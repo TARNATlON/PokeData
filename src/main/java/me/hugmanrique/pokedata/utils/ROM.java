@@ -1,7 +1,7 @@
 package me.hugmanrique.pokedata.utils;
 
-import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hugmanrique
@@ -9,10 +9,26 @@ import java.util.ArrayList;
  */
 public interface ROM {
     /**
+     * Returns this ROM's bytes
+     */
+    byte[] getData();
+
+    int getInternalOffset();
+    void setInternalOffset(int offset);
+
+    /**
+     * You can default it to {@code (byte) 0xFF}
+     */
+    byte getFreeSpaceByte();
+
+    default void addInternalOffset(int add) {
+        setInternalOffset(getInternalOffset() + add);
+    }
+
+    /**
      * Read bytes from the ROM from given offset into an array of a given size
      * @param offset Offset in ROM as hex string
      * @param size Amount of bytes to grab
-     * @return
      */
     default byte[] readBytes(String offset, int size) {
         int offs = convertOffsetToInt(offset);
@@ -20,364 +36,196 @@ public interface ROM {
     }
 
     /**
-     *  Read bytes from the ROM from given offset into an array of a given size
+     * Read bytes from the ROM from given offset into an array of a given size
+     * Use {@link BitConverter#getBytes(byte[], int, int)}
      * @param offset Offset in ROM
      * @param size Amount of bytes to grab
-     * @return
      */
-    public byte[] readBytes(int offset, int size)
-    {
-        return BitConverter.GrabBytes(rom_bytes, offset, size);
+    default byte[] readBytes(int offset, int size) {
+        return BitConverter.getBytes(getData(), offset, size);
     }
 
 
-    public byte[] readBytes(int size)
-    {
-        byte[] t=BitConverter.GrabBytes(rom_bytes, internalOffset, size);
-        internalOffset+=size;
-        return t;
+    default byte[] readBytes(int size) {
+        int offset = getInternalOffset();
+
+        byte[] result = BitConverter.getBytes(getData(), offset, size);
+
+        addInternalOffset(size);
+
+        return result;
     }
+
     /**
      * Reads a byte from an offset
      * @param offset Offset to read from
-     * @return
      */
-    public byte readByte(int offset)
-    {
+    default byte readByte(int offset) {
         return readBytes(offset,1)[0];
     }
-    public byte readByte()
-    {
-        byte t = rom_bytes[internalOffset];
-        internalOffset+=1;
+
+    default byte readByte() {
+        byte t = getData()[getInternalOffset()];
+        addInternalOffset(1);
+
         return t;
     }
+
     /**
      * Reads a byte from an offset
      * @param offset Offset to read from
-     * @return
      */
-    public int readByteAsInt(int offset)
-    {
-        return BitConverter.ToInts(readBytes(offset,1))[0];
+    default int readByteAsInt(int offset) {
+        return BitConverter.toInts(readBytes(offset,1))[0];
     }
+
     /**
      * Reads a byte from an internal offset
-     * @param offset Offset to read from
-     * @return
      */
-    public int readByteAsInt()
-    {
-        int tmp=BitConverter.ToInts(readBytes(internalOffset,1))[0];
-        internalOffset++;
-        return tmp;
+    default int readByteAsInt() {
+        return readByteAsInt(getInternalOffset());
     }
-    public long readLong()
-    {
-        byte[] t=readBytes(4);
-        internalOffset+=4;
-        return BitConverter.ToInt32(t);
 
-    }
-    public long readLong(int offset)
-    {
-        byte[] t=readBytes(offset, 4);
-        return BitConverter.ToInt32(t);
+    default long readLong(int offset) {
+        byte[] t = readBytes(offset, 4);
 
+        return BitConverter.toInt32(t);
     }
+
+    default long readLong() {
+        return readLong(getInternalOffset());
+    }
+
     /**
      * Reads a 16 bit word from an offset
      * @param offset Offset to read from
      * @return
      */
-    public int readWord(int offset)
-    {
-        int[] words = BitConverter.ToInts(readBytes(offset,2));
+    default int readWord(int offset) {
+        int[] words = BitConverter.toInts(readBytes(offset,2));
+
         return (words[1] << 8) + (words[0]);
     }
 
-    public void writeWord(int offset, int toWrite)
-    {
+
+    default void writeWord(int offset, int toWrite) {
         int[] bytes = new int[] {toWrite & 0xFF, (toWrite & 0xFF00) >> 8};
         byte[] nBytes = BitConverter.toBytes(bytes);
-        writeBytes(offset,nBytes);
+
+        writeBytes(offset, nBytes);
     }
 
-    public void writeWord(int toWrite)
-    {
-        writeWord(internalOffset,toWrite);
-        internalOffset += 2;
+    default void writeWord(int toWrite) {
+        writeWord(getInternalOffset(), toWrite);
+        addInternalOffset(2);
     }
 
     /**
-     * Reads a 16 bit word from an InternalOffset
-     * @return
+     * Reads a 16 bit word from the internalOffset
      */
-    public int readWord()
-    {
-        int[] words = BitConverter.ToInts(readBytes(internalOffset,2));
-        internalOffset+=2;
-        return (words[1] << 8) + (words[0]);
+    default int readWord() {
+        int word = readWord(getInternalOffset());
+
+        addInternalOffset(2);
+
+        return word;
     }
+
+    void writeByte(byte value, int offset);
+
     /**
-     *  Write an array of bytes to the ROM at a given offset
+     * Write an array of bytes to the ROM at a given offset
      * @param offset Offset to write the bytes at
-     * @param bytes_to_write Bytes to write to the ROM
+     * @param bytesToWrite Bytes to write to the ROM
      */
-    public void writeBytes(int offset, byte[] bytes_to_write)
-    {
-        for (int count = 0; count < bytes_to_write.length; count++)
-        {
+    default void writeBytes(int offset, byte[] bytesToWrite) {
+        for (int count = 0; count < bytesToWrite.length; count++) {
             try {
-                rom_bytes[offset] = bytes_to_write[count];
+                writeByte(bytesToWrite[count], offset);
                 offset++;
+            } catch (Exception e) {
+                String message = String.format("Tried to write out of bounds (%s)", offset);
+                System.out.println(message);
             }
-            catch (Exception e) {
-                System.out.println("Tried to write outside of bounds! (" + (offset) + ")");
-            }
         }
     }
 
-    public void writeByte(byte b, int offset)
-    {
-        rom_bytes[offset] = b;
+    default void writeByte(byte b) {
+        writeByte(b, getInternalOffset());
+        addInternalOffset(1);
     }
 
-    public void writeByte(byte b)
-    {
-        rom_bytes[internalOffset] = b;
-        internalOffset++;
-    }
-
-    public int internalOffset;
     /**
-     *  Write an array of bytes to the ROM at a given offset
-     * @param bytes_to_write Bytes to write to the ROM
+     * Write an array of bytes to the ROM at a given offset
+     * @param bytesToWrite Bytes to write to the ROM
      */
-    public void writeBytes(byte[] bytes_to_write)
-    {
-        for (int count = 0; count < bytes_to_write.length; count++)
-        {
-            rom_bytes[internalOffset] = bytes_to_write[count];
-            internalOffset++;
-        }
-    }
-    /**
-     *  Write any changes made back to the ROM file on disk
-     * @return
-     */
-    @SuppressWarnings("resource")
-    public int commitChangesToROMFile()
-    {
-        FileOutputStream fos = null;
-
-        try
-        {
-            fos = new FileOutputStream(input_filepath);
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-            return 1;
-        }
-        try
-        {
-            fos.write(rom_bytes);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return 2;
-        }
-        try
-        {
-            fos.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return 3;
-        }
-        return 0;
+    default void writeBytes(byte[] bytesToWrite) {
+        writeBytes(getInternalOffset(), bytesToWrite);
+        addInternalOffset(bytesToWrite.length);
     }
 
     /**
-     *  Convert a string offset i.e 0x943BBD into a decimal
-     *  Used for directly accessing the ROM byte array
+     * Convert a string offset i.e 0x943BBD into a decimal
+     * Used for directly accessing the ROM byte array
      * @param offset Offset to convert to an integer
      * @return The offset as an int
      */
-    public int convertOffsetToInt(String offset)
-    {
+    default int convertOffsetToInt(String offset) {
         return Integer.parseInt(offset, 16);
     }
 
     /**
-     *  Retrieve the header of the ROM, based on offset and size
-     *  Identical to readBytesFromROM just with a different name
-     * @param header_offset
-     * @param header_size
+     * Validate the file loaded based on a given byte and offset
+     * @param offset Offset to check in the ROM
+     * @param validByte Byte to check it with
      * @return
+     */
+    default boolean validateROM(int offset, byte validByte) {
+        return getData()[offset] == validByte;
+    }
+
+    void setCurrentHeader(byte[] romHeader);
+    byte[] getCurrentHeader();
+
+    /**
+     * Retrieve the header of the ROM, based on offset and size
+     * Identical to readBytesFromROM just with a different name
      */
     @Deprecated
-    public byte[] getROMHeader(String header_offset, int header_size)
-    {
-        current_rom_header = readBytes(header_offset, header_size);
-        return current_rom_header;
+    default byte[] getROMHeader(String headerOffset, int headerSize) {
+        byte[] header = readBytes(headerOffset, headerSize);
+        setCurrentHeader(header);
+
+        return header;
     }
 
     /**
-     *  Validate the file loaded based on a given byte and offset
-     * @param validation_offset Offset to check in the ROM
-     * @param validation_byte Byte to check it with
-     * @return
+     * Return a string of the friendly ROM header based on the current ROM
      */
-    public Boolean validateROM(int validation_offset, byte validation_byte)
-    {
-        if (rom_bytes[validation_offset] == validation_byte)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+    default String getFriendlyHeader() {
+        return HeaderNames.get(new String(getCurrentHeader()));
     }
 
     /**
-     *  Load a HEX table file for character mapping i.e. Pokétext
-     * @param tbl_path File path to the character table
-     * @throws IOException
-     */
-    public void loadHexTBLFromFile(String tbl_path) throws IOException
-    {
-        File file = new File(tbl_path);
-
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
-        while ((line = br.readLine()) != null)
-        {
-            String[] seperated = line.split("=");
-            String key;
-            String value;
-
-            if (seperated.length > 1)
-            {
-                key = seperated[0];
-                value = seperated[1];
-            }
-            else
-            {
-                key = seperated[0];
-                value = " ";
-            }
-
-            hex_tbl.put(key, value);
-        }
-        br.close();
-    }
-
-    /**
-     *  Load a HEX table file for character mapping i.e. Pokétext
-     * @param tbl_path File path to the character table
-     * @throws IOException
-     */
-    public void loadHexTBL(String tbl_path) throws IOException
-    {
-        InputStream tbl = this.getClass().getClassLoader().getResourceAsStream(tbl_path);
-
-        if (tbl == null){
-            throw new IOException("Cannot find poketable in the Java internals");
-        }
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(tbl));
-        String line;
-        while ((line = br.readLine()) != null)
-        {
-            String[] seperated = line.split("=");
-            String key;
-            String value;
-
-            if (seperated.length > 1)
-            {
-                key = seperated[0];
-                value = seperated[1];
-            }
-            else
-            {
-                key = seperated[0];
-                value = " ";
-            }
-
-            hex_tbl.put(key, value);
-        }
-        br.close();
-    }
-
-    /**
-     *  Convert Poketext to ascii, takes an array of bytes of poketext
-     *  Basically returns the results from the given HEX Table <- must loadHexTBL first
-     * @param poketext Poketext as a byte array
-     * @return
-     */
-    public String convertPoketextToAscii(byte[] poketext)
-    {
-        StringBuilder converted = new StringBuilder();
-
-        for (int i = 0; i < poketext.length; i++)
-        {
-            String temp;
-            temp = hex_tbl.get(String.format("%02X", poketext[i]));
-
-            converted.append(temp);
-        }
-
-        return converted.toString().trim();
-    }
-
-    /**
-     *  Return a string of the friendly ROM header based on the current ROM
-     * @return
-     */
-    public String getFriendlyROMHeader()
-    {
-        return rom_header_names.get(new String(current_rom_header));
-    }
-
-    // Update the list of friendly ROM headers
-    // TODO: Load header list from file or .ini and include inside the tool
-    private void updateROMHeaderNames()
-    {
-        rom_header_names.put("POKEMON FIREBPRE01", "Pokémon: FireRed");
-        rom_header_names.put("POKEMON LEAFBPGE01", "Pokémon: LeafGreen");
-        rom_header_names.put("POKEMON EMERBPEE01", "Pokémon: Emerald");
-    }
-
-    /**
-     *  Read a structure of data from the ROM at a given offset, a set numner of times, with a set structure size
-     *  For example returning the names of Pokemon into an ArrayList of bytes
+     * Read a structure of data from the ROM at a given offset, a set number of times, with a set structure size
+     * For example returning the names of Pokemon into an ArrayList of bytes
      * @param offset Offset to read the structure from
      * @param amount Amount to read
-     * @param max_struct_size Maximum structure size
-     * @return
+     * @param maxStructSize Maximum structure size
      */
-    public ArrayList<byte[]> loadArrayOfStructuredData(int offset,
-                                                       int amount, int max_struct_size)
-    {
-        ArrayList<byte[]> data = new ArrayList<>();
+    default List<byte[]> loadArrayOfStructuredData(int offset, int amount, int maxStructSize) {
+        List<byte[]> data = new ArrayList<>();
         int offs = offset & 0x1FFFFFF;
 
-        for (int count = 0; count < amount; count++)
-        {
-            byte[] temp_byte = new byte[max_struct_size];
+        for (int count = 0; count < amount; count++) {
+            byte[] tempByte = new byte[maxStructSize];
 
-            for (int c2 = 0; c2 < temp_byte.length; c2++)
-            {
-                temp_byte[c2] = rom_bytes[offs];
+            for (int c2 = 0; c2 < tempByte.length; c2++) {
+                tempByte[c2] = getData()[offs];
                 offs++;
             }
 
-            data.add(temp_byte);
+            data.add(tempByte);
         }
 
         return data;
@@ -387,66 +235,55 @@ public interface ROM {
      * Reads ASCII text from the ROM
      * @param offset The offset to read from
      * @param length The amount of text to read
-     * @return Returns the text as a String object
+     * @return The text as a String object
      */
-    public String readText(int offset, int length)
-    {
-        return new String(BitConverter.GrabBytes(rom_bytes, offset, length));
+    default String readText(int offset, int length) {
+        return new String(BitConverter.getBytes(getData(), offset, length));
     }
 
-    public String readPokeText(int offset)
-    {
+    default String readPokeText(int offset) {
         return readPokeText(offset, -1);
     }
 
-    public String readPokeText(int offset, int length)
-    {
-        if(length > -1)
-            return convertPoketextToAscii(BitConverter.GrabBytes(getData(), offset, length));
+    default String readPokeText(int offset, int length) {
+        // If length set, return converted
+        if (length > -1) {
+            return PokeText.toAscii(BitConverter.getBytes(getData(), offset, length));
+        }
 
+        // Grab till end of text
         byte b = 0x0;
         int i = 0;
-        while(b != -1)
-        {
+
+        while (b != -1) {
             b = getData()[offset+i];
             i++;
         }
 
-        return convertPoketextToAscii(BitConverter.GrabBytes(getData(), offset, i));
+        return PokeText.toAscii(BitConverter.getBytes(getData(), offset, i));
     }
 
-    public String readPokeText()
-    {
-        byte b = 0x0;
-        int i = 0;
-        while(b != -1)
-        {
-            b = getData()[internalOffset+i];
-            i++;
-        }
+    default String readPokeText() {
+        String text = readPokeText(getInternalOffset(), -1);
+        addInternalOffset(text.length());
 
-        String s = convertPoketextToAscii(BitConverter.GrabBytes(getData(), internalOffset, i));
-        internalOffset += i;
-        return s;
-    }
-
-    public byte[] getData()
-    {
-        return rom_bytes;
+        return text;
     }
 
     /**
      * Gets a pointer at an offset
      * @param offset Offset to get the pointer from
      * @param fullPointer Whether we should fetch the full 32 bit pointer or the 24 bit byte[] friendly version.
-     * @return Pointer as a Long
+     * @return Pointer as a long
      */
-    public long getPointer(int offset, boolean fullPointer)
-    {
-        byte[] data = BitConverter.GrabBytes(getData(), offset, 4);
-        if(!fullPointer)
-            data[3]=0;
-        return BitConverter.ToInt32(data);
+    default long getPointer(int offset, boolean fullPointer) {
+        byte[] data = BitConverter.getBytes(getData(), offset, 4);
+
+        if(!fullPointer) {
+            data[3] = 0;
+        }
+
+        return BitConverter.toInt32(data);
     }
 
     /**
@@ -454,30 +291,31 @@ public interface ROM {
      * @param offset Offset to get the pointer from
      * @return Pointer as a Long
      */
-    public long getPointer(int offset)
-    {
+    default long getPointer(int offset) {
         return getPointer(offset,false) & 0x1FFFFFF;
     }
 
     /**
      * Gets a pointer in the ROM as an integer.
-     * Does not support 32 bit pointers due to Java's integer size not being long enough.
+     * Does not support 32 bit pointers due to Java's integer size ({@link Integer#MAX_VALUE}) not being long enough.
      * @param offset Offset to get the pointer from
      * @return Pointer as an Integer
      */
-    public int getPointerAsInt(int offset)
-    {
-        return (int)getPointer(offset,false);
+    default int getPointerAsInt(int offset) {
+        return (int) getPointer(offset,false);
     }
 
-    public long getSignedLong(boolean fullPointer)
-    {
-        byte[] data = BitConverter.GrabBytes(getData(), internalOffset, 4);
-        if(!fullPointer)
+    default long getSignedLong(boolean fullPointer) {
+        byte[] data = BitConverter.getBytes(getData(), getInternalOffset(), 4);
+
+        if(!fullPointer) {
             data[3] = 0;
-        internalOffset+=4;
-        long ptr = BitConverter.ToInt32(data);
-        return (data[3] > 0x7F ? ~ptr : ptr);
+        }
+
+        addInternalOffset(4);
+
+        long pointer = BitConverter.toInt32(data);
+        return data[3] > 0x7F ? ~pointer : pointer;
     }
 
     /**
@@ -485,10 +323,9 @@ public interface ROM {
      * @param pointer Pointer to write
      * @param offset Offset to write it at
      */
-    public void writePointer(long pointer, int offset)
-    {
-        byte[] bytes = BitConverter.GetBytes(pointer);
-        writeBytes(offset,bytes);
+    default void writePointer(long pointer, int offset) {
+        byte[] bytes = BitConverter.getBytes(pointer);
+        writeBytes(offset, bytes);
     }
 
     /**
@@ -496,210 +333,199 @@ public interface ROM {
      * @param pointer Pointer to write (appends 08 automatically)
      * @param offset Offset to write it at
      */
-    public void writePointer(int pointer, int offset)
-    {
-        byte[] bytes = BitConverter.GetBytes(pointer);
-        bytes = BitConverter.ReverseBytes(bytes);
+    default void writePointer(int pointer, int offset) {
+        byte[] bytes = BitConverter.getBytes(pointer);
+
+        bytes = BitConverter.reverseBytes(bytes);
         bytes[3] = 0x08;
-        writeBytes(offset,bytes);
+
+        writeBytes(offset, bytes);
     }
 
     /**
      * Gets the game code from the ROM, ie BPRE for US Pkmn Fire Red
-     * @return
      */
-    public String getGameCode()
-    {
-        return headerCode;
-    }
+    String getGameCode();
 
     /**
      * Gets the game text from the ROM, ie POKEMON FIRE for US Pkmn Fire Red
-     * @return
      */
-    public String getGameText()
-    {
-        return headerName;
-    }
+    String getGameText();
 
     /**
      * Gets the game creator ID as a String, ie '01' is GameFreak's Company ID
-     * @return
      */
-    public String getGameCreatorID()
-    {
-        return headerMaker;
-    }
+    String getGameCreatorId();
 
     /**
      * Gets a pointer at an offset
-     * @param offset Offset to get the pointer from
      * @param fullPointer Whether we should fetch the full 32 bit pointer or the 24 bit byte[] friendly version.
      * @return Pointer as a Long
      */
-    public long getPointer(boolean fullPointer)
-    {
-        byte[] data = BitConverter.GrabBytes(getData(), internalOffset, 4);
-        if(!fullPointer && data[3] >= 0x8)
+    default long getPointer(boolean fullPointer) {
+        byte[] data = BitConverter.getBytes(getData(), getInternalOffset(), 4);
+
+        if (!fullPointer && data[3] >= 0x8) {
             data[3] -= 0x8;
-        internalOffset+=4;
-        return BitConverter.ToInt32(data);
+        }
+
+        addInternalOffset(4);
+        return BitConverter.toInt32(data);
     }
 
     /**
      * Gets a 24 bit pointer in the ROM as an integer.
-     * @param offset Offset to get the pointer from
      * @return Pointer as a Long
      */
-    public long getPointer()
-    {
+    default long getPointer() {
         return getPointer(false);
     }
 
     /**
      * Gets a pointer in the ROM as an integer.
      * Does not support 32 bit pointers due to Java's integer size not being long enough.
-     * @param offset Offset to get the pointer from
      * @return Pointer as an Integer
      */
-    public int getPointerAsInt()
-    {
-        return (int)getPointer(internalOffset,false);
+    default int getPointerAsInt() {
+        return (int) getPointer(getInternalOffset(),false);
     }
 
     /**
      * Reverses and writes a pointer to the ROM
      * @param pointer Pointer to write
-     * @param offset Offset to write it at
      */
-    public void writePointer(long pointer)
-    {
-        byte[] bytes = BitConverter.ReverseBytes(BitConverter.GetBytes(pointer));
+    default void writePointer(long pointer) {
+        byte[] bytes = BitConverter.reverseBytes(BitConverter.getBytes(pointer));
 
-        writeBytes(internalOffset,bytes);
-        internalOffset+=4;
+        writeBytes(getInternalOffset(), bytes);
+        addInternalOffset(4);
     }
 
-    public void writeSignedPointer(long pointer)
-    {
-        byte[] bytes = BitConverter.ReverseBytes(BitConverter.GetBytes(pointer));
+    default void writeSignedPointer(long pointer) {
+        byte[] bytes = BitConverter.reverseBytes(BitConverter.getBytes(pointer));
 
-        writeBytes(internalOffset,bytes);
-        internalOffset+=4;
+        writeBytes(getInternalOffset(), bytes);
+        addInternalOffset(4);
     }
 
     /**
      * Reverses and writes a pointer to the ROM. Assumes pointer is ROM memory and appends 08 to it.
      * @param pointer Pointer to write (appends 08 automatically)
-     * @param offset Offset to write it at
      */
-    public void writePointer(int pointer)
-    {
-        byte[] bytes = BitConverter.ReverseBytes(BitConverter.GetBytes(pointer));
+    default void writePointer(int pointer) {
+        byte[] bytes = BitConverter.reverseBytes(BitConverter.getBytes(pointer));
         bytes[3] += 0x8;
 
-        writeBytes(internalOffset,bytes);
-        internalOffset+=4;
+        writeBytes(getInternalOffset(), bytes);
+        addInternalOffset(4);
     }
 
-    /**
-     * Gets the game code from the ROM, ie BPRE for US Pkmn Fire Red
-     * @return
-     */
-    public void Seek(int offset)
-    {
-        if(offset > 0x08000000)
+    default void seek(int offset) {
+        if(offset > 0x08000000) {
             offset &= 0x1FFFFFF;
+        }
 
-        internalOffset=offset;
+        setInternalOffset(offset);
     }
 
-    public byte freeSpaceByte = (byte)0xFF;
-    public int findFreespace(int length)
-    {
-        return findFreespace(length, 0, false);
-    }
+    default int findFreespace(long freeSpaceSize, int startLoc, boolean asmSafe) {
+        byte free = getFreeSpaceByte();
+        byte[] searching = new byte[(int) freeSpaceSize];
 
-    public int findFreespace(int length, boolean asmSafe)
-    {
-        return findFreespace(length, 0, asmSafe);
-    }
-
-    public int findFreespace(long freespaceStart, int startingLocation)
-    {
-        return findFreespace(freespaceStart, startingLocation, false);
-    }
-
-    public int findFreespace(long freespaceSize, int startingLocation, boolean asmSafe)
-    {
-        byte free = freeSpaceByte;
-        byte[] searching = new byte[(int) freespaceSize];
-        for(int i = 0; i < freespaceSize; i++)
+        for(int i = 0; i < freeSpaceSize; i++) {
             searching[i] = free;
+        }
+
         int numMatches = 0;
         int freespace = -1;
-        for(int i = startingLocation; i < rom_bytes.length; i++)
-        {
-            byte b = rom_bytes[i];
+
+        byte[] bytes = getData();
+
+        for(int i = startLoc; i < bytes.length; i++) {
+            byte b = bytes[i];
             byte c = searching[numMatches];
-            if(b == c)
-            {
+
+            if(b == c) {
                 numMatches++;
-                if(numMatches == searching.length - 1)
-                {
+
+                if(numMatches == searching.length - 1) {
                     freespace = i - searching.length + 2;
                     break;
                 }
-            }
-            else
+            } else {
                 numMatches = 0;
+            }
         }
+
         return freespace;
     }
 
-    public void floodBytes(int offset, byte b, int length)
-    {
-        if(offset > 0x1FFFFFF)
+    default int findFreespace(int length, boolean asmSafe) {
+        return findFreespace(length, 0, asmSafe);
+    }
+
+    default int findFreespace(long freeSpaceStart, int startLoc) {
+        return findFreespace(freeSpaceStart, startLoc, false);
+    }
+
+    default int findFreespace(int length) {
+        return findFreespace(length, 0, false);
+    }
+
+    default void floodBytes(int offset, byte b, int length) {
+        if(offset > 0x1FFFFFF) {
             return;
+        }
 
-        for(int i = offset; i < offset+length; i++)
-            rom_bytes[i] = b;
+        for(int i = offset; i < offset + length; i++) {
+            writeByte(b, i);
+        }
     }
 
-    public void repoint(int pOriginal, int pNew)
-    {
-        repoint(pOriginal, pNew, -1);
-    }
+    default void repoint(int original, int newPointer, int lookForNum) {
+        original |= 0x08000000;
 
-    public void repoint(int pOriginal, int pNew, int numbertolookfor)
-    {
-        pOriginal |= 0x08000000;
-        byte[] searching = BitConverter.ReverseBytes(BitConverter.GetBytes(pOriginal));
+        byte[] searching = BitConverter.reverseBytes(BitConverter.getBytes(original));
+
         int numMatches = 0;
         int totalMatches = 0;
-        int offset = -1;
-        for(int i = 0; i < rom_bytes.length; i++)
-        {
-            byte b = rom_bytes[i];
+        int offset;
+
+        byte[] bytes = getData();
+
+        for (int i = 0; i < bytes.length; i++) {
+            byte b = bytes[i];
             byte c = searching[numMatches];
-            if(b == c)
-            {
+
+            if (b == c) {
                 numMatches++;
-                if(numMatches == searching.length - 1)
-                {
+
+                if (numMatches == searching.length - 1) {
                     offset = i - searching.length + 2;
-                    this.Seek(offset);
-                    this.writePointer(pNew);
-                    System.out.println(BitConverter.toHexString(offset));
+
+                    this.seek(offset);
+                    this.writePointer(newPointer);
+
+                    // TODO Should we log the offsets?
+                    //System.out.println(BitConverter.toHexString(offset));
+
                     totalMatches++;
-                    if(totalMatches == numbertolookfor)
+
+                    if (totalMatches == lookForNum) {
                         break;
+                    }
+
                     numMatches = 0;
                 }
-            }
-            else
+            } else {
                 numMatches = 0;
+            }
         }
-        System.out.println("Found " + totalMatches + " occurences of the pointer specified.");
+
+        System.out.println("Found " + totalMatches + " occurrences of the pointer specified.");
+    }
+
+    default void repoint(int original, int newPointer) {
+        repoint(original, newPointer, -1);
     }
 }
