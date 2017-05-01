@@ -2,7 +2,7 @@
 Pokémon data classes from Gen III that can read from a ROM.
 
 ## ROM reader and writer
-PokeData provides a [ROM](src/main/java/me/hugmanrique/pokedata/utils/ROM.java) which contains all the ROM reading and writing methods.
+PokeData provides a [ROM](src/main/java/me/hugmanrique/pokedata/utils/ROM.java) interface which contains all the ROM reading and writing methods.
 
 You can make your ROM readable only by leaving the `writeByte(byte value, int offset)` method empty.
 
