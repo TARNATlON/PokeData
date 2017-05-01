@@ -21,6 +21,15 @@ public class Move extends Data {
 
     @Override
     public void read(ROM rom) {
-
+        effect = rom.readByte();
+        basePower = rom.readByte();
+        type = rom.readByte();
+        accuracy = rom.readByte();
+        pp = rom.readByte();
+        effectAccuracy = rom.readByte();
+        affects = rom.readByte();
+        priority = rom.readByte();
+        flags = rom.readByte();
+        rom.addInternalOffset(3);
     }
 }
