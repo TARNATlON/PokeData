@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Represents a readable (and optionally writable) GBA ROM
+ * The ROM will be written using {@link #writeByte(byte)}, but you can leave it empty
  * @author Hugmanrique
  * @since 30/04/2017
  */
 public interface ROM {
     /**
-     * Returns this ROM's bytes
+     * Retrieves this ROM's bytes
      */
     byte[] getData();
 
