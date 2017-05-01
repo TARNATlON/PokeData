@@ -15,4 +15,4 @@ All the classes contain an URL to Bulbapedia if available, where the data values
 - Moves: Move metadata
 - Pokédex: details about a Pokémon species
 - Pokémon: basic data of a captured Pokémon
-- PokemonData: combat data of a captured Pokémon 
+- PokemonData: battle data of a captured Pokémon 
