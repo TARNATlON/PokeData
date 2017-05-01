@@ -101,25 +101,11 @@ public interface ROM {
     /**
      * Reads a 16 bit word from an offset
      * @param offset Offset to read from
-     * @return
      */
     default int readWord(int offset) {
         int[] words = BitConverter.toInts(readBytes(offset,2));
 
-        return (words[1] << 8) + (words[0]);
-    }
-
-
-    default void writeWord(int offset, int toWrite) {
-        int[] bytes = new int[] {toWrite & 0xFF, (toWrite & 0xFF00) >> 8};
-        byte[] nBytes = BitConverter.toBytes(bytes);
-
-        writeBytes(offset, nBytes);
-    }
-
-    default void writeWord(int toWrite) {
-        writeWord(getInternalOffset(), toWrite);
-        addInternalOffset(2);
+        return ((words[1] << 8) + (words[0]));
     }
 
     /**
@@ -131,6 +117,18 @@ public interface ROM {
         addInternalOffset(2);
 
         return word;
+    }
+
+    default void writeWord(int offset, int toWrite) {
+        int[] bytes = new int[] {toWrite & 0xFF, (toWrite & 0xFF00) >> 8};
+        byte[] nBytes = BitConverter.toBytes(bytes);
+
+        writeBytes(offset, nBytes);
+    }
+
+    default void writeWord(int toWrite) {
+        writeWord(getInternalOffset(), toWrite);
+        addInternalOffset(2);
     }
 
     void writeByte(byte value, int offset);
