@@ -1,6 +1,7 @@
 package me.hugmanrique.pokedata.items;
 
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.utils.ROM;
 
 /**
  * http://bulbapedia.bulbagarden.net/wiki/Item_data_structure_in_Generation_III
@@ -9,16 +10,33 @@ import me.hugmanrique.pokedata.Data;
  */
 public class Item extends Data {
     private String name;
-    private short index;
-    private short price;
+    private int index;
+    private int price;
     private byte holdEffect;
     private byte parameter;
     private long descriptionPtr;
-    private short mysteryValue;
+    private int mysteryValue;
     private byte pocket;
     private byte type;
     private long usageCodePtr;
     private long battleUsage;
     private long battleUsagePtr;
     private long extraParam;
+
+    @Override
+    public void read(ROM rom) {
+        name = rom.readPokeText();
+        index = rom.readWord();
+        price = rom.readWord();
+        holdEffect = rom.readByte();
+        parameter = rom.readByte();
+        descriptionPtr = rom.getPointer();
+        mysteryValue = rom.readWord();
+        pocket = rom.readByte();
+        type = rom.readByte();
+        usageCodePtr = rom.getPointer();
+        battleUsage = rom.readLong();
+        battleUsagePtr = rom.getPointer();
+        extraParam = rom.readLong();
+    }
 }
