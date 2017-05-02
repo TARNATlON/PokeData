@@ -2,6 +2,7 @@ package me.hugmanrique.pokedata.pokemon.ev;
 
 import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.utils.ROM;
 
 /**
@@ -22,5 +23,12 @@ public class Evolution extends Data {
 
         // Skip padding due to alignment
         rom.addInternalOffset(2);
+    }
+
+    /**
+     * Returns if this entry is an actual evolution
+     */
+    public boolean isZeroedOut() {
+        return BitConverter.zeroedOut(evolutionType, parameter, target);
     }
 }

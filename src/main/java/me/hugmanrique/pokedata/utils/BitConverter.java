@@ -126,4 +126,14 @@ public class BitConverter {
 
         return result;
     }
+
+    public static boolean zeroedOut(int... words) {
+        for (int i : words) {
+            if (i != 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
