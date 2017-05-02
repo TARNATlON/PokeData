@@ -9,7 +9,7 @@ You can make your ROM readable only by leaving the `writeByte(byte value, int of
 TODO: Explain PokeText table loading
 
 ## Data reference:
-All the classes contain an URL to Bulbapedia if available, where the data values are explain in more depth.
+All the classes contain an URL to Bulbapedia if available, where the data values are explained in more depth.
 
 - Items: Item metadata
 - Moves: Move metadata
