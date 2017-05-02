@@ -8,16 +8,11 @@ import me.hugmanrique.pokedata.utils.ROM;
  * @since 30/04/2017
  */
 public class Data {
-    public Data() {}
+    protected Data() {}
 
-    public Data(ROM rom) {
-        read(rom);
-    }
+    public Data(ROM rom) {}
 
     public Data(ROM rom, int offset) {
-        rom.seek(offset);
-        read(rom);
+        this(rom.seekAndGet(offset));
     }
-
-    public void read(ROM rom) {}
 }

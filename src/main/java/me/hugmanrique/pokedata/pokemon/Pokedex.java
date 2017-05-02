@@ -20,8 +20,7 @@ public class Pokedex extends Data {
     private int trainerScale;
     private int trainerOffset;
 
-    @Override
-    public void read(ROM rom) {
+    public Pokedex(ROM rom) {
         name = rom.readPokeText();
         height = rom.readWord();
         weight = rom.readWord();

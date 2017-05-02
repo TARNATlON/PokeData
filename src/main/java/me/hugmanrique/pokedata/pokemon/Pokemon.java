@@ -1,6 +1,8 @@
 package me.hugmanrique.pokedata.pokemon;
 
 import lombok.Getter;
+import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.utils.ROM;
 
 /**
  * http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_III
@@ -8,7 +10,7 @@ import lombok.Getter;
  * @since 30/04/2017
  */
 @Getter
-public class Pokemon {
+public class Pokemon extends Data {
     private int personality;
     private int otId;
     private String nickname;
@@ -30,4 +32,17 @@ public class Pokemon {
     private short speed;
     private short spAttack;
     private short spDefense;
+
+    public Pokemon(ROM rom) {
+        super(rom);
+    }
+
+    public Pokemon(ROM rom, int offset) {
+        super(rom, offset);
+    }
+
+    @Override
+    public void read(ROM rom) {
+        super.read(rom);
+    }
 }

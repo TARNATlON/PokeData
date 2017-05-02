@@ -21,8 +21,7 @@ public class Move extends Data {
     private byte priority;
     private byte flags;
 
-    @Override
-    public void read(ROM rom) {
+    public Move(ROM rom) {
         effect = rom.readByte();
         basePower = rom.readByte();
         type = rom.readByte();

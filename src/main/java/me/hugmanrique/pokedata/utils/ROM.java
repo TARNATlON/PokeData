@@ -428,6 +428,12 @@ public interface ROM {
         setInternalOffset(offset);
     }
 
+    // Hacky way to make ROM, offset constructors work
+    default ROM seekAndGet(int offset) {
+        seek(offset);
+        return this;
+    }
+
     default int findFreespace(long freeSpaceSize, int startLoc, boolean asmSafe) {
         byte free = getFreeSpaceByte();
         byte[] searching = new byte[(int) freeSpaceSize];

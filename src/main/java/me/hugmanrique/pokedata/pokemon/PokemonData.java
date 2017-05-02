@@ -8,7 +8,7 @@ import lombok.Getter;
  * @since 30/04/2017
  */
 @Getter
-public class PokemonData {
+public class PokemonData { // TODO Extend data and implement reader
     // Growth
     private short species;
     private short heldItem;

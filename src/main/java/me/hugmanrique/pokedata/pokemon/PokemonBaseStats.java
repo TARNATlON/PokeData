@@ -35,8 +35,7 @@ public class PokemonBaseStats extends Data {
     private byte safariZoneRate;
     private byte colorFlip;
 
-    @Override
-    public void read(ROM rom) {
+    public PokemonBaseStats(ROM rom) {
         baseHp = rom.readByte();
         baseAttack = rom.readByte();
         baseDefense = rom.readByte();

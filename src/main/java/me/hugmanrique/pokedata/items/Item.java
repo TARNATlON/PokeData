@@ -25,8 +25,7 @@ public class Item extends Data {
     private long battleUsagePtr;
     private long extraParam;
 
-    @Override
-    public void read(ROM rom) {
+    public Item(ROM rom) {
         name = rom.readPokeText();
         index = rom.readWord();
         price = rom.readWord();
