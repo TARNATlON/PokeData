@@ -1,5 +1,6 @@
 package me.hugmanrique.pokedata.pokemon;
 
+import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.utils.ROM;
 
@@ -7,6 +8,7 @@ import me.hugmanrique.pokedata.utils.ROM;
  * @author Hugmanrique
  * @since 30/04/2017
  */
+@Getter
 public class Pokedex extends Data {
     private String name;
     private int height;

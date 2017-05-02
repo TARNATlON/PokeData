@@ -1,10 +1,13 @@
 package me.hugmanrique.pokedata.pokemon;
 
+import lombok.Getter;
+
 /**
  * http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_substructures_in_Generation_III
  * @author Hugmanrique
  * @since 30/04/2017
  */
+@Getter
 public class PokemonData {
     // Growth
     private short species;

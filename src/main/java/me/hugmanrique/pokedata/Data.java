@@ -1,7 +1,5 @@
 package me.hugmanrique.pokedata;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import me.hugmanrique.pokedata.utils.ROM;
 
 /**
@@ -9,9 +7,9 @@ import me.hugmanrique.pokedata.utils.ROM;
  * @author Hugmanrique
  * @since 30/04/2017
  */
-@AllArgsConstructor
-@Getter
 public class Data {
+    public Data() {}
+
     public Data(ROM rom) {
         read(rom);
     }
