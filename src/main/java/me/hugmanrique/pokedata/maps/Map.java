@@ -10,7 +10,12 @@ import me.hugmanrique.pokedata.utils.ROM;
  * Bulbapedia article missing
  * As the map data class contains a lot of values, each "section" is
  * separated into child classes
- * @author Hugmanrique
+ *
+ * Data structure gathered by @shinyquagsire23,
+ * Extracted from MEH (https://github.com/shinyquagsire23/MEH)
+ * Thanks!
+ *
+ * @author shinyquagsire23, Hugmanrique
  * @since 30/04/2017
  */
 @Getter
