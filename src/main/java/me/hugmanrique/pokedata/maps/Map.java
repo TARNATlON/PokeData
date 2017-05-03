@@ -6,6 +6,7 @@ import me.hugmanrique.pokedata.connections.ConnectionData;
 import me.hugmanrique.pokedata.sprites.SpritesHeader;
 import me.hugmanrique.pokedata.sprites.npcs.SpritesNPCManager;
 import me.hugmanrique.pokedata.sprites.signs.SpritesSignManager;
+import me.hugmanrique.pokedata.sprites.triggers.TriggerManager;
 import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.utils.ROM;
 
@@ -29,6 +30,7 @@ public class Map extends Data {
 
     private SpritesNPCManager npcManager;
     private SpritesSignManager signManager;
+    private TriggerManager triggerManager;
 
     public Map(ROM rom) {
         header = new MapHeader(rom);
@@ -43,5 +45,6 @@ public class Map extends Data {
 
         npcManager = new SpritesNPCManager(rom, (int) sprites.getNpcPtr(), sprites.getNpcAmount());
         signManager = new SpritesSignManager(rom, (int) sprites.getSignsPtr(), sprites.getSignsAmount());
+        triggerManager = new TriggerManager(rom, (int) sprites.getTrapsPtr(), sprites.getTrapsAmount());
     }
 }
