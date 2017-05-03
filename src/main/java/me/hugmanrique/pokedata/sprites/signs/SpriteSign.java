@@ -8,6 +8,7 @@ import me.hugmanrique.pokedata.utils.ROM;
  * @since 02/05/2017
  */
 public class SpriteSign extends Sprite {
+    // TODO Check if some of these bytes are words values
     private byte b2;
     private byte b4;
     private byte b5;
