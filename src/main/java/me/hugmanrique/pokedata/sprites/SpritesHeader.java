@@ -13,23 +13,23 @@ import me.hugmanrique.pokedata.utils.ROM;
 public class SpritesHeader extends Data {
     private byte npcAmount;
     private byte exitsAmount;
-    private byte trapsAmount;
+    private byte triggersAmount;
     private byte signsAmount;
 
     private long npcPtr;
     private long exitsPtr;
-    private long trapsPtr;
+    private long triggersPtr;
     private long signsPtr;
 
     public SpritesHeader(ROM rom) {
         npcAmount = rom.readByte();
         exitsAmount = rom.readByte();
-        trapsAmount = rom.readByte();
+        triggersAmount = rom.readByte();
         signsAmount = rom.readByte();
 
         npcPtr = rom.getPointer();
         exitsPtr = rom.getPointer();
-        trapsPtr = rom.getPointer();
+        triggersPtr = rom.getPointer();
         signsPtr = rom.getPointer();
     }
 }

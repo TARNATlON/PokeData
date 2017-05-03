@@ -47,7 +47,7 @@ public class Map extends Data {
 
         npcManager = new SpritesNPCManager(rom, (int) sprites.getNpcPtr(), sprites.getNpcAmount());
         signManager = new SpritesSignManager(rom, (int) sprites.getSignsPtr(), sprites.getSignsAmount());
-        triggerManager = new TriggerManager(rom, (int) sprites.getTrapsPtr(), sprites.getTrapsAmount());
+        triggerManager = new TriggerManager(rom, (int) sprites.getTriggersPtr(), sprites.getTriggersAmount());
         exitManager = new SpritesExitManager(rom, (int) sprites.getExitsPtr(), sprites.getExitsAmount());
     }
 }

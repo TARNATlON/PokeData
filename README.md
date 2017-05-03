@@ -27,6 +27,16 @@ As the structure of a Map is complex, every section receives its own class:
 - MapHeader: Map metadata
 - ConnectionData: Connection pointers and list of them
 - Connection: offset, borders, map destination...
+- [Sprites](#Sprites)
 
 Special thanks to [@shinyquagsire23](https://github.com/shinyquagsire23/) for finding out all the data structures for this section.
 These values were extracted from his project [MEH](https://github.com/shinyquagsire23/MEH), check it out!
+
+### Sprites
+PokeData has base classes for Sprites and a SpriteManager, which creates the sprite instances, here are the different types currently implemented:
+
+- NPCs: trainer that have scripts (speeches, combats...)
+- Signs: contains the pointer to the text pointer and metadata
+- Triggers: also known as traps, calls scripts when passing over a tile
+- Exits: move the player to other map locations, contains the Bank and the Map ID
+- OverworldSprites: (Soon) raw images of the overworld sprites, offers methods to render into Java's Images
