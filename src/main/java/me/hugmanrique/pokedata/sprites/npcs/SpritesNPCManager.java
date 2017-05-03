@@ -13,4 +13,9 @@ public class SpritesNPCManager extends SpriteManager<SpriteNPC> {
             sprites.add(new SpriteNPC(rom));
         }
     }
+
+    public SpritesNPCManager(ROM rom, int offset, int count) {
+        // TODO Make sure this in super calls constructor above
+        super(rom, offset, count);
+    }
 }

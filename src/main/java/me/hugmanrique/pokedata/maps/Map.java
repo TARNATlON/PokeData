@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.connections.ConnectionData;
 import me.hugmanrique.pokedata.sprites.SpritesHeader;
+import me.hugmanrique.pokedata.sprites.npcs.SpritesNPCManager;
 import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.utils.ROM;
 
@@ -25,13 +26,19 @@ public class Map extends Data {
     private ConnectionData connections;
     private SpritesHeader sprites;
 
+    private SpritesNPCManager npcManager;
+
     public Map(ROM rom) {
         header = new MapHeader(rom);
 
         rom.seek(BitConverter.shortenPointer(header.getConnectPtr()));
         connections = new ConnectionData(rom);
 
+        // Sprites loading
+
         rom.seek((int) header.getSpritesPtr() & 0x1FFFFFF);
         sprites = new SpritesHeader(rom);
+
+        npcManager = new SpritesNPCManager(rom, (int) sprites.getNpcPtr(), sprites.getNpcAmount());
     }
 }
