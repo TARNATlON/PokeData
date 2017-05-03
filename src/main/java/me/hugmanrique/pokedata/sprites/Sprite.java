@@ -18,6 +18,10 @@ public abstract class Sprite extends Data {
 
     public Sprite(ROM rom) {}
 
+    public Sprite(ROM rom, int offset) {
+        this(rom.seekAndGet(offset));
+    }
+
     // Should be static, create different type enum with constants?
     public abstract int getSize();
 }
