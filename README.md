@@ -27,7 +27,7 @@ As the structure of a Map is complex, every section receives its own class:
 - MapHeader: Map metadata
 - ConnectionData: Connection pointers and list of them
 - Connection: offset, borders, map destination...
-- [Sprites](#Sprites)
+- [Sprites](#sprites)
 
 Special thanks to [@shinyquagsire23](https://github.com/shinyquagsire23/) for finding out all the data structures for this section.
 These values were extracted from his project [MEH](https://github.com/shinyquagsire23/MEH), check it out!
