@@ -44,4 +44,13 @@ public abstract class SpriteManager<T extends Sprite> extends Data {
 
         return null;
     }
+
+    public int getSize() {
+        if (sprites.isEmpty()) {
+            return 0;
+        }
+
+        // Sizes of different Sprite instances should be equal
+        return sprites.size() * sprites.get(0).getSize();
+    }
 }
