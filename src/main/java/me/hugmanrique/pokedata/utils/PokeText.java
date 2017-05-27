@@ -1,6 +1,8 @@
 package me.hugmanrique.pokedata.utils;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
@@ -14,13 +16,25 @@ public class PokeText {
     private static Map<String, String> hexTable = new HashMap<>();
 
     /**
-     * Load a HEX table file for character mapping i.e. Pokétext
-     * @param tablePath File path to the character table
-     * @throws IOException
+     * Loads the default PokeTable from this JAR's resources
+     * @throws IOException If the PokeTable isn't stored in this JAR
      */
-    public static void loadFromFile(String tablePath) throws IOException {
-        File file = new File(tablePath);
-        List<String> lines = Files.readAllLines(file.toPath());
+    public static void loadFromJar() throws IOException {
+        URL url = PokeText.class.getClassLoader().getResource("poketable.ini");
+
+        if (url == null) {
+            throw new IOException("Cannot find internal PokeTable in PokeData JAR");
+        }
+
+        loadFromFile(new File(url.getPath()));
+    }
+
+    /**
+     * Load a HEX table file for character mapping i.e. Pokétext
+     * @param tableFile File that contains the character table
+     */
+    public static void loadFromFile(File tableFile) throws IOException {
+        List<String> lines = Files.readAllLines(tableFile.toPath());
 
         for (String line : lines) {
             String[] separated = line.split("=");
@@ -35,7 +49,7 @@ public class PokeText {
     /**
      * Convert Poketext to ascii, takes an array of bytes of poketext
      * @param pokeText Poketext as a byte array
-     * @return The results from the given HEX Table <- must {@link #loadFromFile(String)} first
+     * @return The results from the given HEX Table <- must {@link #loadFromFile(File)} first
      */
     public static String toAscii(byte[] pokeText) {
         StringBuilder converted = new StringBuilder();
