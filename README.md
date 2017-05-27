@@ -1,4 +1,6 @@
 # PokeData
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Pokémon data classes from Gen III that can read from a ROM.
 
 ## ROM reader and writer
@@ -6,7 +8,7 @@ PokeData provides a [ROM](src/main/java/me/hugmanrique/pokedata/utils/ROM.java) 
 
 You can make your ROM readable-only by leaving the `writeByte(byte value, int offset)` method empty.
 
-TODO: Explain PokeText table loading
+You can find a guide on how to load the `PokeTable` and a base `ROM` class in the [PokeDataTest](https://github.com/hugmanrique/PokeDataTest) repo.
 
 ## Data reference:
 All the classes contain an URL to Bulbapedia if available, where the data values are explained in more depth.
@@ -33,7 +35,7 @@ Special thanks to [@shinyquagsire23](https://github.com/shinyquagsire23/) for fi
 These values were extracted from his project [MEH](https://github.com/shinyquagsire23/MEH), check it out!
 
 ### Sprites
-PokeData has base classes for Sprites and a SpriteManager, which creates the sprite instances, here are the different types currently implemented:
+PokeData has base classes for Sprites and a SpriteManager, which creates the sprite instances; here are the different types currently implemented:
 
 - NPCs: trainer that have scripts (speeches, combats...)
 - Signs: contains the pointer to the text pointer and metadata
