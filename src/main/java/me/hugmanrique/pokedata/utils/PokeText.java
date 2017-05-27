@@ -20,13 +20,13 @@ public class PokeText {
      * @throws IOException If the PokeTable isn't stored in this JAR
      */
     public static void loadFromJar() throws Exception {
-        URL url = PokeText.class.getClassLoader().getResource("poketable.ini");
+        InputStream in = PokeText.class.getClassLoader().getResourceAsStream("poketable.ini");
 
-        if (url == null) {
+        if (in == null) {
             throw new IOException("Cannot find internal PokeTable in PokeData JAR");
         }
 
-        loadFromFile(new File(url.toURI()));
+        loadFromStream(in);
     }
 
     /**
@@ -34,9 +34,14 @@ public class PokeText {
      * @param tableFile File that contains the character table
      */
     public static void loadFromFile(File tableFile) throws IOException {
-        List<String> lines = Files.readAllLines(tableFile.toPath());
+        loadFromStream(new FileInputStream(tableFile));
+    }
 
-        for (String line : lines) {
+    private static void loadFromStream(InputStream in) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String line;
+
+        while ((line = reader.readLine()) != null) {
             String[] separated = line.split("=");
 
             String key = separated[0];
@@ -44,6 +49,8 @@ public class PokeText {
 
             hexTable.put(key, value);
         }
+
+        reader.close();
     }
 
     /**
