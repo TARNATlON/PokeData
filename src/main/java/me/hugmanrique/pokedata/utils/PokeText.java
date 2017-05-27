@@ -1,7 +1,7 @@
 package me.hugmanrique.pokedata.utils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -19,14 +19,14 @@ public class PokeText {
      * Loads the default PokeTable from this JAR's resources
      * @throws IOException If the PokeTable isn't stored in this JAR
      */
-    public static void loadFromJar() throws IOException {
+    public static void loadFromJar() throws Exception {
         URL url = PokeText.class.getClassLoader().getResource("poketable.ini");
 
         if (url == null) {
             throw new IOException("Cannot find internal PokeTable in PokeData JAR");
         }
 
-        loadFromFile(new File(url.getPath()));
+        loadFromFile(new File(url.toURI()));
     }
 
     /**
