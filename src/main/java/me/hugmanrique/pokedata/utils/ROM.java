@@ -15,6 +15,11 @@ public interface ROM {
      */
     byte[] getData();
 
+    /**
+     * Initializes this ROM's bytes. Only called once
+     */
+    void setData(byte[] bytes);
+
     int getInternalOffset();
     void setInternalOffset(int offset);
 
@@ -46,7 +51,6 @@ public interface ROM {
     default byte[] readBytes(int offset, int size) {
         return BitConverter.getBytes(getData(), offset, size);
     }
-
 
     default byte[] readBytes(int size) {
         int offset = getInternalOffset();
@@ -356,6 +360,45 @@ public interface ROM {
      * Gets the game creator ID as a String, ie '01' is GameFreak's Company ID
      */
     String getGameCreatorId();
+
+    /**
+     * Sets the game code, the game creator and the game creator ID
+     */
+    void setGameVars(String code, String name, String maker);
+
+    /**
+     * Update some ROM flags depending on the Pokémon game
+     */
+    default void updateFlags() {
+        String code = getGameCode();
+
+        if (code.equals("BPRE")) {
+            // Is this a function pointer?
+            if (readByte(0x082903) == 0x8) {
+                setDNPokePatchAdded(true);
+            }
+
+            // Is interdepth's RTC in there?
+            if (readByte(0x427) == 0x8) {
+                setRTCAdded(true);
+            }
+        } else if (code.equals("BPEE")) {
+            setRTCAdded(true);
+
+            if (readByte(0x0B4C7F) == 0x8) {
+                setDNPokePatchAdded(true);
+            }
+        }
+    }
+
+    // Flags getters and setters
+    boolean isDNPokePatchAdded();
+
+    boolean isRTCAdded();
+
+    void setDNPokePatchAdded(boolean added);
+
+    void setRTCAdded(boolean added);
 
     /**
      * Gets a pointer at an offset

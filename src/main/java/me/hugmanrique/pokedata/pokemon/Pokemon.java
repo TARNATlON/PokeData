@@ -34,15 +34,6 @@ public class Pokemon extends Data {
     private short spDefense;
 
     public Pokemon(ROM rom) {
-        super(rom);
-    }
-
-    public Pokemon(ROM rom, int offset) {
-        super(rom, offset);
-    }
-
-    @Override
-    public void read(ROM rom) {
-        super.read(rom);
+        // TODO
     }
 }
