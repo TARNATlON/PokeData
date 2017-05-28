@@ -1,6 +1,10 @@
 package me.hugmanrique.pokedata.loaders;
 
 import me.hugmanrique.pokedata.pokemon.ev.EvolutionParam;
+import org.ini4j.Wini;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Hugmanrique
@@ -91,4 +95,13 @@ public class ROMData {
     private long pokedexLightestTable;
     private long pokedexSmallestTable;
     private long pokedexTypeTable;
+
+    public ROMData(Wini store, String header) {
+
+
+    }
+
+    public ROMData(File file, String header) throws IOException {
+        this(new Wini(file), header);
+    }
 }
