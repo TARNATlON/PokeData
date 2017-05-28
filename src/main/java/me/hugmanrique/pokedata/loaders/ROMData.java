@@ -15,8 +15,8 @@ public class ROMData {
     private long itemData;
     private long attackNames;
     private long tmData;
-    private short totalTMsAndHMs;
-    private short totalTMs;
+    private int totalTMsAndHMs;
+    private int totalTMs;
     private long itemImgData;
     private int itemsNumber;
     private int attacksNumber;
@@ -97,7 +97,19 @@ public class ROMData {
     private long pokedexTypeTable;
 
     public ROMData(Wini store, String header) {
+        DataLoader loader = new DataLoader(store, header);
 
+        romName = loader.getString("ROMName");
+        itemData = loader.getLong("ItemData");
+        attackNames = loader.getLong("AttackNames");
+        tmData = loader.getLong("TMData");
+        totalTMsAndHMs = loader.getInt("TotalTMsPlusHMs");
+        itemImgData = loader.getLong("ItemIMGData");
+        itemsNumber = loader.getInt("NumberOfItems");
+        attacksNumber = loader.getInt("NumberOfAttacks");
+        moveTutorAttacks = loader.getLong("MoveTutorAttacks");
+        moveTutorAttacksNumber = loader.getInt("NumberOfMoveTutorAttacks");
+        pokemonNames = loader.getLong("PokemonNames");
 
     }
 
