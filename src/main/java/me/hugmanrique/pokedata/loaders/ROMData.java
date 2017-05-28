@@ -11,6 +11,8 @@ import java.io.IOException;
  * @since 27/05/2017
  */
 public class ROMData {
+    private static final int BANKS = 42;
+
     private String romName;
     private long itemData;
     private long attackNames;
@@ -104,6 +106,7 @@ public class ROMData {
         attackNames = loader.getLong("AttackNames");
         tmData = loader.getLong("TMData");
         totalTMsAndHMs = loader.getInt("TotalTMsPlusHMs");
+        totalTMs = loader.getInt("TotalTMs");
         itemImgData = loader.getLong("ItemIMGData");
         itemsNumber = loader.getInt("NumberOfItems");
         attacksNumber = loader.getInt("NumberOfAttacks");
@@ -120,7 +123,75 @@ public class ROMData {
         abilityNames = loader.getLong("AbilityNames");
         abilitiesNumber = loader.getInt("NumberOfAbilities");
 
+        pointerOfMapBanksPointer = loader.getLong("Pointer2PointersToMapBanks");
 
+        bankPointers = new long[BANKS];
+        mapsInBanksNumber = new int[BANKS];
+
+        for (int i = 0; i < BANKS; i++) {
+            bankPointers[i] = loader.getLong("OriginalBankPointer" + i);
+            mapsInBanksNumber[i] = loader.getInt("NumberOfMapsInBank" + i);
+        }
+
+        mapLabelData = loader.getLong("MapLabelData");
+        mapLabelsNumber = loader.getInt("NumberOfMapLabels");
+
+        // TODO Load tiles in tileset
+
+        pokemonFrontSprites = loader.getLong("PokemonFrontSprites");
+        pokemonBackSprites = loader.getLong("PokemonBackSprites");
+        pokemonNormalPal = loader.getLong("PokemonNormalPal");
+        pokemonShinyPal = loader.getLong("PokemonShinyPal");
+        iconPointerTable = loader.getLong("IconPointerTable");
+        iconPalTable = loader.getLong("IconPalTable");
+        cryTable = loader.getLong("CryTable");
+        cryTable2 = loader.getLong("CryTable2");
+        cryCoversionTable = loader.getLong("CryConversionTable");
+        footPrintTable = loader.getLong("FottPrintTable");
+        pokemonAttackTable = loader.getLong("PokemonAttackTable");
+        pokemonEvolutions = loader.getLong("PokemonEvolutions");
+        tmhmcCompatibility = loader.getLong("TMHMCompatibility");
+        tmhmlLenPerPoke = loader.getInt("TMHMLenPerPoke");
+        moveTutorCompatibility = loader.getLong("MoveTutorCompatibility");
+        enemyYTable = loader.getLong("EnemyYTable");
+        playerYTable = loader.getLong("PlayerYTable");
+        enemyAltitudeTable = loader.getLong("EnemyAltitudeTable");
+        attackData = loader.getLong("AttackData");
+        attackDescriptionTable = loader.getLong("AttackDescriptionTable");
+        abilityDescriptionTable = loader.getLong("AbilityDescriptionTable");
+        attackAnimationTable = loader.getLong("AttackAnimationTable");
+        iconPals = loader.getLong("IconPals");
+        jamboLearnableMovesTerm = loader.getLong("JamboLearnableMovesTerm");
+        startSearchingForSpaceOffset = loader.getLong("StartSearchingForSpaceOffset");
+        freeSpaceSearchInterval = loader.getInt("FreeSpaceSearchInterval");
+        evolutionsPerPokeNumber = loader.getInt("NumberOfEvolutionsPerPokemon");
+        evolutionTypesNumber = loader.getInt("NumberOfEvolutionTypes");
+        evolutionParams = new EvolutionParam[evolutionTypesNumber];
+
+        for (int i = 0; i < evolutionTypesNumber; i++) {
+            String param = loader.getString("Evolution" + i + "Param");
+            evolutionParams[i] = EvolutionParam.byConfig(param);
+        }
+
+        eggMoveTable = loader.getLong("EggMoveTable");
+        eggMoveTableLimiter = loader.getLong("EggMoveTableLimiter");
+        habitatTable = loader.getLong("HabitatTable");
+        itemAnimationTable = loader.getLong("ItemAnimationTable");
+        trainerTable = loader.getLong("TrainerTable");
+        trainersNumber = loader.getInt("NumberOfTrainers");
+        trainerClasses = loader.getLong("TrainerClasses");
+        trainerClassesNumber = loader.getInt("NumberOfTrainerClasses");
+        trainerImageTable = loader.getLong("TrainerImageTable");
+        trainerImagesNumber = loader.getInt("NumberOfTrainerImages");
+        trainerPaletteTable = loader.getLong("TrainerPaletteTable");
+        trainerMoneyTable = loader.getLong("TrainerMoneyTable");
+        dexSizeTrainerSprite = loader.getInt("DexSizeTrainerSprite");
+        tradeData = loader.getLong("TradeData");
+        tradesNumber = loader.getInt("NumberOfTrades");
+        pokedexAlphabetTable = loader.getLong("PokedexAlphabetTable");
+        pokedexLightestTable = loader.getLong("PokedexLighestTable");
+        pokedexSmallestTable = loader.getLong("PokedexSmallestTable");
+        pokedexTypeTable = loader.getLong("PokedexTypeTable");
     }
 
     public ROMData(File file, String header) throws IOException {
