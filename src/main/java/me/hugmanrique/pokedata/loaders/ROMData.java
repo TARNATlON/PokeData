@@ -110,6 +110,16 @@ public class ROMData {
         moveTutorAttacks = loader.getLong("MoveTutorAttacks");
         moveTutorAttacksNumber = loader.getInt("NumberOfMoveTutorAttacks");
         pokemonNames = loader.getLong("PokemonNames");
+        pokemonsNumber = loader.getInt("NumberOfPokemon");
+        nationalDexTable = loader.getLong("NationalDexTable");
+        secondDexTable = loader.getLong("SecondDexTable");
+        pokedexData = loader.getLong("PokedexData");
+        dexEntriesNumber = loader.getInt("NumberOfDexEntries");
+        regionDexEntriesNumber = loader.getInt("NumberOfRegionDex");
+        pokemonData = loader.getLong("PokemonData");
+        abilityNames = loader.getLong("AbilityNames");
+        abilitiesNumber = loader.getInt("NumberOfAbilities");
+
 
     }
 
