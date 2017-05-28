@@ -12,7 +12,7 @@ import me.hugmanrique.pokedata.loaders.InvalidDataException;
 @Getter
 public enum EvolutionParam {
     NONE("none"),
-    EVOLVES_NO_PARAMS("evolvesbutnoparams"),
+    EVOLVES_NO_PARAMS("evolvesbutnoparms"),
     LEVEL("level"),
     ITEM("item"),
     EVOLVES_BASEDONVALUE("evolvesbasedonvalue");

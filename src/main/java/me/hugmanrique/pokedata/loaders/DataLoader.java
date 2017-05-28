@@ -71,11 +71,10 @@ public class DataLoader {
             if (value.startsWith("0x")) {
                 // Remove hex prefix
                 value = value.substring(2);
-                return Long.parseLong(value, 16);
-            } else {
-                return Long.parseLong(value);
             }
-        } catch (Exception e) {
+
+            return Long.parseLong(value, 16);
+        } catch (NumberFormatException e) {
             throwConfigException("Value should be a Long", value);
         }
 

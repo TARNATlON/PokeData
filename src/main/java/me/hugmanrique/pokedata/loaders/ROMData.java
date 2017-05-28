@@ -1,5 +1,6 @@
 package me.hugmanrique.pokedata.loaders;
 
+import lombok.Getter;
 import me.hugmanrique.pokedata.pokemon.ev.EvolutionParam;
 import org.ini4j.Wini;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
  * @author Hugmanrique
  * @since 27/05/2017
  */
+@Getter
 public class ROMData {
     private static final int BANKS = 42;
 
@@ -147,7 +149,7 @@ public class ROMData {
         cryTable = loader.getLong("CryTable");
         cryTable2 = loader.getLong("CryTable2");
         cryCoversionTable = loader.getLong("CryConversionTable");
-        footPrintTable = loader.getLong("FottPrintTable");
+        footPrintTable = loader.getLong("FootPrintTable");
         pokemonAttackTable = loader.getLong("PokemonAttackTable");
         pokemonEvolutions = loader.getLong("PokemonEvolutions");
         tmhmcCompatibility = loader.getLong("TMHMCompatibility");
@@ -189,12 +191,21 @@ public class ROMData {
         tradeData = loader.getLong("TradeData");
         tradesNumber = loader.getInt("NumberOfTrades");
         pokedexAlphabetTable = loader.getLong("PokedexAlphabetTable");
-        pokedexLightestTable = loader.getLong("PokedexLighestTable");
+        pokedexLightestTable = loader.getLong("PokedexLightestTable");
         pokedexSmallestTable = loader.getLong("PokedexSmallestTable");
         pokedexTypeTable = loader.getLong("PokedexTypeTable");
     }
 
     public ROMData(File file, String header) throws IOException {
         this(new Wini(file), header);
+    }
+
+    public ROMData(String header) throws IOException {
+        this(
+            new Wini(
+                ROMData.class.getClassLoader().getResourceAsStream("roms.ini")
+            ),
+            header
+        );
     }
 }
