@@ -20,8 +20,8 @@ public class PokemonBaseStats extends Data {
     private byte baseSpeed;
     private byte baseSpAttack;
     private byte baseSpDefense;
-    private byte type1;
-    private byte type2;
+    private Type type1;
+    private Type type2;
     private byte catchRate;
     private byte baseExp;
     private int effort;
@@ -45,8 +45,8 @@ public class PokemonBaseStats extends Data {
         baseSpeed = rom.readByte();
         baseSpAttack = rom.readByte();
         baseSpDefense = rom.readByte();
-        type1 = rom.readByte();
-        type2 = rom.readByte();
+        type1 = Type.byId(rom.readByte());
+        type2 = Type.byId(rom.readByte());
         catchRate = rom.readByte();
         baseExp = rom.readByte();
         effort = rom.readByte();
