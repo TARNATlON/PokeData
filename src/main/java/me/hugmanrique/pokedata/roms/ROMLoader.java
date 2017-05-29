@@ -1,4 +1,4 @@
-package me.hugmanrique.pokedata.utils;
+package me.hugmanrique.pokedata.roms;
 
 import java.io.File;
 import java.io.FileInputStream;

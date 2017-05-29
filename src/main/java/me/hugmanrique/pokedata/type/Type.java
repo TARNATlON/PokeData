@@ -1,7 +1,7 @@
 package me.hugmanrique.pokedata.type;
 
 import me.hugmanrique.pokedata.Data;
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 
 /**
  * http://bulbapedia.bulbagarden.net/wiki/Type_chart_data_structure_in_Generation_III

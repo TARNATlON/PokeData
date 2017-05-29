@@ -1,4 +1,4 @@
-package me.hugmanrique.pokedata.utils;
+package me.hugmanrique.pokedata.roms;
 
 /**
  * @author Hugmanrique
@@ -11,6 +11,7 @@ public class ReadableROM implements ROM {
     private byte[] romHeader;
     private byte freeSpaceByte = (byte) 0xFF;
 
+    private Game game;
     private String headerCode;
     private String headerName;
     private String headerMaker;
@@ -64,6 +65,11 @@ public class ReadableROM implements ROM {
     }
 
     @Override
+    public Game getGame() {
+        return game;
+    }
+
+    @Override
     public String getGameText() {
         return headerName;
     }
@@ -95,8 +101,13 @@ public class ReadableROM implements ROM {
 
     @Override
     public void setGameVars(String code, String name, String maker) {
+        this.game = Game.byId(code);
         this.headerCode = code;
         this.headerName = name;
         this.headerMaker = maker;
+
+        if (game == Game.CUSTOM) {
+            System.out.println("This ROM is using a custom Pokémon version (" + code + "). Some features might be broken");
+        }
     }
 }

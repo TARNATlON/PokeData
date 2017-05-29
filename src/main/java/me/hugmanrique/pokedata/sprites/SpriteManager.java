@@ -1,7 +1,7 @@
 package me.hugmanrique.pokedata.sprites;
 
 import me.hugmanrique.pokedata.Data;
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 
 import java.util.ArrayList;
 import java.util.List;

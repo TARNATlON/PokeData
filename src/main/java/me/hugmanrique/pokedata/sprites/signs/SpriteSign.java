@@ -2,7 +2,7 @@ package me.hugmanrique.pokedata.sprites.signs;
 
 import lombok.Getter;
 import me.hugmanrique.pokedata.sprites.Sprite;
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 
 /**
  * @author Hugmanrique

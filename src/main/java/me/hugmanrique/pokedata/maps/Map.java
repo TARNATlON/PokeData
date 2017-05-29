@@ -9,7 +9,7 @@ import me.hugmanrique.pokedata.sprites.npcs.SpritesNPCManager;
 import me.hugmanrique.pokedata.sprites.signs.SpritesSignManager;
 import me.hugmanrique.pokedata.sprites.triggers.TriggerManager;
 import me.hugmanrique.pokedata.utils.BitConverter;
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 
 /**
  * Bulbapedia article missing

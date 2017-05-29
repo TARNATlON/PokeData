@@ -2,7 +2,7 @@ package me.hugmanrique.pokedata.pokemon;
 
 import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 
 /**
  * http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_III

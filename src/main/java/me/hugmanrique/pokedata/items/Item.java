@@ -1,9 +1,10 @@
 package me.hugmanrique.pokedata.items;
 
 import lombok.Getter;
+import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.loaders.ROMData;
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 
 /**
  * http://bulbapedia.bulbagarden.net/wiki/Item_data_structure_in_Generation_III
@@ -11,6 +12,7 @@ import me.hugmanrique.pokedata.utils.ROM;
  * @since 30/04/2017
  */
 @Getter
+@ToString
 public class Item extends Data {
     private String name;
     private int index;
@@ -19,7 +21,7 @@ public class Item extends Data {
     private byte parameter;
     private long descriptionPtr;
     private int mysteryValue;
-    private byte pocket;
+    private Pocket pocket;
     private byte type;
     private long usageCodePtr;
     private long battleUsage;
@@ -34,12 +36,16 @@ public class Item extends Data {
         parameter = rom.readByte();
         descriptionPtr = rom.getPointer();
         mysteryValue = rom.readWord();
-        pocket = rom.readByte();
+        pocket = Pocket.byId(rom.getGame(), rom.readByte());
         type = rom.readByte();
         usageCodePtr = rom.getPointer();
         battleUsage = rom.readLong();
         battleUsagePtr = rom.getPointer();
         extraParam = rom.readLong();
+    }
+
+    public String getDescription(ROM rom) {
+        return rom.readPokeText((int) descriptionPtr, -1);
     }
 
     public static Item load(ROM rom, ROMData data, int index) {

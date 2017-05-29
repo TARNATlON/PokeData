@@ -1,7 +1,7 @@
 package me.hugmanrique.pokedata.sprites.signs;
 
 import me.hugmanrique.pokedata.sprites.SpriteManager;
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 
 /**
  * @author Hugmanrique

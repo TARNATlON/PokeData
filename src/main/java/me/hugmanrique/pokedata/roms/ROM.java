@@ -1,4 +1,8 @@
-package me.hugmanrique.pokedata.utils;
+package me.hugmanrique.pokedata.roms;
+
+import me.hugmanrique.pokedata.utils.BitConverter;
+import me.hugmanrique.pokedata.utils.HeaderNames;
+import me.hugmanrique.pokedata.utils.PokeText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -344,8 +348,14 @@ public interface ROM {
 
     /**
      * Gets the game code from the ROM, ie BPRE for US Pkmn Fire Red
+     * @see #getGame()
      */
     String getGameCode();
+
+    /**
+     * Gets the Game from the ROM, ie {@link Game#FIRE_RED} for US Pokémon Fire Red
+     */
+    Game getGame();
 
     /**
      * Gets the game text from the ROM, ie POKEMON FIRE for US Pkmn Fire Red

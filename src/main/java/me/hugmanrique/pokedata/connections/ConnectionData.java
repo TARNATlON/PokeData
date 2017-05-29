@@ -3,7 +3,7 @@ package me.hugmanrique.pokedata.connections;
 import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.utils.BitConverter;
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 
 import java.util.ArrayList;
 import java.util.List;

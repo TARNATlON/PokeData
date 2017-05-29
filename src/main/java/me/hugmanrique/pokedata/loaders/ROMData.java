@@ -2,7 +2,7 @@ package me.hugmanrique.pokedata.loaders;
 
 import lombok.Getter;
 import me.hugmanrique.pokedata.pokemon.ev.EvolutionParam;
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 import org.ini4j.Wini;
 
 import java.io.File;

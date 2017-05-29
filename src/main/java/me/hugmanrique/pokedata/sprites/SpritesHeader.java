@@ -2,7 +2,7 @@ package me.hugmanrique.pokedata.sprites;
 
 import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 
 /**
  * Bulbapedia article missing

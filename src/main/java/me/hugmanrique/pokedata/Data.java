@@ -1,6 +1,6 @@
 package me.hugmanrique.pokedata;
 
-import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.roms.ROM;
 
 /**
  * Represents a class containing ROM data
