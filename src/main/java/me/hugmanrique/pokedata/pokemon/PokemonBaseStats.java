@@ -92,6 +92,10 @@ public class PokemonBaseStats extends Data {
         return (byte) BitConverter.getBitRange(effort, 10, 12);
     }
 
+    public Gender getGenderType() {
+        return Gender.byValue(gender);
+    }
+
     public static PokemonBaseStats load(ROM rom, ROMData data, int id) {
         int offset = data.getPokemonData() + (id * 28);
         rom.setInternalOffset(offset);
