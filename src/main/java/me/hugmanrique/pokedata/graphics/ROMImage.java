@@ -1,8 +1,77 @@
 package me.hugmanrique.pokedata.graphics;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 /**
  * @author Hugmanrique
  * @since 29/05/2017
  */
+@Getter
+@AllArgsConstructor
 public class ROMImage {
+    private Palette palette;
+    private int[] data;
+    private Point size;
+
+    public static ROMImage fromImage(Image img, Palette palette) {
+        BufferedImage image = (BufferedImage) img;
+        int dims = image.getWidth() * image.getHeight();
+
+        int x = -1;
+        int y = 0;
+        int blockX = 0;
+        int blockY = 0;
+
+        int[] data = new int[dims / 2];
+
+        for (int i = 0; i < dims; i++) {
+            x++;
+
+            if (x >= 8) {
+                x = 0;
+                y++;
+            }
+
+            if (y >= 8) {
+                y = 0;
+                blockX++;
+            }
+
+            if (blockX > (image.getWidth() / 8) - 1) {
+                blockX = 0;
+                blockY++;
+            }
+
+            int rgb = image.getRGB(blockX * 8 + x, blockY * 8 + y);
+            Color color = new Color(rgb, true);
+            int pal = 0;
+
+            for (int j = 0; j < 16; j++) {
+                Color col = palette.getColor(j);
+
+                if (col.equals(color)) {
+                    pal = j;
+                }
+            }
+
+            int write = data[i / 2];
+
+            if ((i & 1) == 0) {
+                write |= (pal & 0xF);
+            } else {
+                write |= ((pal << 4) & 0xF0);
+            }
+
+            data[i / 2] = write;
+        }
+
+        Point size = new Point(image.getWidth(null), image.getHeight(null));
+
+        return new ROMImage(palette, data, size);
+    }
+
 }
