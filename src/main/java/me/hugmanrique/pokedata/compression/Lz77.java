@@ -28,6 +28,12 @@ public class Lz77 {
         InputStream stream = new ByteArrayInputStream(rom.getData());
         HexInputStream hexStream = new HexInputStream(stream);
 
+        try {
+            stream.skip(offset);
+
+            return Compression
+        }
+
 
 
     }
