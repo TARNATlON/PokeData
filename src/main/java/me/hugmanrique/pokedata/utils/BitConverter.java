@@ -136,4 +136,8 @@ public class BitConverter {
 
         return true;
     }
+
+    public static boolean isBitSet(byte value, int index) {
+        return (value & (1 << index)) != 0;
+    }
 }
