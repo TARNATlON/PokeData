@@ -118,8 +118,6 @@ public class ROMImage {
             } catch (Exception ignored) {}
         }
 
-
-        return palette.getType().getImage(size, data, palette, transparency)
+        return image;
     }
-
 }
