@@ -1,21 +1,47 @@
 package me.hugmanrique.pokedata.type;
 
-import me.hugmanrique.pokedata.Data;
-import me.hugmanrique.pokedata.roms.ROM;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
- * http://bulbapedia.bulbagarden.net/wiki/Type_chart_data_structure_in_Generation_III
  * @author Hugmanrique
  * @since 01/05/2017
  */
-public class Type extends Data {
-    private byte attacking;
-    private byte defending;
-    private byte effectiveness;
+@Getter
+@ToString
+public enum Type {
+    NORMAL(0),
+    FIGHTING(1),
+    FLYING(2),
+    POISON(3),
+    GROUND(4),
+    ROCK(5),
+    BUG(6),
+    GHOST(7),
+    STEEL(8),
+    UNKNOWN(9),
+    FIRE(10),
+    WATER(11),
+    GRASS(12),
+    ELECTRIC(13),
+    PSYCHIC(14),
+    ICE(15),
+    DRAGON(16),
+    DARK(16);
 
-    public Type(ROM rom) {
-        attacking = rom.readByte();
-        defending = rom.readByte();
-        effectiveness = rom.readByte();
+    private byte id;
+
+    Type(int id) {
+        this.id = (byte) id;
+    }
+
+    public static Type byId(byte id) {
+        for (Type type : values()) {
+            if (type.getId() == id) {
+                return type;
+            }
+        }
+
+        return NORMAL;
     }
 }
