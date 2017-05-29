@@ -26,7 +26,7 @@ public class Item extends Data {
     private long extraParam;
 
     public Item(ROM rom) {
-        name = rom.readPokeText();
+        name = rom.readPokeText(14);
         index = rom.readWord();
         price = rom.readWord();
         holdEffect = rom.readByte();

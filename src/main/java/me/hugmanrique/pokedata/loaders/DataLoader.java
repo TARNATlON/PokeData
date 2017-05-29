@@ -19,10 +19,10 @@ public class DataLoader {
         return parseString(key, value);
     }
 
-    public long getLong(String key) {
+    public int getPointer(String key) {
         String value = getString(key);
 
-        return parseLong(key, value);
+        return parsePointer(key, value);
     }
 
     public int getInt(String key) {
@@ -64,7 +64,7 @@ public class DataLoader {
         return 0;
     }
 
-    private long parseLong(String key, String value) {
+    private int parsePointer(String key, String value) {
         value = parseString(key, value);
 
         try {
@@ -73,12 +73,12 @@ public class DataLoader {
                 value = value.substring(2);
             }
 
-            return Long.parseLong(value, 16);
+            return Integer.parseInt(value, 16);
         } catch (NumberFormatException e) {
-            throwConfigException("Value should be a Long", value);
+            throwConfigException("Value should be a hex integer", value);
         }
 
-        return 0L;
+        return 0;
     }
 
     // TODO Also throw the config key that has the exception

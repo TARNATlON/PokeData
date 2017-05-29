@@ -1,14 +1,18 @@
 package me.hugmanrique.pokedata.pokemon;
 
 import lombok.Getter;
+import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.utils.ROM;
+import me.hugmanrique.pokedata.utils.ROMUtils;
 
 /**
  * @author Hugmanrique
  * @since 30/04/2017
  */
 @Getter
+@ToString
 public class Pokedex extends Data {
     private String name;
     private int height;
@@ -20,12 +24,16 @@ public class Pokedex extends Data {
     private int trainerScale;
     private int trainerOffset;
 
-    public Pokedex(ROM rom) {
-        name = rom.readPokeText();
+    public Pokedex(ROM rom, boolean emerald) {
+        name = rom.readPokeText(12);
         height = rom.readWord();
         weight = rom.readWord();
         desc1Ptr = rom.getPointer();
-        desc2Ptr = rom.getPointer();
+
+        if (!emerald) {
+            desc2Ptr = rom.getPointer();
+        }
+
         rom.addInternalOffset(2);
 
         scale = rom.readWord();
@@ -33,5 +41,20 @@ public class Pokedex extends Data {
         trainerScale = rom.readWord();
         trainerOffset = rom.readWord();
         rom.addInternalOffset(2);
+    }
+
+    public String getDesc1(ROM rom) {
+        return rom.readPokeText((int) desc1Ptr, -1);
+    }
+
+    public static Pokedex load(ROM rom, ROMData data, int pokemon) {
+        boolean emerald = ROMUtils.isEmerald(rom);
+
+        int size = emerald ? 32 : 36;
+        int offset = data.getPokedexData() + (pokemon * size);
+
+        rom.setInternalOffset(offset);
+
+        return new Pokedex(rom, emerald);
     }
 }

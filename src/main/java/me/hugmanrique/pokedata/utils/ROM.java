@@ -245,8 +245,11 @@ public interface ROM {
         return new String(BitConverter.getBytes(getData(), offset, length));
     }
 
-    default String readPokeText(int offset) {
-        return readPokeText(offset, -1);
+    default String readPokeText(int length) {
+        String text = readPokeText(getInternalOffset(), length);
+        addInternalOffset(length);
+
+        return text;
     }
 
     default String readPokeText(int offset, int length) {
@@ -265,13 +268,6 @@ public interface ROM {
         }
 
         return PokeText.toAscii(BitConverter.getBytes(getData(), offset, i));
-    }
-
-    default String readPokeText() {
-        String text = readPokeText(getInternalOffset(), -1);
-        addInternalOffset(text.length());
-
-        return text;
     }
 
     /**

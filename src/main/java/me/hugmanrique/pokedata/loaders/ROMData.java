@@ -2,6 +2,7 @@ package me.hugmanrique.pokedata.loaders;
 
 import lombok.Getter;
 import me.hugmanrique.pokedata.pokemon.ev.EvolutionParam;
+import me.hugmanrique.pokedata.utils.ROM;
 import org.ini4j.Wini;
 
 import java.io.File;
@@ -16,62 +17,62 @@ public class ROMData {
     private static final int BANKS = 42;
 
     private String romName;
-    private long itemData;
-    private long attackNames;
-    private long tmData;
+    private int itemData;
+    private int attackNames;
+    private int tmData;
     private int totalTMsAndHMs;
     private int totalTMs;
-    private long itemImgData;
+    private int itemImgData;
     private int itemsNumber;
     private int attacksNumber;
-    private long moveTutorAttacks;
+    private int moveTutorAttacks;
     private int moveTutorAttacksNumber;
-    private long pokemonNames;
+    private int pokemonNames;
     private int pokemonsNumber;
-    private long nationalDexTable;
-    private long secondDexTable;
-    private long pokedexData;
+    private int nationalDexTable;
+    private int secondDexTable;
+    private int pokedexData;
     private int dexEntriesNumber;
     private int regionDexEntriesNumber;
-    private long pokemonData;
-    private long abilityNames;
+    private int pokemonData;
+    private int abilityNames;
     private int abilitiesNumber;
-    private long pointerOfMapBanksPointer;
+    private int pointerOfMapBanksPointer;
 
     // Should always have a length of 42
-    private long[] bankPointers;
+    private int[] bankPointers;
     private int[] mapsInBanksNumber;
 
-    private long mapLabelData;
+    private int mapLabelData;
     private int mapLabelsNumber;
 
     // TODO Add all the tilesets
 
-    private long pokemonFrontSprites;
-    private long pokemonBackSprites;
-    private long pokemonNormalPal;
-    private long pokemonShinyPal;
-    private long iconPointerTable;
-    private long iconPalTable;
-    private long cryTable;
-    private long cryTable2;
-    private long cryCoversionTable;
-    private long footPrintTable;
-    private long pokemonAttackTable;
-    private long pokemonEvolutions;
-    private long tmhmcCompatibility;
+    private int pokemonFrontSprites;
+    private int pokemonBackSprites;
+    private int pokemonNormalPal;
+    private int pokemonShinyPal;
+    private int iconPointerTable;
+    private int iconPalTable;
+    private int cryTable;
+    private int cryTable2;
+    private int cryCoversionTable;
+    private int footPrintTable;
+    private int pokemonAttackTable;
+    private int pokemonEvolutions;
+    private int tmhmcCompatibility;
     private int tmhmlLenPerPoke;
-    private long moveTutorCompatibility;
-    private long enemyYTable;
-    private long playerYTable;
-    private long enemyAltitudeTable;
-    private long attackData;
-    private long attackDescriptionTable;
-    private long abilityDescriptionTable;
-    private long attackAnimationTable;
-    private long iconPals;
-    private long jamboLearnableMovesTerm;
-    private long startSearchingForSpaceOffset;
+    private int moveTutorCompatibility;
+    private int enemyYTable;
+    private int playerYTable;
+    private int enemyAltitudeTable;
+    private int attackData;
+    private int attackDescriptionTable;
+    private int abilityDescriptionTable;
+    private int attackAnimationTable;
+    private int iconPals;
+    private int jamboLearnableMovesTerm;
+    private int startSearchingForSpaceOffset;
     private int freeSpaceSearchInterval;
     private int evolutionsPerPokeNumber;
     private int evolutionTypesNumber;
@@ -80,91 +81,91 @@ public class ROMData {
     private String[] evolutionNames;
     private EvolutionParam[] evolutionParams;
 
-    private long eggMoveTable;
-    private long eggMoveTableLimiter;
-    private long habitatTable;
-    private long itemAnimationTable;
-    private long trainerTable;
+    private int eggMoveTable;
+    private int eggMoveTableLimiter;
+    private int habitatTable;
+    private int itemAnimationTable;
+    private int trainerTable;
     private int trainersNumber;
-    private long trainerClasses;
+    private int trainerClasses;
     private int trainerClassesNumber;
-    private long trainerImageTable;
+    private int trainerImageTable;
     private int trainerImagesNumber;
-    private long trainerPaletteTable;
-    private long trainerMoneyTable;
+    private int trainerPaletteTable;
+    private int trainerMoneyTable;
     private int dexSizeTrainerSprite;
-    private long tradeData;
+    private int tradeData;
     private int tradesNumber;
-    private long pokedexAlphabetTable;
-    private long pokedexLightestTable;
-    private long pokedexSmallestTable;
-    private long pokedexTypeTable;
+    private int pokedexAlphabetTable;
+    private int pokedexLightestTable;
+    private int pokedexSmallestTable;
+    private int pokedexTypeTable;
 
     public ROMData(Wini store, String header) {
         DataLoader loader = new DataLoader(store, header);
 
         romName = loader.getString("ROMName");
-        itemData = loader.getLong("ItemData");
-        attackNames = loader.getLong("AttackNames");
-        tmData = loader.getLong("TMData");
+        itemData = loader.getPointer("ItemData");
+        attackNames = loader.getPointer("AttackNames");
+        tmData = loader.getPointer("TMData");
         totalTMsAndHMs = loader.getInt("TotalTMsPlusHMs");
         totalTMs = loader.getInt("TotalTMs");
-        itemImgData = loader.getLong("ItemIMGData");
+        itemImgData = loader.getPointer("ItemIMGData");
         itemsNumber = loader.getInt("NumberOfItems");
         attacksNumber = loader.getInt("NumberOfAttacks");
-        moveTutorAttacks = loader.getLong("MoveTutorAttacks");
+        moveTutorAttacks = loader.getPointer("MoveTutorAttacks");
         moveTutorAttacksNumber = loader.getInt("NumberOfMoveTutorAttacks");
-        pokemonNames = loader.getLong("PokemonNames");
+        pokemonNames = loader.getPointer("PokemonNames");
         pokemonsNumber = loader.getInt("NumberOfPokemon");
-        nationalDexTable = loader.getLong("NationalDexTable");
-        secondDexTable = loader.getLong("SecondDexTable");
-        pokedexData = loader.getLong("PokedexData");
+        nationalDexTable = loader.getPointer("NationalDexTable");
+        secondDexTable = loader.getPointer("SecondDexTable");
+        pokedexData = loader.getPointer("PokedexData");
         dexEntriesNumber = loader.getInt("NumberOfDexEntries");
         regionDexEntriesNumber = loader.getInt("NumberOfRegionDex");
-        pokemonData = loader.getLong("PokemonData");
-        abilityNames = loader.getLong("AbilityNames");
+        pokemonData = loader.getPointer("PokemonData");
+        abilityNames = loader.getPointer("AbilityNames");
         abilitiesNumber = loader.getInt("NumberOfAbilities");
 
-        pointerOfMapBanksPointer = loader.getLong("Pointer2PointersToMapBanks");
+        pointerOfMapBanksPointer = loader.getPointer("Pointer2PointersToMapBanks");
 
-        bankPointers = new long[BANKS];
+        bankPointers = new int[BANKS];
         mapsInBanksNumber = new int[BANKS];
 
         for (int i = 0; i < BANKS; i++) {
-            bankPointers[i] = loader.getLong("OriginalBankPointer" + i);
+            bankPointers[i] = loader.getPointer("OriginalBankPointer" + i);
             mapsInBanksNumber[i] = loader.getInt("NumberOfMapsInBank" + i);
         }
 
-        mapLabelData = loader.getLong("MapLabelData");
+        mapLabelData = loader.getPointer("MapLabelData");
         mapLabelsNumber = loader.getInt("NumberOfMapLabels");
 
         // TODO Load tiles in tileset
 
-        pokemonFrontSprites = loader.getLong("PokemonFrontSprites");
-        pokemonBackSprites = loader.getLong("PokemonBackSprites");
-        pokemonNormalPal = loader.getLong("PokemonNormalPal");
-        pokemonShinyPal = loader.getLong("PokemonShinyPal");
-        iconPointerTable = loader.getLong("IconPointerTable");
-        iconPalTable = loader.getLong("IconPalTable");
-        cryTable = loader.getLong("CryTable");
-        cryTable2 = loader.getLong("CryTable2");
-        cryCoversionTable = loader.getLong("CryConversionTable");
-        footPrintTable = loader.getLong("FootPrintTable");
-        pokemonAttackTable = loader.getLong("PokemonAttackTable");
-        pokemonEvolutions = loader.getLong("PokemonEvolutions");
-        tmhmcCompatibility = loader.getLong("TMHMCompatibility");
+        pokemonFrontSprites = loader.getPointer("PokemonFrontSprites");
+        pokemonBackSprites = loader.getPointer("PokemonBackSprites");
+        pokemonNormalPal = loader.getPointer("PokemonNormalPal");
+        pokemonShinyPal = loader.getPointer("PokemonShinyPal");
+        iconPointerTable = loader.getPointer("IconPointerTable");
+        iconPalTable = loader.getPointer("IconPalTable");
+        cryTable = loader.getPointer("CryTable");
+        cryTable2 = loader.getPointer("CryTable2");
+        cryCoversionTable = loader.getPointer("CryConversionTable");
+        footPrintTable = loader.getPointer("FootPrintTable");
+        pokemonAttackTable = loader.getPointer("PokemonAttackTable");
+        pokemonEvolutions = loader.getPointer("PokemonEvolutions");
+        tmhmcCompatibility = loader.getPointer("TMHMCompatibility");
         tmhmlLenPerPoke = loader.getInt("TMHMLenPerPoke");
-        moveTutorCompatibility = loader.getLong("MoveTutorCompatibility");
-        enemyYTable = loader.getLong("EnemyYTable");
-        playerYTable = loader.getLong("PlayerYTable");
-        enemyAltitudeTable = loader.getLong("EnemyAltitudeTable");
-        attackData = loader.getLong("AttackData");
-        attackDescriptionTable = loader.getLong("AttackDescriptionTable");
-        abilityDescriptionTable = loader.getLong("AbilityDescriptionTable");
-        attackAnimationTable = loader.getLong("AttackAnimationTable");
-        iconPals = loader.getLong("IconPals");
-        jamboLearnableMovesTerm = loader.getLong("JamboLearnableMovesTerm");
-        startSearchingForSpaceOffset = loader.getLong("StartSearchingForSpaceOffset");
+        moveTutorCompatibility = loader.getPointer("MoveTutorCompatibility");
+        enemyYTable = loader.getPointer("EnemyYTable");
+        playerYTable = loader.getPointer("PlayerYTable");
+        enemyAltitudeTable = loader.getPointer("EnemyAltitudeTable");
+        attackData = loader.getPointer("AttackData");
+        attackDescriptionTable = loader.getPointer("AttackDescriptionTable");
+        abilityDescriptionTable = loader.getPointer("AbilityDescriptionTable");
+        attackAnimationTable = loader.getPointer("AttackAnimationTable");
+        iconPals = loader.getPointer("IconPals");
+        jamboLearnableMovesTerm = loader.getPointer("JamboLearnableMovesTerm");
+        startSearchingForSpaceOffset = loader.getPointer("StartSearchingForSpaceOffset");
         freeSpaceSearchInterval = loader.getInt("FreeSpaceSearchInterval");
         evolutionsPerPokeNumber = loader.getInt("NumberOfEvolutionsPerPokemon");
         evolutionTypesNumber = loader.getInt("NumberOfEvolutionTypes");
@@ -175,25 +176,25 @@ public class ROMData {
             evolutionParams[i] = EvolutionParam.byConfig(param);
         }
 
-        eggMoveTable = loader.getLong("EggMoveTable");
-        eggMoveTableLimiter = loader.getLong("EggMoveTableLimiter");
-        habitatTable = loader.getLong("HabitatTable");
-        itemAnimationTable = loader.getLong("ItemAnimationTable");
-        trainerTable = loader.getLong("TrainerTable");
+        eggMoveTable = loader.getPointer("EggMoveTable");
+        eggMoveTableLimiter = loader.getPointer("EggMoveTableLimiter");
+        habitatTable = loader.getPointer("HabitatTable");
+        itemAnimationTable = loader.getPointer("ItemAnimationTable");
+        trainerTable = loader.getPointer("TrainerTable");
         trainersNumber = loader.getInt("NumberOfTrainers");
-        trainerClasses = loader.getLong("TrainerClasses");
+        trainerClasses = loader.getPointer("TrainerClasses");
         trainerClassesNumber = loader.getInt("NumberOfTrainerClasses");
-        trainerImageTable = loader.getLong("TrainerImageTable");
+        trainerImageTable = loader.getPointer("TrainerImageTable");
         trainerImagesNumber = loader.getInt("NumberOfTrainerImages");
-        trainerPaletteTable = loader.getLong("TrainerPaletteTable");
-        trainerMoneyTable = loader.getLong("TrainerMoneyTable");
+        trainerPaletteTable = loader.getPointer("TrainerPaletteTable");
+        trainerMoneyTable = loader.getPointer("TrainerMoneyTable");
         dexSizeTrainerSprite = loader.getInt("DexSizeTrainerSprite");
-        tradeData = loader.getLong("TradeData");
+        tradeData = loader.getPointer("TradeData");
         tradesNumber = loader.getInt("NumberOfTrades");
-        pokedexAlphabetTable = loader.getLong("PokedexAlphabetTable");
-        pokedexLightestTable = loader.getLong("PokedexLightestTable");
-        pokedexSmallestTable = loader.getLong("PokedexSmallestTable");
-        pokedexTypeTable = loader.getLong("PokedexTypeTable");
+        pokedexAlphabetTable = loader.getPointer("PokedexAlphabetTable");
+        pokedexLightestTable = loader.getPointer("PokedexLightestTable");
+        pokedexSmallestTable = loader.getPointer("PokedexSmallestTable");
+        pokedexTypeTable = loader.getPointer("PokedexTypeTable");
     }
 
     public ROMData(File file, String header) throws IOException {
@@ -207,5 +208,9 @@ public class ROMData {
             ),
             header
         );
+    }
+
+    public ROMData(ROM rom) throws IOException {
+        this(rom.getGameCode());
     }
 }

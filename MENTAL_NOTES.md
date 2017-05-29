@@ -6,6 +6,11 @@ I sometimes forget basic things, so here's a reference sheet about them:
 | word    | int  |
 | text    | String |
 
+## Pokémon types
+| Type | Java |
+|------|------|
+| char (PokeTable lookup) | 2 bytes |
+
 ## Unsigned values
 
 | Type    | Java   |
