@@ -3,6 +3,9 @@ package me.hugmanrique.pokedata.compression;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.utils.BitConverter;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 /**
  * @author Hugmanrique
  * @since 29/05/2017
@@ -19,6 +22,14 @@ public class Lz77 {
                 0x0
             }
         );
+    }
+
+    public static int[] decompress(ROM rom, int offset) {
+        InputStream stream = new ByteArrayInputStream(rom.getData());
+        HexInputStream hexStream = new HexInputStream(stream);
+
+
+
     }
 
 
