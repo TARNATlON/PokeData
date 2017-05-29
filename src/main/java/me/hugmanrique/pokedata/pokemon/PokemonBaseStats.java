@@ -69,8 +69,27 @@ public class PokemonBaseStats extends Data {
     }
 
     public byte getEvHp() {
-        // TODO Check if right
         return (byte) BitConverter.getBitRange(effort, 0, 2);
+    }
+
+    public byte getEvAttack() {
+        return (byte) BitConverter.getBitRange(effort, 2, 4);
+    }
+
+    public byte getEvDefense() {
+        return (byte) BitConverter.getBitRange(effort, 4, 6);
+    }
+
+    public byte getEvSpeed() {
+        return (byte) BitConverter.getBitRange(effort, 6, 8);
+    }
+
+    public byte getEvSpAttack() {
+        return (byte) BitConverter.getBitRange(effort, 8, 10);
+    }
+
+    public byte getEvSpDefense() {
+        return (byte) BitConverter.getBitRange(effort, 10, 12);
     }
 
     public static PokemonBaseStats load(ROM rom, ROMData data, int id) {
