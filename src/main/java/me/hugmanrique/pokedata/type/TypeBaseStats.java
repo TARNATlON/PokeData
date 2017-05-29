@@ -24,6 +24,10 @@ public class TypeBaseStats {
         this.effectiveness = effectiveness;
     }
 
+    /**
+     * Loads the type chart. Normally effective attacks, such
+     * as Fighting on Poison are not listed in the table.
+     */
     public static void load(ROM rom, ROMData data) {
         BASE_STATS = new TypeBaseStats[SIZE];
 
