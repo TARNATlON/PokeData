@@ -1,7 +1,8 @@
-package me.hugmanrique.pokedata.pokedex;
+package me.hugmanrique.pokedata.pokedex.ev;
 
 import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
 
 /**
@@ -10,12 +11,19 @@ import me.hugmanrique.pokedata.roms.ROM;
  * @since 01/05/2017
  */
 @Getter
-public class PokemonEvolutionData extends Data {
+public class EvolutionData extends Data {
     private Evolution[] evolutions = new Evolution[5];
 
-    public PokemonEvolutionData(ROM rom) {
+    public EvolutionData(ROM rom) {
         for (int i = 0; i < 5; i++) {
             evolutions[i] = new Evolution(rom);
         }
+    }
+
+    public static EvolutionData load(ROM rom, ROMData data, int id) {
+        int offset = data.getPokemonEvolutions() + (id * 40);
+        rom.setInternalOffset(offset);
+
+        return new EvolutionData(rom);
     }
 }

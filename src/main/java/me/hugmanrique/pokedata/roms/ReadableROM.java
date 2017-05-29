@@ -1,6 +1,7 @@
 package me.hugmanrique.pokedata.roms;
 
 /**
+ * Non thread-safe readable ROM implementation
  * @author Hugmanrique
  * @since 28/05/2017
  */
