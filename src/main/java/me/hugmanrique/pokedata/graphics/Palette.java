@@ -78,6 +78,14 @@ public class Palette {
         return colors.length;
     }
 
+    public ImageType getType() {
+        if (colors.length == 16) {
+            return ImageType.C16;
+        } else {
+            return ImageType.C256;
+        }
+    }
+
     private boolean checkBounds(int index) {
         if (index > colors.length) {
             warnOutside();

@@ -74,4 +74,52 @@ public class ROMImage {
         return new ROMImage(palette, data, size);
     }
 
+    public BufferedImage toBufferedImage() {
+        return toBufferedImage(true);
+    }
+
+    public BufferedImage toBufferedImage(boolean transparency) {
+        BufferedImage image = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
+        ImageType type = palette.getType();
+        Graphics graphics = null;
+
+        if (type.isGraphics()) {
+            graphics = image.createGraphics();
+        }
+
+        int x = -1;
+        int y = 0;
+        int blockX = 0;
+        int blockY = 0;
+
+        for (int i = 0; i < data.length * type.getResize(); i++) {
+            x++;
+
+            if (x >= 8) {
+                x = 0;
+                y++;
+            }
+
+            if (y >= 8) {
+                y = 0;
+                blockX++;
+            }
+
+            if (blockX > (image.getWidth() / 8) - 1) {
+                blockX = 0;
+                blockY++;
+            }
+
+            int pal = data[i / type.getResize()];
+            pal = type.getPal(i, pal);
+
+            try {
+                type.setPixel(image, graphics, blockX * 8 + x, blockY * 8 + y, palette, pal, transparency);
+            } catch (Exception ignored) {}
+        }
+
+
+        return palette.getType().getImage(size, data, palette, transparency)
+    }
+
 }
