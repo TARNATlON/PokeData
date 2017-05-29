@@ -1,7 +1,9 @@
 package me.hugmanrique.pokedata.pokemon;
 
 import lombok.Getter;
+import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
 
 /**
@@ -10,6 +12,7 @@ import me.hugmanrique.pokedata.roms.ROM;
  * @since 01/05/2017
  */
 @Getter
+@ToString
 public class PokemonBaseStats extends Data {
     private byte baseHp;
     private byte baseAttack;
@@ -62,5 +65,12 @@ public class PokemonBaseStats extends Data {
 
         // Skip word pad
         rom.addInternalOffset(2);
+    }
+
+    public static PokemonBaseStats load(ROM rom, ROMData data, int id) {
+        int offset = data.getPokemonData() + (id * 28);
+        rom.setInternalOffset(offset);
+
+        return new PokemonBaseStats(rom);
     }
 }

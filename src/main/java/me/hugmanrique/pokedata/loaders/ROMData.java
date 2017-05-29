@@ -122,7 +122,7 @@ public class ROMData {
         pokedexData = loader.getPointer("PokedexData");
         dexEntriesNumber = loader.getInt("NumberOfDexEntries");
         regionDexEntriesNumber = loader.getInt("NumberOfRegionDex");
-        pokemonData = loader.getPointer("PokemonData");
+        pokemonData = loader.getPointer("PokemonData") + 28;
         abilityNames = loader.getPointer("AbilityNames");
         abilitiesNumber = loader.getInt("NumberOfAbilities");
 
