@@ -1,4 +1,4 @@
-package me.hugmanrique.pokedata.pokemon;
+package me.hugmanrique.pokedata.pokedex;
 
 import lombok.Getter;
 import lombok.ToString;
