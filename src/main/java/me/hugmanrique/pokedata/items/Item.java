@@ -3,6 +3,8 @@ package me.hugmanrique.pokedata.items;
 import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.graphics.Imageable;
+import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
 
@@ -13,7 +15,7 @@ import me.hugmanrique.pokedata.roms.ROM;
  */
 @Getter
 @ToString
-public class Item extends Data {
+public class Item extends Data implements Imageable {
     private String name;
     private int index;
     private int price;
@@ -28,7 +30,11 @@ public class Item extends Data {
     private long battleUsagePtr;
     private long extraParam;
 
-    public Item(ROM rom) {
+    private int id;
+
+    public Item(ROM rom, int id) {
+        this.id = id;
+
         name = rom.readPokeText(14);
         index = rom.readWord();
         price = rom.readWord();
@@ -52,6 +58,14 @@ public class Item extends Data {
         int offset = data.getItemData() + (index * 44);
         rom.setInternalOffset(offset);
 
-        return new Item(rom);
+        return new Item(rom, index);
+    }
+
+    @Override
+    public ROMImage getImage(ROM rom, ROMData data) {
+        rom.setInternalOffset(data.getItemImgData() + (id * 8));
+
+        long imagePtr = rom.getPointer();
+        long palettePtr = rom.getPointer();
     }
 }

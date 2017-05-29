@@ -1,0 +1,25 @@
+package me.hugmanrique.pokedata.compression;
+
+import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.utils.BitConverter;
+
+/**
+ * @author Hugmanrique
+ * @since 29/05/2017
+ */
+public class Lz77 {
+    public static int getDataLength(ROM rom, int offset) {
+        byte[] data = rom.readBytes(offset, 0x10);
+
+        return (int) BitConverter.toInt32(
+            new byte[] {
+                data[1],
+                data[2],
+                data[3],
+                0x0
+            }
+        );
+    }
+
+
+}
