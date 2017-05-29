@@ -16,7 +16,7 @@ public class EvolutionData extends Data {
 
     public EvolutionData(ROM rom) {
         for (int i = 0; i < 5; i++) {
-            evolutions[i] = new Evolution(rom);
+            evolutions[i] = Evolution.createIfPresent(rom);
         }
     }
 

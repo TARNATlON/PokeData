@@ -1,6 +1,8 @@
 package me.hugmanrique.pokedata.pokedex.ev;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.roms.ROM;
@@ -11,24 +13,30 @@ import me.hugmanrique.pokedata.roms.ROM;
  * @since 01/05/2017
  */
 @Getter
+@ToString
 public class Evolution extends Data {
-    private int evolutionType;
+    private EvolutionType type;
     private int parameter;
     private int target;
 
-    public Evolution(ROM rom) {
-        evolutionType = rom.readWord();
-        parameter = rom.readWord();
-        target = rom.readWord();
+    public Evolution(int type, int parameter, int target) {
+        this.type = EvolutionType.byId(type);
+        this.parameter = parameter;
+        this.target = target;
+    }
+
+    static Evolution createIfPresent(ROM rom) {
+        int type = rom.readWord();
+        int parameter = rom.readWord();
+        int target = rom.readWord();
 
         // Skip padding due to alignment
         rom.addInternalOffset(2);
-    }
 
-    /**
-     * Returns if this entry is an actual evolution
-     */
-    public boolean isZeroedOut() {
-        return BitConverter.zeroedOut(evolutionType, parameter, target);
+        if (!BitConverter.zeroedOut(type, parameter, target)) {
+            return new Evolution(type, parameter, target);
+        } else {
+            return null;
+        }
     }
 }
