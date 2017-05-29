@@ -1,4 +1,5 @@
 import me.hugmanrique.pokedata.loaders.ROMData;
+import me.hugmanrique.pokedata.roms.Game;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class DataLoadTest {
             throw new Error(e);
         }
 
-        assertEquals("ROM Name must be Pokemom Fire Red (English)", data.getRomName(), "Pokemon Fire Red (English)");
-        assertEquals("ItemData pointer must be 0x3DB028", data.getItemData(), 0x3DB028);
+        assertEquals("ROM Name must be Pokemom Fire Red (English)", "Pokemon Fire Red (English)", data.getRomName());
+        assertEquals("ItemData pointer must be 0x3DB028", 0x3DB028, data.getItemData());
     }
 }

@@ -5,6 +5,7 @@ import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.utils.BitConverter;
 
 /**
  * http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_base_stats_data_structure_in_Generation_III
@@ -49,7 +50,7 @@ public class PokemonBaseStats extends Data {
         type2 = Type.byId(rom.readByte());
         catchRate = rom.readByte();
         baseExp = rom.readByte();
-        effort = rom.readByte();
+        effort = rom.readWord();
         item1 = rom.readWord();
         item2 = rom.readWord();
         gender = rom.readByte();
@@ -65,6 +66,11 @@ public class PokemonBaseStats extends Data {
 
         // Skip word pad
         rom.addInternalOffset(2);
+    }
+
+    public byte getEvHp() {
+        // TODO Check if right
+        return (byte) BitConverter.getBitRange(effort, 0, 2);
     }
 
     public static PokemonBaseStats load(ROM rom, ROMData data, int id) {

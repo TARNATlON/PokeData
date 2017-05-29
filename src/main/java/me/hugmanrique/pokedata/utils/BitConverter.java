@@ -140,4 +140,22 @@ public class BitConverter {
     public static boolean isBitSet(byte value, int index) {
         return (value & (1 << index)) != 0;
     }
+
+    /**
+     * Left-to-right bit range of 2 bytes
+     * @param from The bits from 0 (left)
+     * @param to The bits from 0 (left)
+     */
+    public static int getBitRange(int value, int from, int to) {
+        int fromA = 16 - to;
+        to = 16 - from;
+
+        from = fromA;
+
+        int bits = to - from;
+        int rightShifted = value >>> from;
+        int mask = (1 << bits) - 1;
+
+        return rightShifted & mask;
+    }
 }
