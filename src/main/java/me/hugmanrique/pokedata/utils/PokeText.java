@@ -63,6 +63,12 @@ public class PokeText {
             converted.append(value);
         }
 
-        return converted.toString().trim();
+        String text = converted.toString().trim();
+
+        return replaceLineBreaks(text);
+    }
+
+    public static String replaceLineBreaks(String text) {
+        return text.replace("|br|", "\n");
     }
 }

@@ -47,6 +47,15 @@ public class Pokedex extends Data {
         return rom.readPokeText((int) desc1Ptr, -1);
     }
 
+    public String getDesc2(ROM rom) {
+        // Might not be set
+        if (desc2Ptr == 0L) {
+            return null;
+        }
+
+        return rom.readPokeText((int) desc2Ptr, -1);
+    }
+
     public static Pokedex load(ROM rom, ROMData data, int pokemon) {
         boolean emerald = ROMUtils.isEmerald(rom);
 
