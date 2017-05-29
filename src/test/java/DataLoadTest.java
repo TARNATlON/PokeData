@@ -31,7 +31,6 @@ public class DataLoadTest {
             throw new Error(e);
         }
 
-
         assertEquals("ROM Name must be Pokemom Fire Red (English)", data.getRomName(), "Pokemon Fire Red (English)");
         assertEquals("ItemData pointer must be 0x3DB028", data.getItemData(), 0x3DB028);
     }

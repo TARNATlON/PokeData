@@ -2,6 +2,7 @@ package me.hugmanrique.pokedata.items;
 
 import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.utils.ROM;
 
 /**
@@ -39,5 +40,12 @@ public class Item extends Data {
         battleUsage = rom.readLong();
         battleUsagePtr = rom.getPointer();
         extraParam = rom.readLong();
+    }
+
+    public static Item load(ROM rom, ROMData data, int index) {
+        int offset = data.getItemData() + (index * 44);
+        rom.setInternalOffset(offset);
+
+        return new Item(rom);
     }
 }
