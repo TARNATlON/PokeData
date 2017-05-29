@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.loaders.ROMData;
+import me.hugmanrique.pokedata.roms.Game;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.utils.ROMUtils;
 
@@ -57,7 +58,7 @@ public class Pokedex extends Data {
     }
 
     public static Pokedex load(ROM rom, ROMData data, int pokemon) {
-        boolean emerald = ROMUtils.isEmerald(rom);
+        boolean emerald = rom.getGame() == Game.EMERALD;
 
         int size = emerald ? 32 : 36;
         int offset = data.getPokedexData() + (pokemon * size);

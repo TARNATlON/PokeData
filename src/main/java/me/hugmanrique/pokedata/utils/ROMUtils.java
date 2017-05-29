@@ -8,16 +8,13 @@ import me.hugmanrique.pokedata.roms.ROM;
  * @since 28/05/2017
  */
 public class ROMUtils {
-    public static boolean isEmerald(ROM rom) {
-        String name = rom.getGameCode();
-
-        return name.startsWith("BPE");
-    }
-
     public static boolean isGame(ROM rom, Game... games) {
         for (Game game : games) {
-            if (rom.)
+            if (rom.getGame() == game) {
+                return true;
+            }
         }
 
+        return false;
     }
 }
