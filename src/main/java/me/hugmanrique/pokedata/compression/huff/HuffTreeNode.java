@@ -1,5 +1,6 @@
 package me.hugmanrique.pokedata.compression.huff;
 
+import lombok.Setter;
 import me.hugmanrique.pokedata.compression.HexInputStream;
 import me.hugmanrique.pokedata.utils.Pair;
 
@@ -10,11 +11,13 @@ import java.io.IOException;
  * @since 29/05/2017
  */
 public class HuffTreeNode {
-    static int maxInPos = 0;
+    @Setter
+    private static int maxInPos = 0;
+
     HuffTreeNode node0, node1;
     int data = -1; // [-1, 0xFF]
 
-    Pair<Boolean, Integer> getValue(LinkedListNode<Integer> code) throws Exception {
+    public Pair<Boolean, Integer> getValue(LinkedListNode<Integer> code) throws Exception {
         Pair<Boolean, Integer> out = new Pair<>();
         out.setSecond(data);
 
@@ -38,7 +41,7 @@ public class HuffTreeNode {
         return node.getValue(code.getPrevious());
     }
 
-    protected void parseData(HexInputStream stream) throws IOException {
+    public void parseData(HexInputStream stream) throws IOException {
         /*
 		 * Tree Table (list of 8bit nodes, starting with the root node) Root
 		 * Node and Non-Data-Child Nodes are: Bit0-5 Offset to next child node,

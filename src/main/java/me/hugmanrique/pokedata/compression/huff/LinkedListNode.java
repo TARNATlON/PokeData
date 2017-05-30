@@ -45,8 +45,10 @@ public class LinkedListNode<E> {
      * Add this node after another node
      * @param node The node this node should be after
      */
-    public void addAfter(LinkedListNode<E> node) {
-        assert node != null : "Cannot add a node after null";
+    public void addAfter(LinkedListNode<E> node) throws Exception {
+        if (node == null) {
+            throw new IllegalStateException("Cannot add a node after null");
+        }
 
         LinkedListNode<E> next = node.next;
         setPrevious(node);
@@ -57,8 +59,10 @@ public class LinkedListNode<E> {
      * Add this node before another node
      * @param node The node this node should be before
      */
-    public void addBefore(LinkedListNode<E> node) {
-        assert node != null : "Cannot add a node before null";
+    public void addBefore(LinkedListNode<E> node) throws Exception {
+        if (node == null) {
+            throw new IllegalStateException("Cannot add a node before null");
+        }
 
         LinkedListNode<E> prev = node.previous;
 

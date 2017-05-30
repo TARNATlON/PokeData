@@ -1,5 +1,7 @@
 package me.hugmanrique.pokedata.compression;
 
+import me.hugmanrique.pokedata.compression.huff.HuffTreeNode;
+
 import java.io.EOFException;
 import java.io.IOException;
 
@@ -262,6 +264,29 @@ public class CompressUtils {
 
         int decompSize = getLength(stream);
         int treeSize = stream.readU8();
+        HuffTreeNode.setMaxInPos((treeSize + 1) * 2 + 4);
+
+        HuffTreeNode root = new HuffTreeNode();
+        root.parseData(stream);
+
+        // Go back to the start of encoded bit stream
+        stream.setPosition((treeSize + 1) * 2 + 4);
+
+        // Read all the data
+        int[] in = new int[(int) (stream.available() - stream.getPos()) / 4];
+
+        for (int i = 0; i < in.length; i++) {
+            in[i] = stream.readS32();
+        }
+
+        int currentSize = 0;
+        decompSize *= (size == 8 ? 1 : 2);
+
+        int[] out = new int[decompSize];
+
+        int idx = -1;
+        String codeStr = "";
+
 
 
     }
