@@ -3,10 +3,15 @@ package me.hugmanrique.pokedata.items;
 import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.compression.Lz77;
+import me.hugmanrique.pokedata.graphics.ImageType;
 import me.hugmanrique.pokedata.graphics.Imageable;
+import me.hugmanrique.pokedata.graphics.Palette;
 import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
+
+import java.awt.*;
 
 /**
  * http://bulbapedia.bulbagarden.net/wiki/Item_data_structure_in_Generation_III
@@ -67,5 +72,12 @@ public class Item extends Data implements Imageable {
 
         long imagePtr = rom.getPointer();
         long palettePtr = rom.getPointer();
+
+        int[] decPalette = Lz77.decompress(rom, (int) palettePtr);
+        int[] decImage = Lz77.decompress(rom, (int) imagePtr);
+
+        Palette palette = new Palette(ImageType.C16, decPalette);
+
+        return new ROMImage(palette, decImage, 24, 24);
     }
 }

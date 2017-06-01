@@ -17,6 +17,12 @@ public class ROMImage {
     private int[] data;
     private Point size;
 
+    public ROMImage(Palette palette, int[] data, int width, int height) {
+        this.palette = palette;
+        this.data = data;
+        this.size = new Point(width, height);
+    }
+
     public static ROMImage fromImage(Image img, Palette palette) {
         BufferedImage image = (BufferedImage) img;
         int dims = image.getWidth() * image.getHeight();
