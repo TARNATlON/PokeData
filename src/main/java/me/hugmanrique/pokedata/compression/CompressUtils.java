@@ -1,6 +1,8 @@
 package me.hugmanrique.pokedata.compression;
 
 import me.hugmanrique.pokedata.compression.huff.HuffTreeNode;
+import me.hugmanrique.pokedata.compression.huff.LinkedList;
+import me.hugmanrique.pokedata.utils.Pair;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -287,7 +289,63 @@ public class CompressUtils {
         int idx = -1;
         String codeStr = "";
 
+        LinkedList<Integer> code = new LinkedList<>();
 
+        while (currentSize < decompSize) {
+            try {
+                codeStr += Integer.toBinaryString(in[++idx]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new Exception("Not enough data", e);
+            }
 
+            while (codeStr.length() > 0) {
+                code.addFirst(Integer.parseInt(codeStr.charAt(0) + ""));
+                codeStr = codeStr.substring(1);
+
+                Pair<Boolean, Integer> attempt = root.getValue(code.getTail());
+
+                if (attempt.getFirst()) {
+                    try {
+                        out[currentSize++] = attempt.getSecond();
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        if (code.getHead().getValue() != 0) {
+                            throw e;
+                        }
+                    }
+
+                    code.clear();
+                }
+            }
+        }
+
+        if (!codeStr.isEmpty() || idx < in.length - 1) {
+            while (idx < in.length - 1) {
+                codeStr += Integer.toBinaryString(in[++idx]);
+            }
+
+            codeStr = codeStr.replace("0", "");
+
+            if (codeStr.length() > 0) {
+                throw new Exception("Too much data, str=" + codeStr + ", idx=" + idx + "/" + in.length);
+            }
+        }
+
+        int[] realOut;
+
+        if (size == 4) {
+            realOut = new int[decompSize / 2];
+
+            for (int i = 0; i < decompSize / 2; i++) {
+                if ((out[i * 2] & 0xF0) > 0 || (out[i * 2 + 1] & 0xF0) > 0) {
+                    throw new Exception("First 4 bytes of data should be 0 if data size is 4");
+                }
+
+                realOut[i] = (byte) ((out[i * 2] << 4) | out[i * 2 + 1]);
+            }
+        } else {
+            realOut = out;
+        }
+
+        return realOut;
     }
 }

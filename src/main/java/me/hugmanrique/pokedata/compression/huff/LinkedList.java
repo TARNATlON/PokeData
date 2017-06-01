@@ -63,6 +63,12 @@ public class LinkedList<E> implements Iterable<E> {
         this.tail = newTail;
     }
 
+    public void clear() {
+        while (!this.isEmpty()) {
+            this.removeFirst();
+        }
+    }
+
     public boolean isEmpty() {
         return this.head == null;
     }
