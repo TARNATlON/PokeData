@@ -31,12 +31,10 @@ public class Lz77 {
         try {
             stream.skip(offset);
 
-            return Compression
+            return CompressUtils.decompress(hexStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-
-
-
     }
-
-
 }
