@@ -254,6 +254,7 @@ public class CompressUtils {
         return out;
     }
 
+    // Untested
     private static int[] decompressHuff(HexInputStream stream) throws Exception {
         stream.skip(-1);
 
@@ -347,5 +348,55 @@ public class CompressUtils {
         }
 
         return realOut;
+    }
+
+    // Untested
+    private static int[] decompressRle(HexInputStream stream) throws Exception {
+        int[] out = new int[getLength(stream)];
+        int currSize = 0;
+        int i, r1;
+        int flag, b;
+        boolean compressed;
+
+        while (true) {
+            try {
+                flag = stream.readU8();
+            } catch (EOFException e) {
+                break;
+            }
+
+            compressed = (flag & 0x80) > 0;
+            r1 = flag & 0x7F;
+
+            if (compressed) {
+                try {
+                    b = stream.readU8();
+                } catch (EOFException e) {
+                    break;
+                }
+
+                for (i = 0; i < r1; i++) {
+                    out[currSize++] = b;
+                }
+            } else {
+                for (i = 0; i < r1; i++) {
+                    try {
+                        out[currSize++] = stream.readU8();
+                    } catch (EOFException e) {
+                        break;
+                    }
+                }
+            }
+
+            if (currSize > out.length) {
+                throw new Exception("Current size > decompiled size; " + currSize + " > " + out.length);
+            }
+
+            if (currSize == out.length) {
+                break;
+            }
+        }
+
+        return out;
     }
 }
