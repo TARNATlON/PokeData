@@ -56,6 +56,24 @@ public class ImageUtils {
         return blackWhitePal;
     }
 
+    /**
+     * Converts a byte array to individual colors mapped to a {@link Palette}
+     */
+    public static ROMImage loadRawSprite(byte[] bits, Palette palette, int width, int height) {
+        int[] colors = new int[bits.length * 8];
+
+        for (int i = 0; i < bits.length; i++) {
+            int offset = i * 8;
+            byte data = bits[i];
+
+            for (int j = 0; j < 8; j++) {
+                colors[offset + j] = (data >> j) & 1;
+            }
+        }
+
+        return new ROMImage(palette, colors, width, height);
+    }
+
     public static void addCache(int pointer, Palette palette) {
         paletteCache.put(pointer, palette);
     }

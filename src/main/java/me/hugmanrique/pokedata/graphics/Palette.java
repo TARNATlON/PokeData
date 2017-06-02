@@ -107,14 +107,14 @@ public class Palette {
 
     private boolean checkBounds(int index) {
         if (index > colors.length) {
-            warnOutside();
+            warnOutside(index);
             return false;
         }
 
         return true;
     }
 
-    private void warnOutside() {
-        System.out.println("Attempted to grab color outside of palette bounds");
+    private void warnOutside(int index) {
+        System.out.println("Attempted to grab color outside of palette bounds (" + index + ", max: " + colors.length + ")");
     }
 }

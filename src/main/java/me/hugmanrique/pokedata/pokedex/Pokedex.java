@@ -154,9 +154,9 @@ public class Pokedex extends Data implements Imageable {
         int offset = rom.getPointerAsInt();
 
         // Image isn't Lz77 compressed
-        int[] imageData = BitConverter.toInts(rom.readBytes(offset, 0xFF));
+        byte[] imageData = rom.readBytes(offset, 0xFF);
 
-        return new ROMImage(ImageUtils.getBlackWhitePal(), imageData, 16, 16);
+        return ImageUtils.loadRawSprite(imageData, ImageUtils.getBlackWhitePal(), 16, 16);
     }
 
     public ROMImage getAnimationImage(ROM rom, ROMData data, boolean shiny) {
