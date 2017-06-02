@@ -10,6 +10,7 @@ import me.hugmanrique.pokedata.graphics.Palette;
 import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.utils.ImageUtils;
 
 import java.awt.*;
 
@@ -73,11 +74,8 @@ public class Item extends Data implements Imageable {
         long imagePtr = rom.getPointer();
         long palettePtr = rom.getPointer();
 
-        int[] decPalette = Lz77.decompress(rom, (int) palettePtr);
-        int[] decImage = Lz77.decompress(rom, (int) imagePtr);
+        Palette palette = ImageUtils.getPalette(rom, palettePtr);
 
-        Palette palette = new Palette(ImageType.C16, decPalette);
-
-        return new ROMImage(palette, decImage, 24, 24);
+        return ImageUtils.getImage(rom, imagePtr, palette, 24, 24);
     }
 }
