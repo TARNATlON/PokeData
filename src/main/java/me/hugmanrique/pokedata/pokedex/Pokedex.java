@@ -179,8 +179,8 @@ public class Pokedex extends Data implements Imageable {
         return getFootPrint(rom, data, palette);
     }
 
-    public ROMImage getFootPrint(ROM rom, ROMData data, boolean transparent) {
-        Palette palette = transparent ? ImageUtils.getTransBlackPal() : ImageUtils.getBlackWhitePal();
+    public ROMImage getFootPrint(ROM rom, ROMData data, boolean transparency) {
+        Palette palette = transparency ? ImageUtils.getTransBlackPal() : ImageUtils.getBlackWhitePal();
 
         return getFootPrint(rom, data, palette);
     }
