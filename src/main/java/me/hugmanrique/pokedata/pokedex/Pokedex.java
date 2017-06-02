@@ -10,6 +10,7 @@ import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.Game;
 import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.utils.ImageUtils;
 
 /**
@@ -101,10 +102,22 @@ public class Pokedex extends Data implements Imageable {
     }
 
     public Palette getIconPal(ROM rom, ROMData data) {
+        // TODO See why this returns a white palette, could be in Palette constructor
+
         rom.setInternalOffset(data.getIconPals() + (iconPal * 32));
         int pointer = rom.getPointerAsInt();
 
-        return ImageUtils.getPalette(rom, pointer);
+        // Palette isn't Lz77 compressed
+        Palette palette = ImageUtils.getCache(pointer);
+
+        if (palette != null) {
+            return palette;
+        }
+
+        palette = new Palette(ImageType.C16, rom, pointer);
+        ImageUtils.addCache(pointer, palette);
+
+        return palette;
     }
 
     public ROMImage getFrontImage(ROM rom, ROMData data, boolean shiny) {
@@ -131,7 +144,10 @@ public class Pokedex extends Data implements Imageable {
         rom.setInternalOffset(data.getIconPointerTable() + (index * 4));
         int pointer = rom.getPointerAsInt();
 
-        return ImageUtils.getImage(rom, pointer, palette, 32, 64);
+        // Image isn't Lz77 compressed
+        int[] imageData = BitConverter.toInts(rom.readBytes(pointer, 0xFFF));
+
+        return new ROMImage(palette, imageData, 32, 64);
     }
 
     public ROMImage getAnimationImage(ROM rom, ROMData data, boolean shiny) {

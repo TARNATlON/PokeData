@@ -49,4 +49,16 @@ public class ImageUtils {
 
         return new ROMImage(palette, data, width, height);
     }
+
+    public static void addCache(int pointer, Palette palette) {
+        paletteCache.put(pointer, palette);
+    }
+
+    public static void clearCache() {
+        paletteCache.clear();
+    }
+
+    public static Palette getCache(int pointer) {
+        return paletteCache.get(pointer);
+    }
 }
