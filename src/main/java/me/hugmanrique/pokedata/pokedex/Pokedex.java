@@ -85,6 +85,8 @@ public class Pokedex extends Data implements Imageable {
         return new Pokedex(rom, emerald, pokemon, iconPal);
     }
 
+    // Image rendering methods
+
     @Override
     public ROMImage getImage(ROM rom, ROMData data) {
         throw new UnsupportedOperationException("Use getFrontImage or getBackImage instead");
@@ -92,20 +94,21 @@ public class Pokedex extends Data implements Imageable {
 
     public Palette getNormalPal(ROM rom, ROMData data) {
         rom.setInternalOffset(data.getPokemonNormalPal() + (index * 8));
-        int pointer = rom.getPointerAsInt();
+        int offset = rom.getPointerAsInt();
 
-        return ImageUtils.getPalette(rom, pointer);
+        return ImageUtils.getPalette(rom, offset);
     }
 
     public Palette getShinyPal(ROM rom, ROMData data) {
         rom.setInternalOffset(data.getPokemonShinyPal() + (index * 8));
-        int pointer = rom.getPointerAsInt();
+        int offset = rom.getPointerAsInt();
 
-        return ImageUtils.getPalette(rom, pointer);
+        return ImageUtils.getPalette(rom, offset);
     }
 
     public Palette getIconPal(ROM rom, ROMData data) {
         int offset = data.getIconPals() + (iconPal * 32);
+
         Palette palette = ImageUtils.getCache(offset);
 
         if (palette != null) {
@@ -122,30 +125,30 @@ public class Pokedex extends Data implements Imageable {
 
     public ROMImage getFrontImage(ROM rom, ROMData data, boolean shiny) {
         rom.setInternalOffset(data.getPokemonFrontSprites() + (index * 8));
-        int pointer = rom.getPointerAsInt();
+        int offset = rom.getPointerAsInt();
 
         Palette palette = !shiny ? getNormalPal(rom, data) : getShinyPal(rom, data);
 
-        return ImageUtils.getImage(rom, pointer, palette, 64, 64);
+        return ImageUtils.getImage(rom, offset, palette, 64, 64);
     }
 
     public ROMImage getBackImage(ROM rom, ROMData data, boolean shiny) {
         rom.setInternalOffset(data.getPokemonBackSprites() + (index * 8));
-        int pointer = rom.getPointerAsInt();
+        int offset = rom.getPointerAsInt();
 
         Palette palette = !shiny ? getNormalPal(rom, data) : getShinyPal(rom, data);
 
-        return ImageUtils.getImage(rom, pointer, palette, 64, 64);
+        return ImageUtils.getImage(rom, offset, palette, 64, 64);
     }
 
     public ROMImage getIconImage(ROM rom, ROMData data) {
         Palette palette = getIconPal(rom, data);
 
         rom.setInternalOffset(data.getIconPointerTable() + (index * 4));
-        int pointer = rom.getPointerAsInt();
+        int offset = rom.getPointerAsInt();
 
         // Image isn't Lz77 compressed
-        int[] imageData = BitConverter.toInts(rom.readBytes(pointer, 0xFFF));
+        int[] imageData = BitConverter.toInts(rom.readBytes(offset, 0xFFF));
 
         return new ROMImage(palette, imageData, 32, 64);
     }
