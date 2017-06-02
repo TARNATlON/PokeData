@@ -149,6 +149,16 @@ public class Pokedex extends Data implements Imageable {
         return new ROMImage(palette, imageData, 32, 64);
     }
 
+    public ROMImage getFootPrint(ROM rom, ROMData data) {
+        rom.setInternalOffset(data.getFootPrintTable() + index * 4);
+        int offset = rom.getPointerAsInt();
+
+        // Image isn't Lz77 compressed
+        int[] imageData = BitConverter.toInts(rom.readBytes(offset, 0xFF));
+
+        return new ROMImage(ImageUtils.getBlackWhitePal(), imageData, 16, 16);
+    }
+
     public ROMImage getAnimationImage(ROM rom, ROMData data, boolean shiny) {
         // TODO Get ROM locations for games other than Emerald
         //rom.setInternalOffset(data.getPokemonAnimations());

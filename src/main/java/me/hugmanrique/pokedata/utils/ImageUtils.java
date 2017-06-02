@@ -6,6 +6,7 @@ import me.hugmanrique.pokedata.graphics.Palette;
 import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.roms.ROM;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 public class ImageUtils {
     // TODO Implement size limit
     private static Map<Integer, Palette> paletteCache = new HashMap<>();
+    private static Palette blackWhitePal = new Palette(Color.black, Color.white);
 
     public static Palette getPalette(ROM rom, int pointer, ImageType type, boolean cache) {
         if (cache && paletteCache.containsKey(pointer)) {
@@ -48,6 +50,10 @@ public class ImageUtils {
         int[] data = Lz77.decompress(rom, pointer);
 
         return new ROMImage(palette, data, width, height);
+    }
+
+    public static Palette getBlackWhitePal() {
+        return blackWhitePal;
     }
 
     public static void addCache(int pointer, Palette palette) {

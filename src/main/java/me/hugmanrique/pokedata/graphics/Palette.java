@@ -54,6 +54,25 @@ public class Palette {
         this(type, rom.readBytes(offset, type.getROMSize()));
     }
 
+    /**
+     * Used for special custom palettes
+     */
+    public Palette(Color... colors) {
+        this.colors = colors;
+
+        reds = new byte[colors.length];
+        greens = new byte[colors.length];
+        blues = new byte[colors.length];
+
+        for (int i = 0; i < colors.length; i++) {
+            Color color = colors[i];
+
+            reds[i] = (byte) color.getRed();
+            greens[i] = (byte) color.getGreen();
+            blues[i] = (byte) color.getBlue();
+        }
+    }
+
     public Color getColor(int index) {
         if (!checkBounds(index)) {
             return BLACK;
