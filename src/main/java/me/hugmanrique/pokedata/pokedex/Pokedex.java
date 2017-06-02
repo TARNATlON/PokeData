@@ -80,13 +80,15 @@ public class Pokedex extends Data implements Imageable {
     }
 
     public Palette getNormalPal(ROM rom, ROMData data) {
-        int pointer = data.getPokemonNormalPal() + (index * 8);
+        rom.setInternalOffset(data.getPokemonNormalPal() + (index * 8));
+        int pointer = rom.getPointerAsInt();
 
         return ImageUtils.getPalette(rom, pointer);
     }
 
     public Palette getShinyPal(ROM rom, ROMData data) {
-        int pointer = data.getPokemonShinyPal() + (index * 8);
+        rom.setInternalOffset(data.getPokemonShinyPal() + (index * 8));
+        int pointer = rom.getPointerAsInt();
 
         return ImageUtils.getPalette(rom, pointer);
     }
