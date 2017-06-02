@@ -150,6 +150,16 @@ public class Pokedex extends Data implements Imageable {
         return new ROMImage(palette, imageData, 32, 64);
     }
 
+    public ROMImage getFootPrint(ROM rom, ROMData data, Palette palette) {
+        rom.setInternalOffset(data.getFootPrintTable() + index * 4);
+        int offset = rom.getPointerAsInt();
+
+        // Image isn't Lz77 compressed
+        byte[] imageData = rom.readBytes(offset, 0xFF);
+
+        return ImageUtils.loadRawSprite(imageData, palette, 16, 16);
+    }
+
     /**
      * Creates a {@link ROMImage} with the footprint contents
      * @param colors An array with 2 items, first will be background;
@@ -157,13 +167,15 @@ public class Pokedex extends Data implements Imageable {
      * @see Color
      */
     public ROMImage getFootPrint(ROM rom, ROMData data, Color... colors) {
-        rom.setInternalOffset(data.getFootPrintTable() + index * 4);
-        int offset = rom.getPointerAsInt();
+        Palette palette = ImageUtils.createCustomPal(colors);
 
-        // Image isn't Lz77 compressed
-        byte[] imageData = rom.readBytes(offset, 0xFF);
+        return getFootPrint(rom, data, palette);
+    }
 
-        return ImageUtils.loadRawSprite(imageData, ImageUtils.getBlackWhitePal(), 16, 16);
+    public ROMImage getFootPrint(ROM rom, ROMData data, boolean transparent) {
+        Palette palette = transparent ? ImageUtils.getTransBlackPal() : ImageUtils.getBlackWhitePal();
+
+        return getFootPrint(rom, data, palette);
     }
 
     public ROMImage getAnimationImage(ROM rom, ROMData data, boolean shiny) {
