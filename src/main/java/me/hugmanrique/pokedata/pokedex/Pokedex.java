@@ -13,6 +13,8 @@ import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.utils.ImageUtils;
 
+import java.util.Arrays;
+
 /**
  * @author Hugmanrique
  * @since 30/04/2017
@@ -102,22 +104,17 @@ public class Pokedex extends Data implements Imageable {
     }
 
     public Palette getIconPal(ROM rom, ROMData data) {
-        // TODO See why this returns a white palette, could be in Palette constructor
-        System.out.println("Palette #" + iconPal + ", offset: " + (data.getIconPals() + iconPal * 32));
-
-        rom.setInternalOffset(data.getIconPals() + (iconPal * 32));
-        int pointer = rom.getPointerAsInt();
-
-        Palette palette = ImageUtils.getCache(pointer);
+        int offset = data.getIconPals() + (iconPal * 32);
+        Palette palette = ImageUtils.getCache(offset);
 
         if (palette != null) {
             return palette;
         }
 
         // Palette isn't Lz77 compressed
-        palette = new Palette(ImageType.C16, rom, pointer);
+        palette = new Palette(ImageType.C16, rom, offset);
 
-        ImageUtils.addCache(pointer, palette);
+        ImageUtils.addCache(offset, palette);
 
         return palette;
     }
