@@ -28,11 +28,14 @@ public class Pokedex extends Data implements Imageable {
     private int offset;
     private int trainerScale;
     private int trainerOffset;
+    private byte iconPal;
 
     private int index;
 
-    public Pokedex(ROM rom, boolean emerald, int index) {
+    public Pokedex(ROM rom, boolean emerald, int index, byte iconPal) {
         this.index = index;
+        this.iconPal = iconPal;
+
         name = rom.readPokeText(12);
         height = rom.readWord();
         weight = rom.readWord();
@@ -65,6 +68,9 @@ public class Pokedex extends Data implements Imageable {
     }
 
     public static Pokedex load(ROM rom, ROMData data, int pokemon) {
+        // Icon palette loading
+        byte iconPal = rom.readByte(data.getIconPalTable() + pokemon + 1);
+
         boolean emerald = rom.getGame() == Game.EMERALD;
 
         int size = emerald ? 32 : 36;
@@ -72,7 +78,7 @@ public class Pokedex extends Data implements Imageable {
 
         rom.setInternalOffset(offset);
 
-        return new Pokedex(rom, emerald, pokemon);
+        return new Pokedex(rom, emerald, pokemon, iconPal);
     }
 
     @Override
@@ -95,7 +101,7 @@ public class Pokedex extends Data implements Imageable {
     }
 
     public Palette getIconPal(ROM rom, ROMData data) {
-        rom.setInternalOffset(data.getIconPals() + (index * 32));
+        rom.setInternalOffset(data.getIconPals() + (iconPal * 32));
         int pointer = rom.getPointerAsInt();
 
         return ImageUtils.getPalette(rom, pointer);
