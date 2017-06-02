@@ -47,7 +47,7 @@ public class Palette {
     }
 
     public Palette(ImageType type, byte[] data) {
-        this(type, BitConverter.grabBytesAsInts(data, 0, data.length));
+        this(type, BitConverter.toInts(data));
     }
 
     public Palette(ImageType type, ROM rom, int offset) {

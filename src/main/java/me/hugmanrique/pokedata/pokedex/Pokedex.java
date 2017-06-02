@@ -103,18 +103,20 @@ public class Pokedex extends Data implements Imageable {
 
     public Palette getIconPal(ROM rom, ROMData data) {
         // TODO See why this returns a white palette, could be in Palette constructor
+        System.out.println("Palette #" + iconPal + ", offset: " + (data.getIconPals() + iconPal * 32));
 
         rom.setInternalOffset(data.getIconPals() + (iconPal * 32));
         int pointer = rom.getPointerAsInt();
 
-        // Palette isn't Lz77 compressed
         Palette palette = ImageUtils.getCache(pointer);
 
         if (palette != null) {
             return palette;
         }
 
+        // Palette isn't Lz77 compressed
         palette = new Palette(ImageType.C16, rom, pointer);
+
         ImageUtils.addCache(pointer, palette);
 
         return palette;
