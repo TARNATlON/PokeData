@@ -13,6 +13,7 @@ import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.utils.ImageUtils;
 
+import java.awt.*;
 import java.util.Arrays;
 
 /**
@@ -149,7 +150,13 @@ public class Pokedex extends Data implements Imageable {
         return new ROMImage(palette, imageData, 32, 64);
     }
 
-    public ROMImage getFootPrint(ROM rom, ROMData data) {
+    /**
+     * Creates a {@link ROMImage} with the footprint contents
+     * @param colors An array with 2 items, first will be background;
+     *               second is the footprint color
+     * @see Color
+     */
+    public ROMImage getFootPrint(ROM rom, ROMData data, Color... colors) {
         rom.setInternalOffset(data.getFootPrintTable() + index * 4);
         int offset = rom.getPointerAsInt();
 

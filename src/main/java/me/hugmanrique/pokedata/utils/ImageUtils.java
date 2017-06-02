@@ -21,7 +21,6 @@ import java.util.Map;
 public class ImageUtils {
     // TODO Implement size limit
     private static Map<Integer, Palette> paletteCache = new HashMap<>();
-    private static Palette blackWhitePal = new Palette(Color.black, Color.white);
 
     public static Palette getPalette(ROM rom, int pointer, ImageType type, boolean cache) {
         if (cache && paletteCache.containsKey(pointer)) {
@@ -52,8 +51,43 @@ public class ImageUtils {
         return new ROMImage(palette, data, width, height);
     }
 
+    /**
+     * Create a custom {@link Palette} and store it in the cache.
+     * The cache key is determined by the {@link Color}'s hashcode,
+     * and it might create a collision with already
+     * stored values (this is highly unlikely though)
+     * @param colors
+     * @return
+     */
+    public static Palette createCustomPal(Color... colors) {
+        int hash = 0;
+
+        for (Color color : colors) {
+            hash += color.hashCode();
+        }
+
+        // Check if already cached
+        if (paletteCache.containsKey(hash)) {
+            return paletteCache.get(hash);
+        }
+
+        // Create palette
+        Palette palette = new Palette(colors);
+
+        paletteCache.put(palette.hashCode(), palette);
+
+        return palette;
+    }
+
     public static Palette getBlackWhitePal() {
-        return blackWhitePal;
+        return createCustomPal(Color.WHITE, Color.BLACK);
+    }
+
+    public static Palette getTransBlackPal() {
+        return createCustomPal(
+            new Color(0, 0, 0, 0),
+            Color.BLACK
+        );
     }
 
     /**
