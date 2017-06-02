@@ -6,15 +6,31 @@ import me.hugmanrique.pokedata.graphics.Palette;
 import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.roms.ROM;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
+ * {@link Palette} and {@link ROMImage} loader that keeps a palette cache to
+ * avoid too many {@link me.hugmanrique.pokedata.compression.HexInputStream} creation to decompress Lz77
  * @author Hugmanrique
  * @since 01/06/2017
+ * @see Palette
+ * @see ROMImage
  */
 public class ImageUtils {
+    private static Map<Integer, Palette> paletteCache = new HashMap<>();
+
     public static Palette getPalette(ROM rom, int pointer, ImageType type) {
+        if (paletteCache.containsKey(pointer)) {
+            return paletteCache.get(pointer);
+        }
+
         int[] data = Lz77.decompress(rom, pointer);
 
-        return new Palette(type, data);
+        Palette palette = new Palette(type, data);
+        paletteCache.put(pointer, palette);
+
+        return palette;
     }
 
     public static Palette getPalette(ROM rom, int pointer) {
