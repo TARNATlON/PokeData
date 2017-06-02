@@ -71,8 +71,8 @@ public class Item extends Data implements Imageable {
     public ROMImage getImage(ROM rom, ROMData data) {
         rom.setInternalOffset(data.getItemImgData() + (id * 8));
 
-        long imagePtr = rom.getPointer();
-        long palettePtr = rom.getPointer();
+        int imagePtr = rom.getPointerAsInt();
+        int palettePtr = rom.getPointerAsInt();
 
         Palette palette = ImageUtils.getPalette(rom, palettePtr);
 

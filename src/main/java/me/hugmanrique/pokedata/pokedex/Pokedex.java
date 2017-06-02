@@ -3,9 +3,13 @@ package me.hugmanrique.pokedata.pokedex;
 import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.graphics.Imageable;
+import me.hugmanrique.pokedata.graphics.Palette;
+import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.Game;
 import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.utils.ImageUtils;
 
 /**
  * @author Hugmanrique
@@ -13,7 +17,7 @@ import me.hugmanrique.pokedata.roms.ROM;
  */
 @Getter
 @ToString
-public class Pokedex extends Data {
+public class Pokedex extends Data implements Imageable {
     private String name;
     private int height;
     private int weight;
@@ -24,7 +28,10 @@ public class Pokedex extends Data {
     private int trainerScale;
     private int trainerOffset;
 
-    public Pokedex(ROM rom, boolean emerald) {
+    private int index;
+
+    public Pokedex(ROM rom, boolean emerald, int index) {
+        this.index = index;
         name = rom.readPokeText(12);
         height = rom.readWord();
         weight = rom.readWord();
@@ -64,6 +71,37 @@ public class Pokedex extends Data {
 
         rom.setInternalOffset(offset);
 
-        return new Pokedex(rom, emerald);
+        return new Pokedex(rom, emerald, pokemon);
+    }
+
+    @Override
+    public ROMImage getImage(ROM rom, ROMData data) {
+        throw new UnsupportedOperationException("Use getFrontImage or getBackImage instead");
+    }
+
+    public Palette getNormalPal(ROM rom, ROMData data) {
+        int pointer = data.getPokemonNormalPal() + (index * 8);
+
+        return ImageUtils.getPalette(rom, pointer);
+    }
+
+    public Palette getShinyPal(ROM rom, ROMData data) {
+        int pointer = data.getPokemonShinyPal() + (index * 8);
+
+        return ImageUtils.getPalette(rom, pointer);
+    }
+
+    public ROMImage getFrontImage(ROM rom, ROMData data, boolean shiny) {
+        Palette palette = !shiny ? getNormalPal(rom, data) : getShinyPal(rom, data);
+        int pointer = data.getPokemonFrontSprites() + (index * 8);
+
+        return ImageUtils.getImage(rom, pointer, palette, 64, 64);
+    }
+
+    public ROMImage getBackImage(ROM rom, ROMData data, boolean shiny) {
+        Palette palette = !shiny ? getNormalPal(rom, data) : getShinyPal(rom, data);
+        int pointer = data.getPokemonBackSprites() + (index * 8);
+
+        return ImageUtils.getImage(rom, pointer, palette, 64, 64);
     }
 }
