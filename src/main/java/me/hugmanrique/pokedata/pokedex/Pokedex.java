@@ -94,15 +94,19 @@ public class Pokedex extends Data implements Imageable {
     }
 
     public ROMImage getFrontImage(ROM rom, ROMData data, boolean shiny) {
+        rom.setInternalOffset(data.getPokemonFrontSprites() + (index * 8));
+        int pointer = rom.getPointerAsInt();
+
         Palette palette = !shiny ? getNormalPal(rom, data) : getShinyPal(rom, data);
-        int pointer = data.getPokemonFrontSprites() + (index * 8);
 
         return ImageUtils.getImage(rom, pointer, palette, 64, 64);
     }
 
     public ROMImage getBackImage(ROM rom, ROMData data, boolean shiny) {
+        rom.setInternalOffset(data.getPokemonBackSprites() + (index * 8));
+        int pointer = rom.getPointerAsInt();
+
         Palette palette = !shiny ? getNormalPal(rom, data) : getShinyPal(rom, data);
-        int pointer = data.getPokemonBackSprites() + (index * 8);
 
         return ImageUtils.getImage(rom, pointer, palette, 64, 64);
     }
