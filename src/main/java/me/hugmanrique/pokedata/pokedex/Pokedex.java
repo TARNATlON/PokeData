@@ -166,7 +166,11 @@ public class Pokedex extends Data implements Imageable {
      *               second is the footprint color
      * @see Color
      */
-    public ROMImage getFootPrint(ROM rom, ROMData data, Color... colors) {
+    public ROMImage getFootPrint(ROM rom, ROMData data, Color[] colors) {
+        if (colors.length != 2) {
+            throw new IllegalArgumentException("Color array must have a length of 2");
+        }
+
         Palette palette = ImageUtils.createCustomPal(colors);
 
         return getFootPrint(rom, data, palette);
