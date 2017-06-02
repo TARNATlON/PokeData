@@ -18,19 +18,26 @@ import java.util.Map;
  * @see ROMImage
  */
 public class ImageUtils {
+    // TODO Implement size limit
     private static Map<Integer, Palette> paletteCache = new HashMap<>();
 
-    public static Palette getPalette(ROM rom, int pointer, ImageType type) {
-        if (paletteCache.containsKey(pointer)) {
+    public static Palette getPalette(ROM rom, int pointer, ImageType type, boolean cache) {
+        if (cache && paletteCache.containsKey(pointer)) {
             return paletteCache.get(pointer);
         }
 
         int[] data = Lz77.decompress(rom, pointer);
-
         Palette palette = new Palette(type, data);
-        paletteCache.put(pointer, palette);
+
+        if (cache) {
+            paletteCache.put(pointer, palette);
+        }
 
         return palette;
+    }
+
+    public static Palette getPalette(ROM rom, int pointer, ImageType type) {
+        return getPalette(rom, pointer, type, true);
     }
 
     public static Palette getPalette(ROM rom, int pointer) {

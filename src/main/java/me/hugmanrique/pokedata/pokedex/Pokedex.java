@@ -3,6 +3,7 @@ package me.hugmanrique.pokedata.pokedex;
 import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.graphics.ImageType;
 import me.hugmanrique.pokedata.graphics.Imageable;
 import me.hugmanrique.pokedata.graphics.Palette;
 import me.hugmanrique.pokedata.graphics.ROMImage;
@@ -93,6 +94,13 @@ public class Pokedex extends Data implements Imageable {
         return ImageUtils.getPalette(rom, pointer);
     }
 
+    public Palette getIconPal(ROM rom, ROMData data) {
+        rom.setInternalOffset(data.getIconPals() + (index * 32));
+        int pointer = rom.getPointerAsInt();
+
+        return ImageUtils.getPalette(rom, pointer);
+    }
+
     public ROMImage getFrontImage(ROM rom, ROMData data, boolean shiny) {
         rom.setInternalOffset(data.getPokemonFrontSprites() + (index * 8));
         int pointer = rom.getPointerAsInt();
@@ -110,4 +118,22 @@ public class Pokedex extends Data implements Imageable {
 
         return ImageUtils.getImage(rom, pointer, palette, 64, 64);
     }
+
+    public ROMImage getIconImage(ROM rom, ROMData data) {
+        Palette palette = getIconPal(rom, data);
+
+        rom.setInternalOffset(data.getIconPointerTable() + (index * 4));
+        int pointer = rom.getPointerAsInt();
+
+        return ImageUtils.getImage(rom, pointer, palette, 32, 64);
+    }
+
+    public ROMImage getAnimationImage(ROM rom, ROMData data, boolean shiny) {
+        // TODO Get ROM locations for games other than Emerald
+        //rom.setInternalOffset(data.getPokemonAnimations());
+
+        throw new UnsupportedOperationException("Not supported yet");
+    }
+
+    // TODO Get ROM locations for shadow sprites other than Emerald
 }
