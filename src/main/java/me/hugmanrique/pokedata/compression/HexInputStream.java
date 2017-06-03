@@ -50,7 +50,7 @@ public class HexInputStream {
     }
 
     /**
-     * Reads a BitEndian s16
+     * Reads a BigEndian s16
      */
     public short readS16() throws IOException {
         short word = 0;
@@ -76,7 +76,7 @@ public class HexInputStream {
     }
 
     /**
-     * Reads a BitEndian u16
+     * Reads a BigEndian u16
      */
     public int readU16() throws IOException {
         int word = 0;
@@ -102,7 +102,7 @@ public class HexInputStream {
     }
 
     /**
-     * Reads a BitEndian s32 (signed int)
+     * Reads a BigEndian s32 (signed int)
      */
     public int readS32() throws IOException {
         int dword = 0;
@@ -128,7 +128,7 @@ public class HexInputStream {
     }
 
     /**
-     * Reads a BitEndian u32 (unsigned int)
+     * Reads a BigEndian u32 (unsigned int)
      */
     public long readU32() throws IOException {
         long dword = 0;
@@ -154,7 +154,7 @@ public class HexInputStream {
     }
 
     /**
-     * Reads a BitEndian s64 (signed int)
+     * Reads a BigEndian s64 (signed int)
      */
     public long readS64() throws IOException {
         long qword = 0;
