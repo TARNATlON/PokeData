@@ -1,6 +1,7 @@
 package me.hugmanrique.pokedata.trainers;
 
 import lombok.Getter;
+import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
@@ -11,6 +12,7 @@ import me.hugmanrique.pokedata.roms.ROM;
  * @since 02/06/2017
  */
 @Getter
+@ToString
 public class TrainerPokemon extends Data {
     private int evs;
     private int species;

@@ -1,6 +1,7 @@
 package me.hugmanrique.pokedata.trainers;
 
 import lombok.Getter;
+import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.graphics.Imageable;
 import me.hugmanrique.pokedata.graphics.ROMImage;
@@ -12,6 +13,7 @@ import me.hugmanrique.pokedata.roms.ROM;
  * @since 02/06/2017
  */
 @Getter
+@ToString
 public class Trainer extends Data implements Imageable {
     private static final int ITEM_LIMIT = 4;
 
@@ -29,9 +31,6 @@ public class Trainer extends Data implements Imageable {
     private boolean customAttacks;
     private int partyOffset;
     private TrainerPokemon[] party;
-
-    // Pokemon array
-    //private
 
     private int index;
 
@@ -81,10 +80,6 @@ public class Trainer extends Data implements Imageable {
         for (int i = 0; i < count; i++) {
             party[i] = new TrainerPokemon(rom, this);
         }
-
-
-
-
     }
 
     public static Trainer load(ROM rom, ROMData data, int index) {
@@ -93,12 +88,6 @@ public class Trainer extends Data implements Imageable {
 
         return new Trainer(rom, index);
     }
-
-
-
-
-
-
 
     @Override
     public ROMImage getImage(ROM rom, ROMData data) {
