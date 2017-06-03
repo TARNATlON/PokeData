@@ -1,6 +1,7 @@
 package me.hugmanrique.pokedata.connections;
 
 import lombok.Getter;
+import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.roms.ROM;
@@ -14,6 +15,7 @@ import java.util.List;
  * @since 01/05/2017
  */
 @Getter
+@ToString
 public class ConnectionData extends Data {
     private long numConnsPtr;
     private long dataPtr;

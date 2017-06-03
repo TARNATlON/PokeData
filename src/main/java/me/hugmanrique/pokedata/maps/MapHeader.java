@@ -1,6 +1,7 @@
 package me.hugmanrique.pokedata.maps;
 
 import lombok.Getter;
+import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.roms.ROM;
 
@@ -9,6 +10,7 @@ import me.hugmanrique.pokedata.roms.ROM;
  * @since 01/05/2017
  */
 @Getter
+@ToString
 public class MapHeader extends Data {
     private long mapPtr;
     private long spritesPtr;
