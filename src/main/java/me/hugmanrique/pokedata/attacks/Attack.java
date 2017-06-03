@@ -69,7 +69,7 @@ public class Attack extends Data {
 
     public static Attack load(ROM rom, ROMData data, int id) {
         int offset = data.getAttackData() + (id * 12);
-        rom.setInternalOffset(offset);
+        rom.seek(offset);
 
         return new Attack(rom);
     }

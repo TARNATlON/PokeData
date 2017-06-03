@@ -80,7 +80,7 @@ public class Pokedex extends Data implements Imageable {
         int size = emerald ? 32 : 36;
         int offset = data.getPokedexData() + (pokemon * size);
 
-        rom.setInternalOffset(offset);
+        rom.seek(offset);
 
         return new Pokedex(rom, emerald, pokemon, iconPal);
     }
@@ -93,14 +93,14 @@ public class Pokedex extends Data implements Imageable {
     }
 
     public Palette getNormalPal(ROM rom, ROMData data) {
-        rom.setInternalOffset(data.getPokemonNormalPal() + (index * 8));
+        rom.seek(data.getPokemonNormalPal() + (index * 8));
         int offset = rom.getPointerAsInt();
 
         return ImageUtils.getPalette(rom, offset);
     }
 
     public Palette getShinyPal(ROM rom, ROMData data) {
-        rom.setInternalOffset(data.getPokemonShinyPal() + (index * 8));
+        rom.seek(data.getPokemonShinyPal() + (index * 8));
         int offset = rom.getPointerAsInt();
 
         return ImageUtils.getPalette(rom, offset);
@@ -124,7 +124,7 @@ public class Pokedex extends Data implements Imageable {
     }
 
     public ROMImage getFrontImage(ROM rom, ROMData data, boolean shiny) {
-        rom.setInternalOffset(data.getPokemonFrontSprites() + (index * 8));
+        rom.seek(data.getPokemonFrontSprites() + (index * 8));
         int offset = rom.getPointerAsInt();
 
         Palette palette = !shiny ? getNormalPal(rom, data) : getShinyPal(rom, data);
@@ -133,7 +133,7 @@ public class Pokedex extends Data implements Imageable {
     }
 
     public ROMImage getBackImage(ROM rom, ROMData data, boolean shiny) {
-        rom.setInternalOffset(data.getPokemonBackSprites() + (index * 8));
+        rom.seek(data.getPokemonBackSprites() + (index * 8));
         int offset = rom.getPointerAsInt();
 
         Palette palette = !shiny ? getNormalPal(rom, data) : getShinyPal(rom, data);
@@ -144,7 +144,7 @@ public class Pokedex extends Data implements Imageable {
     public ROMImage getIconImage(ROM rom, ROMData data) {
         Palette palette = getIconPal(rom, data);
 
-        rom.setInternalOffset(data.getIconPointerTable() + (index * 4));
+        rom.seek(data.getIconPointerTable() + (index * 4));
         int offset = rom.getPointerAsInt();
 
         // Image isn't Lz77 compressed
@@ -154,7 +154,7 @@ public class Pokedex extends Data implements Imageable {
     }
 
     public ROMImage getFootPrint(ROM rom, ROMData data, Palette palette) {
-        rom.setInternalOffset(data.getFootPrintTable() + index * 4);
+        rom.seek(data.getFootPrintTable() + index * 4);
         int offset = rom.getPointerAsInt();
 
         // Image isn't Lz77 compressed
@@ -187,7 +187,7 @@ public class Pokedex extends Data implements Imageable {
 
     public ROMImage getAnimationImage(ROM rom, ROMData data, boolean shiny) {
         // TODO Get ROM locations for games other than Emerald
-        //rom.setInternalOffset(data.getPokemonAnimations());
+        //rom.seek(data.getPokemonAnimations());
 
         throw new UnsupportedOperationException("Not supported yet");
     }

@@ -3,6 +3,8 @@ package me.hugmanrique.pokedata.maps;
 import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.connections.ConnectionData;
+import me.hugmanrique.pokedata.loaders.ROMData;
+import me.hugmanrique.pokedata.maps.banks.BankLoader;
 import me.hugmanrique.pokedata.sprites.SpritesHeader;
 import me.hugmanrique.pokedata.sprites.exits.SpritesExitManager;
 import me.hugmanrique.pokedata.sprites.npcs.SpritesNPCManager;
@@ -49,5 +51,12 @@ public class Map extends Data {
         signManager = new SpritesSignManager(rom, (int) sprites.getSignsPtr(), sprites.getSignsAmount());
         triggerManager = new TriggerManager(rom, (int) sprites.getTriggersPtr(), sprites.getTriggersAmount());
         exitManager = new SpritesExitManager(rom, (int) sprites.getExitsPtr(), sprites.getExitsAmount());
+    }
+
+    public static Map load(ROM rom, ROMData data, int bank, int map) {
+        int pointer = BankLoader.getMapHeaderPointer(rom, data, bank, map);
+        rom.seek(pointer);
+
+        return new Map(rom);
     }
 }

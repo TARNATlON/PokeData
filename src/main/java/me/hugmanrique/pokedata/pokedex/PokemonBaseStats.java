@@ -99,7 +99,7 @@ public class PokemonBaseStats extends Data {
 
     public static PokemonBaseStats load(ROM rom, ROMData data, int id) {
         int offset = data.getPokemonData() + (id * 28);
-        rom.setInternalOffset(offset);
+        rom.seek(offset);
 
         return new PokemonBaseStats(rom);
     }

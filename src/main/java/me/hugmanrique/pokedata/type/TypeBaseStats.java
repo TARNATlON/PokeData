@@ -31,7 +31,7 @@ public class TypeBaseStats {
     public static void load(ROM rom, ROMData data) {
         BASE_STATS = new TypeBaseStats[SIZE];
 
-        rom.setInternalOffset(data.getPokedexTypeTable());
+        rom.seek(data.getPokedexTypeTable());
 
         for (int i = 0; i < SIZE; i++) {
             TypeBaseStats stats = new TypeBaseStats(

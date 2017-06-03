@@ -74,7 +74,7 @@ public class Trainer extends Data implements Imageable {
             return;
         }
 
-        rom.setInternalOffset(partyOffset);
+        rom.seek(partyOffset);
 
         party = new TrainerPokemon[count];
 
@@ -92,12 +92,12 @@ public class Trainer extends Data implements Imageable {
 
     @Override
     public ROMImage getImage(ROM rom, ROMData data) {
-        rom.setInternalOffset(data.getTrainerPaletteTable() + (sprite * 8));
+        rom.seek(data.getTrainerPaletteTable() + (sprite * 8));
         int offset = rom.getPointerAsInt();
 
         Palette palette = ImageUtils.getPalette(rom, offset);
 
-        rom.setInternalOffset(data.getTrainerImageTable() + (sprite * 8));
+        rom.seek(data.getTrainerImageTable() + (sprite * 8));
         offset = rom.getPointerAsInt();
 
         return ImageUtils.getImage(rom, offset, palette, 64, 64);

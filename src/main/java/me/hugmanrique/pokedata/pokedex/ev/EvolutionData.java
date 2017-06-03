@@ -22,7 +22,7 @@ public class EvolutionData extends Data {
 
     public static EvolutionData load(ROM rom, ROMData data, int id) {
         int offset = data.getPokemonEvolutions() + (id * 40);
-        rom.setInternalOffset(offset);
+        rom.seek(offset);
 
         return new EvolutionData(rom);
     }
