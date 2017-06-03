@@ -1,5 +1,6 @@
 package me.hugmanrique.pokedata.trainers;
 
+import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.graphics.Imageable;
 import me.hugmanrique.pokedata.graphics.ROMImage;
@@ -10,6 +11,7 @@ import me.hugmanrique.pokedata.roms.ROM;
  * @author Hugmanrique
  * @since 02/06/2017
  */
+@Getter
 public class Trainer extends Data implements Imageable {
     private static final int ITEM_LIMIT = 4;
 
@@ -20,12 +22,14 @@ public class Trainer extends Data implements Imageable {
     private byte sprite;
     private String name;
     private boolean heldsItems;
-    private short[] items;
+    private int[] items;
     private boolean doubleBattle;
-    private int ai;
+    private long ai;
 
     private boolean customAttacks;
     private int partyOffset;
+    private TrainerPokemon[] party;
+
     // Pokemon array
     //private
 
@@ -47,10 +51,38 @@ public class Trainer extends Data implements Imageable {
         sprite = rom.readByte();
         name = rom.readPokeText(12);
 
-        items = new short[ITEM_LIMIT];
+        items = new int[ITEM_LIMIT];
+
         for (int i = 0; i < ITEM_LIMIT; i++) {
-            items[i] = rom.read
+            items[i] = rom.readWord();
         }
+
+        doubleBattle = rom.readByte() == 1;
+        rom.addInternalOffset(3);
+
+        ai = rom.getPointer();
+
+        int partyCount = rom.readByte();
+        rom.addInternalOffset(3);
+        partyOffset = rom.getPointerAsInt();
+
+        loadParty(rom, partyCount);
+    }
+
+    private void loadParty(ROM rom, int count) {
+        if (count <= 0 || partyOffset <= 0) {
+            return;
+        }
+
+        rom.setInternalOffset(partyOffset);
+
+        party = new TrainerPokemon[count];
+
+        for (int i = 0; i < count; i++) {
+            party[i] = new TrainerPokemon(rom, this);
+        }
+
+
 
 
     }

@@ -1,29 +1,42 @@
 package me.hugmanrique.pokedata.trainers;
 
+import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
 
 /**
+ * Aka Party member, Trainer's Pokémon representation
  * @author Hugmanrique
  * @since 02/06/2017
  */
+@Getter
 public class TrainerPokemon extends Data {
-    private short evs;
-    private short species;
-    private short level;
-    private short heldItem;
-    private short[] attacks;
+    private int evs;
+    private int species;
+    private int level;
+    private int heldItem;
+    private int[] attacks;
 
-    private int index;
+    public TrainerPokemon(ROM rom, Trainer trainer) {
+        evs = rom.readWord();
+        level = rom.readWord();
+        species = rom.readWord();
 
-    public TrainerPokemon(ROM rom, int index) {
-        this.index = index;
+        if (trainer.isHeldsItems()) {
+            heldItem = rom.readWord();
+        }
 
+        if (trainer.isCustomAttacks()) {
+            attacks = new int[4];
 
-    }
+            for (int j = 0; j < 4; j++) {
+                attacks[j] = rom.readWord();
+            }
+        }
 
-    public static TrainerPokemon load(ROM rom, ROMData data, int index) {
-
+        if (!trainer.isHeldsItems()) {
+            rom.addInternalOffset(2);
+        }
     }
 }
