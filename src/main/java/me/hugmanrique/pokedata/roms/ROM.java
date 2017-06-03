@@ -267,7 +267,7 @@ public interface ROM {
         int i = 0;
 
         while (b != -1) {
-            b = getData()[offset+i];
+            b = getData()[offset + i];
             i++;
         }
 

@@ -29,8 +29,6 @@ import me.hugmanrique.pokedata.roms.ROM;
 @Getter
 @ToString
 public class Map extends Data {
-    private String name;
-
     private MapHeader header;
     private ConnectionData connections;
     private SpritesHeader sprites;
@@ -40,8 +38,7 @@ public class Map extends Data {
     private TriggerManager triggerManager;
     private SpritesExitManager exitManager;
 
-    public Map(ROM rom, String name) {
-        this.name = name;
+    public Map(ROM rom) {
         header = new MapHeader(rom);
 
         rom.seek(BitConverter.shortenPointer(header.getConnectPtr()));
@@ -49,32 +46,46 @@ public class Map extends Data {
 
         // Sprites loading
 
-        rom.seek((int) header.getSpritesPtr() & 0x1FFFFFF);
+        /*rom.seek((int) header.getSpritesPtr() & 0x1FFFFFF);
         sprites = new SpritesHeader(rom);
 
         npcManager = new SpritesNPCManager(rom, (int) sprites.getNpcPtr(), sprites.getNpcAmount());
         signManager = new SpritesSignManager(rom, (int) sprites.getSignsPtr(), sprites.getSignsAmount());
         triggerManager = new TriggerManager(rom, (int) sprites.getTriggersPtr(), sprites.getTriggersAmount());
-        exitManager = new SpritesExitManager(rom, (int) sprites.getExitsPtr(), sprites.getExitsAmount());
+        exitManager = new SpritesExitManager(rom, (int) sprites.getExitsPtr(), sprites.getExitsAmount());*/
     }
 
-    public static Map load(ROM rom, ROMData data, int bank, int map) {
-        int pointer = BankLoader.getMapHeaderPointer(rom, data, bank, map);
+    public static Map load(ROM rom, ROMData data, int bank, int id) {
+        int pointer = BankLoader.getMapHeaderPointer(rom, data, bank, id);
         rom.seek(pointer);
 
-        int offset = pointer - (8 << 24) + 0x14;
-        int mapName = rom.readByte(offset);
-        int namePointer;
+        Map map = new Map(rom);
+        injectMapName(rom, data, map);
 
+        return map;
+    }
+
+    private static void injectMapName(ROM rom, ROMData data, Map map) {
+        byte labelId = map.getHeader().getLabelId();
+        int offset;
+
+        // Switch depending on the engine version
         if (rom.getGame().isElements()) {
-            namePointer = data.getMapLabelData() + ((mapName * 8) + 4);
+            offset = data.getMapLabelData() + (labelId * 4);
         } else {
-            namePointer = data.getMapLabelData() + ((mapName - 0x58) * 4);
+            // TODO Will cause issues with custom games
+            offset = data.getMapLabelData() + (labelId * 8);
         }
 
-        namePointer = rom.getPointerAsInt(namePointer);
-        String name = rom.readPokeText(namePointer);
+        int namePointer = rom.getPointerAsInt(offset);
 
-        return new Map(rom, name);
+        String name = rom.readPokeText(namePointer, -1);
+        System.out.println(name);
+
+        map.setHeaderName(name);
+    }
+
+    private void setHeaderName(String name) {
+        getHeader().setName(name);
     }
 }

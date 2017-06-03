@@ -1,6 +1,8 @@
 package me.hugmanrique.pokedata.maps;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.roms.ROM;
@@ -16,20 +18,24 @@ public class MapHeader extends Data {
     private long spritesPtr;
     private long scriptPtr;
     private long connectPtr;
-    private int song;
+    private int music;
     private int map;
     private byte labelId;
     private byte flash;
     private byte weather;
     private byte type;
     private byte labelToggle;
+    private byte battleFieldModel;
+
+    @Setter(AccessLevel.PACKAGE)
+    private String name = "";
 
     public MapHeader(ROM rom) {
         mapPtr = rom.getPointer();
         spritesPtr = rom.getPointer();
         scriptPtr = rom.getPointer();
         connectPtr = rom.getPointer();
-        song = rom.readWord();
+        music = rom.readWord();
         map = rom.readWord();
         labelId = rom.readByte();
         flash = rom.readByte();
@@ -37,6 +43,6 @@ public class MapHeader extends Data {
         type = rom.readByte();
         rom.addInternalOffset(2);
         labelToggle = rom.readByte();
-        rom.addInternalOffset(1);
+        battleFieldModel = rom.readByte();
     }
 }
