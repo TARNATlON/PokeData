@@ -47,7 +47,6 @@
         </plugins>
         <resources>
             <resource>
-                <!-- If we ever need variables in roms.ini, switch to maven-resource-plugin, this uses ISO encoding, we need UTF8 -->
                 <directory>src/main/resources</directory>
                 <filtering>false</filtering>
             </resource>
