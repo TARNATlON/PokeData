@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.graphics.Imageable;
+import me.hugmanrique.pokedata.graphics.Palette;
 import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.utils.ImageUtils;
 
 /**
  * @author Hugmanrique
@@ -18,7 +20,6 @@ public class Trainer extends Data implements Imageable {
     private static final int ITEM_LIMIT = 4;
 
     private byte trainerClass;
-    // TODO Convert to boolean?
     private byte gender;
     private byte music;
     private byte sprite;
@@ -91,6 +92,14 @@ public class Trainer extends Data implements Imageable {
 
     @Override
     public ROMImage getImage(ROM rom, ROMData data) {
-        return null;
+        rom.setInternalOffset(data.getTrainerPaletteTable() + (index * 8));
+        int offset = rom.getPointerAsInt();
+
+        Palette palette = ImageUtils.getPalette(rom, offset);
+
+        rom.setInternalOffset(data.getTrainerImageTable() + (index * 8));
+        offset = rom.getPointerAsInt();
+
+        return ImageUtils.getImage(rom, offset, palette, 64, 64);
     }
 }
