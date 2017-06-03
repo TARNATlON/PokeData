@@ -71,16 +71,14 @@ public class Map extends Data {
 
         // Switch depending on the engine version
         if (rom.getGame().isElements()) {
-            offset = data.getMapLabelData() + (labelId * 4);
+            offset = data.getMapLabelData() + (labelId  - 0x58) * 4;
         } else {
             // TODO Will cause issues with custom games
-            offset = data.getMapLabelData() + (labelId * 8);
+            offset = data.getMapLabelData() + (labelId * 8) + 4;
         }
 
         int namePointer = rom.getPointerAsInt(offset);
-
         String name = rom.readPokeText(namePointer, -1);
-        System.out.println(name);
 
         map.setHeaderName(name);
     }
