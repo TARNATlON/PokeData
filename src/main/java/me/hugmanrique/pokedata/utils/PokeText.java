@@ -1,6 +1,7 @@
 package me.hugmanrique.pokedata.utils;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class PokeText {
     }
 
     private static void loadFromStream(InputStream in) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         String line;
 
         while ((line = reader.readLine()) != null) {

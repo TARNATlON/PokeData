@@ -14,7 +14,6 @@ import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.utils.ImageUtils;
 
 import java.awt.*;
-import java.util.Arrays;
 
 /**
  * @author Hugmanrique
@@ -24,6 +23,7 @@ import java.util.Arrays;
 @ToString
 public class Pokedex extends Data implements Imageable {
     private String name;
+    private String type;
     private int height;
     private int weight;
     private long desc1Ptr;
@@ -36,11 +36,12 @@ public class Pokedex extends Data implements Imageable {
 
     private int index;
 
-    public Pokedex(ROM rom, boolean emerald, int index, byte iconPal) {
+    public Pokedex(ROM rom, boolean emerald, int index, byte iconPal, String name) {
         this.index = index;
         this.iconPal = iconPal;
+        this.name = name;
 
-        name = rom.readPokeText(12);
+        type = rom.readPokeText(12);
         height = rom.readWord();
         weight = rom.readWord();
         desc1Ptr = rom.getPointer();
@@ -74,6 +75,7 @@ public class Pokedex extends Data implements Imageable {
     public static Pokedex load(ROM rom, ROMData data, int pokemon) {
         // Icon palette loading
         byte iconPal = rom.readByte(data.getIconPalTable() + pokemon + 1);
+        String name = getPokeName(rom, data, pokemon);
 
         boolean emerald = rom.getGame() == Game.EMERALD;
 
@@ -82,7 +84,13 @@ public class Pokedex extends Data implements Imageable {
 
         rom.seek(offset);
 
-        return new Pokedex(rom, emerald, pokemon, iconPal);
+        return new Pokedex(rom, emerald, pokemon, iconPal, name);
+    }
+
+    private static String getPokeName(ROM rom, ROMData data, int pokemon) {
+        int offset = data.getPokemonNames() + (pokemon * 11);
+
+        return rom.readPokeText(offset, -1);
     }
 
     // Image rendering methods
