@@ -45,6 +45,6 @@ PokeData has base classes for Sprites and a SpriteManager, which creates the spr
 - OverworldSprites: (Soon) raw images of the overworld sprites, offers methods to render into Java's Images
 
 ## Image rendering system
-PokeData provides an intelligent way to load GBA images with a [Palette](src/java/me/hugmanrique/pokedata/graphics/Palette) and render it into a [BufferedImage](https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html) by using the [ROMImage](src/java/me/hugmanrique/pokedata/graphics/ROMImage) class.
+PokeData provides an intelligent way to load GBA images with a [Palette](src/main/java/me/hugmanrique/pokedata/graphics/Palette) and render it into a [BufferedImage](https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html) by using the [ROMImage](src/main/java/me/hugmanrique/pokedata/graphics/ROMImage) class.
 
-The [ImageUtils](src/java/me/hugmanrique/pokedata/utils/ImageUtils) provides ways to load Lz77 compressed palettes and images with a cache system to improve load times for duplicate reads.
+The [ImageUtils](src/main/java/me/hugmanrique/pokedata/utils/ImageUtils) provides ways to load Lz77 compressed palettes and images with a cache system to improve load times for duplicate reads.
