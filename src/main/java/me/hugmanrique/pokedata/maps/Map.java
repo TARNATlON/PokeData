@@ -29,6 +29,8 @@ import me.hugmanrique.pokedata.roms.ROM;
 @Getter
 @ToString
 public class Map extends Data {
+    private String name;
+
     private MapHeader header;
     private ConnectionData connections;
     private SpritesHeader sprites;
@@ -38,7 +40,8 @@ public class Map extends Data {
     private TriggerManager triggerManager;
     private SpritesExitManager exitManager;
 
-    public Map(ROM rom) {
+    public Map(ROM rom, String name) {
+        this.name = name;
         header = new MapHeader(rom);
 
         rom.seek(BitConverter.shortenPointer(header.getConnectPtr()));
@@ -59,6 +62,19 @@ public class Map extends Data {
         int pointer = BankLoader.getMapHeaderPointer(rom, data, bank, map);
         rom.seek(pointer);
 
-        return new Map(rom);
+        int offset = pointer - (8 << 24) + 0x14;
+        int mapName = rom.readByte(offset);
+        int namePointer;
+
+        if (rom.getGame().isElements()) {
+            namePointer = data.getMapLabelData() + ((mapName * 8) + 4);
+        } else {
+            namePointer = data.getMapLabelData() + ((mapName - 0x58) * 4);
+        }
+
+        namePointer = rom.getPointerAsInt(namePointer);
+        String name = rom.readPokeText(namePointer);
+
+        return new Map(rom, name);
     }
 }
