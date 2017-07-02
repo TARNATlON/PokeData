@@ -69,7 +69,7 @@ public class Tileset extends Data {
 
     public void startTileLoaders() {
         for (int i = 0; i < (header.isPrimary() ? MAIN_PAL_COUNT : 13); i++) {
-
+            new TileLoader(this, renderedTiles, i).start();
         }
     }
 
