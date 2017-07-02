@@ -52,6 +52,9 @@ public class MapTileData extends Data {
         calcSize(width, height);
     }
 
+    /**
+     * Creates an {@link Image} with a grid of all the tiles from the global and local tileset
+     */
     public Image drawTileset(ROM rom, BlockRenderer renderer, MapData mapData) {
         Tileset global = TilesetCache.get(rom, mapData.getGlobalTilesetPtr());
         Tileset local = TilesetCache.get(rom, mapData.getLocalTilesetPtr());
@@ -77,8 +80,7 @@ public class MapTileData extends Data {
             int x = (i % TILE_COLS) * 16;
             int y = (i / TILE_COLS) * 16;
 
-            // TODO Render image
-            buffer.drawImage(null, x, y, null);
+            buffer.drawImage(renderer.renderBlock(rom, i), x, y, null);
         }
 
         return image;
