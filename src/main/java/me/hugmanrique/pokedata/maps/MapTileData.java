@@ -66,7 +66,7 @@ public class MapTileData extends Data {
         renderer.setTilesets(global, local);
 
         Dimension imageDims = getDimension();
-        imageBuffer = rerenderTiles(rom, imageDims, renderer, 0, Tileset.MAIN_BLOCKS + 0x200, false);
+        imageBuffer = rerenderTiles(rom, imageDims, renderer, 0, Tileset.MAIN_BLOCKS + 0x200, true);
 
         return imageBuffer;
     }
@@ -91,7 +91,7 @@ public class MapTileData extends Data {
     }
 
     private Dimension getDimension() {
-        int height = (Tileset.MAIN_SIZE / TILE_COLS + Tileset.LOCAL_SIZE / TILE_COLS) * 16;
+        int height = (Tileset.MAIN_SIZE / TILE_COLS) * (Tileset.LOCAL_SIZE / TILE_COLS) * 16;
 
         return new Dimension(TILE_COLS * 16, height);
     }
