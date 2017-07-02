@@ -3,7 +3,7 @@ package me.hugmanrique.pokedata.maps;
 import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
-import me.hugmanrique.pokedata.maps.tiles.MapTile;
+import me.hugmanrique.pokedata.tiles.MapTile;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.utils.BitConverter;
 

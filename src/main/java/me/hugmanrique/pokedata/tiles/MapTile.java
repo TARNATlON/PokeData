@@ -1,4 +1,4 @@
-package me.hugmanrique.pokedata.maps.tiles;
+package me.hugmanrique.pokedata.tiles;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
