@@ -91,7 +91,7 @@ public class MapTileData extends Data {
     }
 
     private Dimension getDimension() {
-        int height = (Tileset.MAIN_SIZE / TILE_COLS) * (Tileset.LOCAL_SIZE / TILE_COLS) * 16;
+        int height = ((Tileset.MAIN_SIZE / TILE_COLS) + (Tileset.LOCAL_SIZE / TILE_COLS)) * 16;
 
         return new Dimension(TILE_COLS * 16, height);
     }
