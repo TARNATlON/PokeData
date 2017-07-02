@@ -112,6 +112,7 @@ public class Tileset extends Data {
 
     public BufferedImage getTile(int tileIndex, int palette, boolean flipX, boolean flipY, int time) {
         if (palette < MAIN_PAL_COUNT) {
+            // Check if tile is cached
             Map<Integer, BufferedImage> tiles = renderedTiles[palette + (time * 16)];
 
             if (tiles.containsKey(tileIndex)) {
@@ -119,7 +120,7 @@ public class Tileset extends Data {
 
                 return applyTransforms(image, flipX, flipY);
             }
-        } else {
+        } else if (palette >= 13) {
             String error = String.format(
                 "[WARN] Attempted to read tile %s of palette %s in %s tileset",
                 tileIndex,
@@ -135,7 +136,7 @@ public class Tileset extends Data {
 
         // Tile isn't cached
         int x = (tileIndex % (128 / 8)) * 8;
-        int y = (tileIndex % (128 / 8)) * 8;
+        int y = (tileIndex / (128 / 8)) * 8;
 
         BufferedImage image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
 
