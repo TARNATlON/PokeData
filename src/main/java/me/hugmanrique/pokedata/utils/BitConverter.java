@@ -51,7 +51,7 @@ public class BitConverter {
             try {
                 result[i] = array[offset + i];
             } catch (ArrayIndexOutOfBoundsException e) {
-                String message = String.format("Tried to read outside of bounds (%s, %s)", offset, i);
+                String message = String.format("Tried to read outside of bounds (%05X, %s)", offset, i);
 
                 System.out.println(message);
             }

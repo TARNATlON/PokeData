@@ -47,6 +47,8 @@ public class Tileset extends Data {
     public Tileset(ROM rom) {
         header = new TilesetHeader(rom);
         blockCount = 1024;
+
+        render(rom);
     }
 
     public static Tileset load(ROM rom, int offset) {
