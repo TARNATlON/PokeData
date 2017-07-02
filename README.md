@@ -1,5 +1,5 @@
 # PokeData
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Travis CI](https://travis-ci.org/hugmanrique/PokeData.svg?branch=master)](https://travis-ci.org/hugmanrique/PokeData/)
 
 Pokémon data classes from Gen III that can read from a ROM.
 
