@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @Getter
 public class Tileset extends Data {
-    private static final int MAIN_PAL_COUNT = 6;
+    public static final int MAIN_PAL_COUNT = 6;
     private static final int MAIN_HEIGHT = 0x100;
     private static final int LOCAL_HEIGHT = 0x100;
 
@@ -64,6 +64,12 @@ public class Tileset extends Data {
                 byte[] data = rom.readBytes(offset, 32);
                 palettes[i][j] = new Palette(ImageType.C16, data);
             }
+        }
+    }
+
+    public void startTileLoaders() {
+        for (int i = 0; i < (header.isPrimary() ? MAIN_PAL_COUNT : 13); i++) {
+
         }
     }
 
@@ -139,10 +145,6 @@ public class Tileset extends Data {
         return ImageUtils.applyTransforms(image, flipX, flipY);
     }
 
-    private int getHeight() {
-        return header.isPrimary() ? MAIN_HEIGHT : LOCAL_HEIGHT;
-    }
-
     public void renderPalettedTiles() {
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 16; i++) {
@@ -153,5 +155,13 @@ public class Tileset extends Data {
 
     private void rerenderTileSet(int palette, int time) {
         images[time][palette] = image.getImage(palettes[time][palette]);
+    }
+
+    public Palette[] getPalette(int time) {
+        return palettes[time];
+    }
+
+    private int getHeight() {
+        return header.isPrimary() ? MAIN_HEIGHT : LOCAL_HEIGHT;
     }
 }

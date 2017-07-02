@@ -5,7 +5,11 @@ import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.tiles.MapTile;
 import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.tiles.Tileset;
+import me.hugmanrique.pokedata.tiles.TilesetCache;
 import me.hugmanrique.pokedata.utils.BitConverter;
+
+import java.awt.*;
 
 /**
  * @author Hugmanrique
@@ -39,6 +43,14 @@ public class MapTileData extends Data {
         }
 
         calcSize(width, height);
+    }
+
+    public Image drawTileset(ROM rom, MapData mapData) {
+        Tileset global = TilesetCache.get(rom, mapData.getGlobalTilesetPtr());
+        Tileset local = TilesetCache.get(rom, mapData.getLocalTilesetPtr());
+
+        // TODO Get dims, create image buffer and render tiles
+        return null;
     }
 
     private void calcSize(int width, int height) {
