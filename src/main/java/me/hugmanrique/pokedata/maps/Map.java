@@ -11,6 +11,7 @@ import me.hugmanrique.pokedata.sprites.exits.SpritesExitManager;
 import me.hugmanrique.pokedata.sprites.npcs.SpritesNPCManager;
 import me.hugmanrique.pokedata.sprites.signs.SpritesSignManager;
 import me.hugmanrique.pokedata.sprites.triggers.TriggerManager;
+import me.hugmanrique.pokedata.tiles.TilesetCache;
 import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.roms.ROM;
 
@@ -67,6 +68,9 @@ public class Map extends Data {
 
         Map map = new Map(rom);
         injectMapName(rom, data, map);
+
+        // Load and cache map tilesets
+        TilesetCache.switchTileset(rom, map.getData());
 
         return map;
     }

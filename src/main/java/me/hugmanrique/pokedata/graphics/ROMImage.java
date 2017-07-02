@@ -139,7 +139,7 @@ public class ROMImage {
         int blockX = 0;
         int blockY = 0;
 
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0; i < data.length * 2; i++) {
             x++;
 
             if (x >= 8) {
