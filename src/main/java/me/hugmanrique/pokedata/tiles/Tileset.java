@@ -21,8 +21,15 @@ import java.util.Map;
 @Getter
 public class Tileset extends Data {
     public static final int MAIN_PAL_COUNT = 6;
+
     private static final int MAIN_HEIGHT = 0x100;
     private static final int LOCAL_HEIGHT = 0x100;
+
+    public static final int MAIN_SIZE = 0x200;
+    public static final int LOCAL_SIZE = 0x200;
+
+    public static final int MAIN_BLOCKS = 0x200;
+    public static final int LOCAL_BLOCKS = 0xFE;
 
     // Cache last primary as it's used a lot
     private static Tileset lastPrimary;

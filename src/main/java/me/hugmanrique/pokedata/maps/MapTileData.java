@@ -10,6 +10,7 @@ import me.hugmanrique.pokedata.tiles.TilesetCache;
 import me.hugmanrique.pokedata.utils.BitConverter;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @author Hugmanrique
@@ -18,10 +19,15 @@ import java.awt.*;
 @Getter
 @ToString
 public class MapTileData extends Data {
+    private static final int TILE_COLS = 8;
+
     private int pointer;
     private int size;
 
     private MapTile[][] tiles;
+
+    private Image imageBuffer;
+    private Graphics buffer;
 
     public MapTileData(ROM rom, MapData data) {
         int width = (int) data.getWidth();
@@ -45,12 +51,42 @@ public class MapTileData extends Data {
         calcSize(width, height);
     }
 
-    public Image drawTileset(ROM rom, MapData mapData) {
+    public Image drawTileset(ROM rom, BlockRenderer renderer, MapData mapData) {
         Tileset global = TilesetCache.get(rom, mapData.getGlobalTilesetPtr());
         Tileset local = TilesetCache.get(rom, mapData.getLocalTilesetPtr());
 
-        // TODO Get dims, create image buffer and render tiles
-        return null;
+        renderer.setTilesets(global, local);
+
+        Dimension imageDims = getDimension();
+        imageBuffer = rerenderTiles(rom, imageDims, renderer, 0, Tileset.MAIN_BLOCKS + 0x200, false);
+
+        return imageBuffer;
+    }
+
+    private Image rerenderTiles(ROM rom, Dimension dimension, BlockRenderer renderer, int start, int end, boolean complete) {
+        if (complete && rom.getGame().isGem()) {
+            dimension.height = 3048;
+        }
+
+        BufferedImage image = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_ARGB);
+
+        buffer = image.getGraphics();
+
+        for (int i = start; i < end; i++) {
+            int x = (i % TILE_COLS) * 16;
+            int y = (i / TILE_COLS) * 16;
+
+            // TODO Render image
+            buffer.drawImage(null, x, y, null);
+        }
+
+        return image;
+    }
+
+    private Dimension getDimension() {
+        int height = (Tileset.MAIN_SIZE / TILE_COLS + Tileset.LOCAL_SIZE / TILE_COLS) * 16;
+
+        return new Dimension(TILE_COLS * 16, height);
     }
 
     private void calcSize(int width, int height) {
