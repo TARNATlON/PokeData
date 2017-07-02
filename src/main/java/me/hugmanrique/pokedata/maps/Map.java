@@ -38,6 +38,9 @@ public class Map extends Data {
     private TriggerManager triggerManager;
     private SpritesExitManager exitManager;
 
+    private MapData data;
+    private MapTileData tileData;
+
     public Map(ROM rom) {
         header = new MapHeader(rom);
 
@@ -47,12 +50,14 @@ public class Map extends Data {
         // Sprites loading
 
         /*rom.seek((int) header.getSpritesPtr() & 0x1FFFFFF);
-        sprites = new SpritesHeader(rom);
+        sprites = new SpritesHeader(rom);*/
 
-        npcManager = new SpritesNPCManager(rom, (int) sprites.getNpcPtr(), sprites.getNpcAmount());
+        /*npcManager = new SpritesNPCManager(rom, (int) sprites.getNpcPtr(), sprites.getNpcAmount());
         signManager = new SpritesSignManager(rom, (int) sprites.getSignsPtr(), sprites.getSignsAmount());
         triggerManager = new TriggerManager(rom, (int) sprites.getTriggersPtr(), sprites.getTriggersAmount());
         exitManager = new SpritesExitManager(rom, (int) sprites.getExitsPtr(), sprites.getExitsAmount());*/
+
+        data = new MapData(rom, (int) header.getMapPtr());
     }
 
     public static Map load(ROM rom, ROMData data, int bank, int id) {
