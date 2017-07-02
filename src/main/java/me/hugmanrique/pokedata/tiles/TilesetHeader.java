@@ -38,10 +38,4 @@ public class TilesetHeader extends Data {
             animationPtr = rom.getPointer();
         }
     }
-
-    public static TilesetHeader load(ROM rom, int offset) {
-        rom.seek(offset);
-
-        return new TilesetHeader(rom);
-    }
 }
