@@ -1,5 +1,6 @@
 package me.hugmanrique.pokedata.tiles;
 
+import lombok.Getter;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.compression.Lz77;
 import me.hugmanrique.pokedata.graphics.ImageType;
@@ -7,8 +8,8 @@ import me.hugmanrique.pokedata.graphics.Palette;
 import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.utils.BitConverter;
+import me.hugmanrique.pokedata.utils.ImageUtils;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @author Hugmanrique
  * @since 02/07/2017
  */
+@Getter
 public class Tileset extends Data {
     private static final int MAIN_PAL_COUNT = 6;
     private static final int MAIN_HEIGHT = 0x100;
@@ -134,31 +136,22 @@ public class Tileset extends Data {
     }
 
     private BufferedImage applyTransforms(BufferedImage image, boolean flipX, boolean flipY) {
-        if (flipX) {
-            image = horizontalFlip(image);
-        }
-
-        if (flipY) {
-            image = verticalFlip(image);
-        }
-
-        return image;
-    }
-
-    private BufferedImage horizontalFlip(BufferedImage image) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-
-        BufferedImage newImage = new BufferedImage(width, height, image.getType());
-
-        Graphics2D graphics = newImage.createGraphics();
-        graphics.drawImage(image, 0, 0, width, height, width, 0, 0, height, null);
-        graphics.dispose();
-
-        return newImage;
+        return ImageUtils.applyTransforms(image, flipX, flipY);
     }
 
     private int getHeight() {
         return header.isPrimary() ? MAIN_HEIGHT : LOCAL_HEIGHT;
+    }
+
+    public void renderPalettedTiles() {
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 16; i++) {
+                rerenderTileSet(i, j);
+            }
+        }
+    }
+
+    private void rerenderTileSet(int palette, int time) {
+        images[time][palette] = image.getImage(palettes[time][palette]);
     }
 }

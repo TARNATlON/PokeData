@@ -122,7 +122,7 @@ public class ImageUtils {
     }
 
     // Transformation utils
-    public BufferedImage applyTransforms(BufferedImage image, boolean flipX, boolean flipY) {
+    public static BufferedImage applyTransforms(BufferedImage image, boolean flipX, boolean flipY) {
         if (flipX) {
             image = horizontalFlip(image);
         }
@@ -134,21 +134,21 @@ public class ImageUtils {
         return image;
     }
 
-    public BufferedImage horizontalFlip(BufferedImage image) {
+    public static BufferedImage horizontalFlip(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
 
         return rotationTransform(image, width, 0, 0, height);
     }
 
-    public BufferedImage verticalFlip(BufferedImage image) {
+    public static BufferedImage verticalFlip(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
 
         return rotationTransform(image, 0, height, width, 0);
     }
 
-    private BufferedImage rotationTransform(BufferedImage image, int sx1, int sy1, int sx2, int sy2) {
+    private static BufferedImage rotationTransform(BufferedImage image, int sx1, int sy1, int sx2, int sy2) {
         int width = image.getWidth();
         int height = image.getHeight();
 

@@ -126,4 +126,55 @@ public class ROMImage {
 
         return image;
     }
+
+    public BufferedImage getImage(Palette palette) {
+        return getImage(palette, true);
+    }
+
+    public BufferedImage getImage(Palette palette, boolean transparency) {
+        BufferedImage image = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
+
+        int x = -1;
+        int y = 0;
+        int blockX = 0;
+        int blockY = 0;
+
+        for (int i = 0; i < data.length; i++) {
+            x++;
+
+            if (x >= 8) {
+                x = 0;
+                y++;
+            }
+
+            if (y >= 8) {
+                y = 0;
+                blockX++;
+            }
+
+            if (blockX > image.getWidth() / 8 - 1) {
+                blockX = 0;
+                blockY++;
+            }
+
+            int pal = data[i / 2];
+
+            if ((i & 1) == 0) {
+                pal &= 15;
+            } else {
+                pal = (pal & 240) >> 4;
+            }
+
+            try {
+                int red = palette.getReds()[pal];
+                int green = palette.getGreens()[pal];
+                int blue = palette.getBlues()[pal];
+                int alpha = transparency && pal == 0 ? 0 : 255;
+
+                image.getRaster().setPixel(x + blockX * 8, y + blockY * 8, new int[]{ red, green, blue, alpha });
+            } catch (Exception ignored) {}
+        }
+
+        return image;
+    }
 }
