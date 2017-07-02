@@ -24,8 +24,6 @@ public class MapData extends Data {
     private int secondarySize;
 
     public MapData(ROM rom) {
-        super(rom);
-
         width = rom.getPointer(true);
         height = rom.getPointer(true);
 

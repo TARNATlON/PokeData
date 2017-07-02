@@ -58,6 +58,7 @@ public class Map extends Data {
         exitManager = new SpritesExitManager(rom, (int) sprites.getExitsPtr(), sprites.getExitsAmount());*/
 
         data = new MapData(rom, (int) header.getMapPtr());
+        tileData = new MapTileData(rom, data);
     }
 
     public static Map load(ROM rom, ROMData data, int bank, int id) {
