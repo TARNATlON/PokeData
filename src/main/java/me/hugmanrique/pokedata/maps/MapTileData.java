@@ -27,7 +27,7 @@ public class MapTileData extends Data {
 
     private MapTile[][] tiles;
 
-    private Image imageBuffer;
+    private BufferedImage imageBuffer;
     private Graphics buffer;
 
     public MapTileData(ROM rom, MapData data) {
@@ -52,10 +52,14 @@ public class MapTileData extends Data {
         calcSize(width, height);
     }
 
+    public BufferedImage drawTileset(ROM rom, MapData mapData) {
+        return drawTileset(rom, BlockRenderer.DEFAULT, mapData);
+    }
+
     /**
      * Creates an {@link Image} with a grid of all the tiles from the global and local tileset
      */
-    public Image drawTileset(ROM rom, BlockRenderer renderer, MapData mapData) {
+    public BufferedImage drawTileset(ROM rom, BlockRenderer renderer, MapData mapData) {
         Tileset global = TilesetCache.get(rom, mapData.getGlobalTilesetPtr());
         Tileset local = TilesetCache.get(rom, mapData.getLocalTilesetPtr());
 
@@ -67,7 +71,7 @@ public class MapTileData extends Data {
         return imageBuffer;
     }
 
-    private Image rerenderTiles(ROM rom, Dimension dimension, BlockRenderer renderer, int start, int end, boolean complete) {
+    private BufferedImage rerenderTiles(ROM rom, Dimension dimension, BlockRenderer renderer, int start, int end, boolean complete) {
         if (complete && rom.getGame().isGem()) {
             dimension.height = 3048;
         }

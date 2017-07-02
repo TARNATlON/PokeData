@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
  * @since 02/07/2017
  */
 public class BlockRenderer {
+    public static final BlockRenderer DEFAULT = new BlockRenderer();
 
     private Tileset global;
     private Tileset local;
