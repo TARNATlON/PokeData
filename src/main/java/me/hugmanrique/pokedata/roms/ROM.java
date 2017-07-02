@@ -436,7 +436,7 @@ public interface ROM {
      * @return Pointer as an Integer
      */
     default int getPointerAsInt() {
-        return (int) getPointer(getInternalOffset(),false);
+        return (int) getPointer(false);
     }
 
     /**

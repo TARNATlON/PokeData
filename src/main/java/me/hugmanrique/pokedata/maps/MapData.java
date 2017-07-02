@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.tiles.Tileset;
 import me.hugmanrique.pokedata.utils.BitConverter;
 
 /**
@@ -30,10 +31,12 @@ public class MapData extends Data {
         height = rom.getPointer(true);
 
         borderTilePtr = rom.getPointerAsInt();
-        mapTilesPtr = rom.getPointerAsInt();
 
+        mapTilesPtr = rom.getPointerAsInt();
         globalTilesetPtr = rom.getPointerAsInt();
         localTilesetPtr = rom.getPointerAsInt();
+
+        secondarySize = borderWidth + 0xA0;
 
         // Borders on Emerald are always 2x2
         if (rom.getGame().isElements()) {
@@ -41,9 +44,12 @@ public class MapData extends Data {
 
             borderWidth = borderDims[0];
             borderHeight = borderDims[1];
+
+            secondarySize = Tileset.LOCAL_SIZE;
+        } else {
+            Tileset.LOCAL_BLOCKS = secondarySize;
         }
 
-        secondarySize = borderWidth + 0xA0;
     }
 
     public static MapData load(ROM rom, int offset) {

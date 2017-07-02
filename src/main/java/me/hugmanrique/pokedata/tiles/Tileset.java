@@ -29,7 +29,7 @@ public class Tileset extends Data {
     public static final int LOCAL_SIZE = 0x200;
 
     public static final int MAIN_BLOCKS = 0x200;
-    public static final int LOCAL_BLOCKS = 0xFE;
+    public static int LOCAL_BLOCKS = 0xFE;
 
     // Cache last primary as it's used a lot
     private static Tileset lastPrimary;
