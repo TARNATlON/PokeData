@@ -1,6 +1,5 @@
 package me.hugmanrique.pokedata.items;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import me.hugmanrique.pokedata.roms.Game;
 

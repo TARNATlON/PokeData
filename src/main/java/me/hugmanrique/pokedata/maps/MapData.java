@@ -1,6 +1,7 @@
 package me.hugmanrique.pokedata.maps;
 
 import lombok.Getter;
+import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.utils.BitConverter;
@@ -10,6 +11,7 @@ import me.hugmanrique.pokedata.utils.BitConverter;
  * @since 02/07/2017
  */
 @Getter
+@ToString
 public class MapData extends Data {
     private long width;
     private long height;
@@ -44,7 +46,9 @@ public class MapData extends Data {
         secondarySize = borderWidth + 0xA0;
     }
 
-    public MapData(ROM rom, int offset) {
-        super(rom, offset);
+    public static MapData load(ROM rom, int offset) {
+        rom.seek(offset);
+
+        return new MapData(rom);
     }
 }

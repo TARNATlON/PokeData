@@ -57,7 +57,7 @@ public class Map extends Data {
         triggerManager = new TriggerManager(rom, (int) sprites.getTriggersPtr(), sprites.getTriggersAmount());
         exitManager = new SpritesExitManager(rom, (int) sprites.getExitsPtr(), sprites.getExitsAmount());*/
 
-        data = new MapData(rom, (int) header.getMapPtr());
+        data = MapData.load(rom, (int) header.getMapPtr());
         tileData = new MapTileData(rom, data);
     }
 
