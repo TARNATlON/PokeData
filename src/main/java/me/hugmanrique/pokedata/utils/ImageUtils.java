@@ -7,6 +7,7 @@ import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.roms.ROM;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -118,5 +119,45 @@ public class ImageUtils {
 
     public static Palette getCache(int pointer) {
         return paletteCache.get(pointer);
+    }
+
+    // Transformation utils
+    public BufferedImage applyTransforms(BufferedImage image, boolean flipX, boolean flipY) {
+        if (flipX) {
+            image = horizontalFlip(image);
+        }
+
+        if (flipY) {
+            image = verticalFlip(image);
+        }
+
+        return image;
+    }
+
+    public BufferedImage horizontalFlip(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        return rotationTransform(image, width, 0, 0, height);
+    }
+
+    public BufferedImage verticalFlip(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        return rotationTransform(image, 0, height, width, 0);
+    }
+
+    private BufferedImage rotationTransform(BufferedImage image, int sx1, int sy1, int sx2, int sy2) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        BufferedImage newImage = new BufferedImage(width, height, image.getType());
+
+        Graphics2D graphics = newImage.createGraphics();
+        graphics.drawImage(image, 0, 0, width, height, sx1, sy1, sx2, sy2, null);
+        graphics.dispose();
+
+        return newImage;
     }
 }

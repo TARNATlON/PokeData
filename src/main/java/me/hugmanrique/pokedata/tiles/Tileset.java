@@ -8,6 +8,7 @@ import me.hugmanrique.pokedata.graphics.ROMImage;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.utils.BitConverter;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @since 02/07/2017
  */
 public class Tileset extends Data {
+    private static final int MAIN_PAL_COUNT = 6;
     private static final int MAIN_HEIGHT = 0x100;
     private static final int LOCAL_HEIGHT = 0x100;
 
@@ -89,6 +91,71 @@ public class Tileset extends Data {
         }
 
         image = new ROMImage(palettes[0][0], data, 128, getHeight());
+    }
+
+    public BufferedImage getTile(int tileIndex, int palette, boolean flipX, boolean flipY, int time) {
+        if (palette < MAIN_PAL_COUNT) {
+            Map<Integer, BufferedImage> tiles = renderedTiles[palette + (time * 16)];
+
+            if (tiles.containsKey(tileIndex)) {
+                BufferedImage image = tiles.get(tileIndex);
+
+                return applyTransforms(image, flipX, flipY);
+            }
+        } else {
+            String error = String.format(
+                "[WARN] Attempted to read tile %s of palette %s in %s tileset",
+                tileIndex,
+                palette,
+                header.isPrimary() ? "global" : "local"
+            );
+
+            System.out.println(error);
+
+            // Return empty image
+            return new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
+        }
+
+        // Tile isn't cached
+        int x = (tileIndex % (128 / 8)) * 8;
+        int y = (tileIndex % (128 / 8)) * 8;
+
+        BufferedImage image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
+
+        try {
+            image = images[time][palette].getSubimage(x, y, 8, 8);
+        } catch (Exception ignored) {} // Out of bounds
+
+        if (palette < MAIN_PAL_COUNT || renderedTiles.length > MAIN_PAL_COUNT) {
+            renderedTiles[palette + (time * 16)].put(tileIndex, image);
+        }
+
+        return applyTransforms(image, flipX, flipY);
+    }
+
+    private BufferedImage applyTransforms(BufferedImage image, boolean flipX, boolean flipY) {
+        if (flipX) {
+            image = horizontalFlip(image);
+        }
+
+        if (flipY) {
+            image = verticalFlip(image);
+        }
+
+        return image;
+    }
+
+    private BufferedImage horizontalFlip(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        BufferedImage newImage = new BufferedImage(width, height, image.getType());
+
+        Graphics2D graphics = newImage.createGraphics();
+        graphics.drawImage(image, 0, 0, width, height, width, 0, 0, height, null);
+        graphics.dispose();
+
+        return newImage;
     }
 
     private int getHeight() {
