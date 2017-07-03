@@ -68,17 +68,11 @@ public class Tileset extends Data {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 16; j++) {
-                int offset = (int) header.getPalettesPtr() + (32 * j + i * 0x200);
+                int offset = (int) header.getPalettesPtr() + (32 * j) + (i * 0x200);
 
                 byte[] data = rom.readBytes(offset, 32);
                 palettes[i][j] = new Palette(ImageType.C16, data);
             }
-        }
-    }
-
-    public void startTileLoaders() {
-        for (int i = 0; i < (header.isPrimary() ? MAIN_PAL_COUNT : 13); i++) {
-            new TileLoader(this, renderedTiles, i).start();
         }
     }
 
@@ -108,6 +102,12 @@ public class Tileset extends Data {
         }
 
         image = new ROMImage(palettes[0][0], data, 128, getHeight());
+    }
+
+    public void startTileLoaders() {
+        for (int i = 0; i < (header.isPrimary() ? MAIN_PAL_COUNT : 13); i++) {
+            new TileLoader(this, renderedTiles, i).start();
+        }
     }
 
     public BufferedImage getTile(int tileIndex, int palette, boolean flipX, boolean flipY, int time) {

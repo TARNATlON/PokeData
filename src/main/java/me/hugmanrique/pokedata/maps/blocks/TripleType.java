@@ -25,6 +25,4 @@ public enum TripleType {
 
         return NONE;
     }
-
-
 }

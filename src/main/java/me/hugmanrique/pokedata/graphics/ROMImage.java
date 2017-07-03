@@ -160,9 +160,9 @@ public class ROMImage {
             int pal = data[i / 2];
 
             if ((i & 1) == 0) {
-                pal &= 15;
+                pal &= 0xF;
             } else {
-                pal = (pal & 240) >> 4;
+                pal = (pal & 0xF0) >> 4;
             }
 
             try {

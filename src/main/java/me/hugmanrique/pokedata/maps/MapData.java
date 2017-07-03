@@ -22,9 +22,8 @@ public class MapData extends Data {
     private int globalTilesetPtr;
     private int localTilesetPtr;
 
-    private int borderWidth = 2;
-    private int borderHeight = 2;
-    private int secondarySize;
+    private int borderWidth;
+    private int borderHeight;
 
     public MapData(ROM rom) {
         width = rom.getPointer(true);
@@ -36,20 +35,19 @@ public class MapData extends Data {
         globalTilesetPtr = rom.getPointerAsInt();
         localTilesetPtr = rom.getPointerAsInt();
 
-        secondarySize = borderWidth + 0xA0;
-
         // Borders on Emerald are always 2x2
-        if (rom.getGame().isElements()) {
+        if (rom.getGame().isGem()) {
+            borderWidth = 2;
+            borderHeight = 2;
+
+            // borderWidth + 0xA0
+            Tileset.LOCAL_BLOCKS = 0xA2;
+        } else {
             int[] borderDims = BitConverter.toInts(rom.readBytes(2));
 
             borderWidth = borderDims[0];
             borderHeight = borderDims[1];
-
-            secondarySize = Tileset.LOCAL_SIZE;
-        } else {
-            Tileset.LOCAL_BLOCKS = secondarySize;
         }
-
     }
 
     public static MapData load(ROM rom, int offset) {
