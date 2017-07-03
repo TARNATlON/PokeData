@@ -22,6 +22,9 @@ public class Palette {
     private byte[] greens;
     private byte[] blues;
 
+    /**
+     * @throws ArrayIndexOutOfBoundsException if data is longer than the {@link ImageType} allows
+     */
     public Palette(ImageType type, int[] data) {
         int size = type.getSize();
 
@@ -30,7 +33,7 @@ public class Palette {
         greens = new byte[size];
         blues = new byte[size];
 
-        for (int i = 0; i < data.length - 2; i += 2) {
+        for (int i = 0; i < data.length && i < type.getROMSize(); i += 2) {
             int color = data[i] + (data[i + 1] << 8);
 
             int red = (color & 0x1F) << 3;

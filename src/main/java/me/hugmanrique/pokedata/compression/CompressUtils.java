@@ -28,6 +28,7 @@ public class CompressUtils {
                 return decompressHuff(stream);
             case 0x30:
                 return decompressRle(stream);
+            // Data most likely isn't compressed
             default:
                 return null;
         }

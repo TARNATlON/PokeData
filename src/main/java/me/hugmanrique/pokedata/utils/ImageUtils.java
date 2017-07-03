@@ -29,6 +29,7 @@ public class ImageUtils {
         }
 
         int[] data = Lz77.decompress(rom, pointer);
+
         Palette palette = new Palette(type, data);
 
         if (cache) {
@@ -48,6 +49,10 @@ public class ImageUtils {
 
     public static ROMImage getImage(ROM rom, int pointer, Palette palette, int width, int height) {
         int[] data = Lz77.decompress(rom, pointer);
+
+        if (data == null) {
+            data = BitConverter.toInts(rom.readBytes(pointer, width * height));
+        }
 
         return new ROMImage(palette, data, width, height);
     }
