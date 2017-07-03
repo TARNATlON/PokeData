@@ -50,8 +50,11 @@ public class ImageUtils {
     public static ROMImage getImage(ROM rom, int pointer, Palette palette, int width, int height) {
         int[] data = Lz77.decompress(rom, pointer);
 
+        // If data isn't compressed, fallback to uncompressed read
         if (data == null) {
-            data = BitConverter.toInts(rom.readBytes(pointer, width * height));
+            byte[] imageData = rom.readBytes(pointer, width * height);
+
+            return ImageUtils.loadRawSprite(imageData, palette, width, height);
         }
 
         return new ROMImage(palette, data, width, height);
