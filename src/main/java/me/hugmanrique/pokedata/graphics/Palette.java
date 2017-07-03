@@ -30,7 +30,7 @@ public class Palette {
         greens = new byte[size];
         blues = new byte[size];
 
-        for (int i = 0; i < data.length; i += 2) {
+        for (int i = 0; i < data.length - 2; i += 2) {
             int color = data[i] + (data[i + 1] << 8);
 
             int red = (color & 0x1F) << 3;

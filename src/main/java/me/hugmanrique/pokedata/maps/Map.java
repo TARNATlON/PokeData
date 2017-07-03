@@ -50,13 +50,13 @@ public class Map extends Data {
 
         // Sprites loading
 
-        /*rom.seek((int) header.getSpritesPtr() & 0x1FFFFFF);
-        sprites = new SpritesHeader(rom);*/
+        rom.seek((int) header.getSpritesPtr() & 0x1FFFFFF);
+        sprites = new SpritesHeader(rom);
 
-        /*npcManager = new SpritesNPCManager(rom, (int) sprites.getNpcPtr(), sprites.getNpcAmount());
+        npcManager = new SpritesNPCManager(rom, (int) sprites.getNpcPtr(), sprites.getNpcAmount());
         signManager = new SpritesSignManager(rom, (int) sprites.getSignsPtr(), sprites.getSignsAmount());
         triggerManager = new TriggerManager(rom, (int) sprites.getTriggersPtr(), sprites.getTriggersAmount());
-        exitManager = new SpritesExitManager(rom, (int) sprites.getExitsPtr(), sprites.getExitsAmount());*/
+        exitManager = new SpritesExitManager(rom, (int) sprites.getExitsPtr(), sprites.getExitsAmount());
 
         data = MapData.load(rom, (int) header.getMapPtr());
         tileData = new MapTileData(rom, data);
