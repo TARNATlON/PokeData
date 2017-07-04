@@ -27,7 +27,7 @@ public enum Type {
     PSYCHIC(14),
     ICE(15),
     DRAGON(16),
-    DARK(16);
+    DARK(17);
 
     private byte id;
 
