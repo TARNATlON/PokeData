@@ -27,7 +27,11 @@ public class Attack extends Data {
     private byte priority;
     private byte flags;
 
-    public Attack(ROM rom) {
+    private String name;
+
+    public Attack(ROM rom, String name) {
+        this.name = name;
+
         effect = rom.readByte();
         basePower = rom.readByte();
         type = rom.readByte();
@@ -71,6 +75,14 @@ public class Attack extends Data {
         int offset = data.getAttackData() + (id * 12);
         rom.seek(offset);
 
-        return new Attack(rom);
+        String name = getAttackName(rom, data, id);
+
+        return new Attack(rom, name);
+    }
+
+    private static String getAttackName(ROM rom, ROMData data, int index) {
+        int offset = data.getAttackNames() + (index * 13);
+
+        return rom.readPokeText(offset, -1);
     }
 }
