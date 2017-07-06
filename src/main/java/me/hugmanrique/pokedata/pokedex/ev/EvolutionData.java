@@ -20,6 +20,18 @@ public class EvolutionData extends Data {
         }
     }
 
+    public int getRealSize() {
+        int count = 0;
+
+        for (Evolution evolution : evolutions) {
+            if (evolution != null) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     public static EvolutionData load(ROM rom, ROMData data, int id) {
         int offset = data.getPokemonEvolutions() + (id * 40);
         rom.seek(offset);

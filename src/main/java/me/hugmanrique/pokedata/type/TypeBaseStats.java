@@ -12,7 +12,7 @@ import me.hugmanrique.pokedata.roms.ROM;
 @Getter
 public class TypeBaseStats {
     private static final int SIZE = 112;
-    private static TypeBaseStats[] BASE_STATS;
+    public static TypeBaseStats[] BASE_STATS;
 
     private Type attacking;
     private Type defending;

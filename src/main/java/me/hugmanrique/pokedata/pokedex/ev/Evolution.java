@@ -1,11 +1,10 @@
 package me.hugmanrique.pokedata.pokedex.ev;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
-import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.utils.BitConverter;
 
 /**
  * http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_evolution_data_structure_in_Generation_III
