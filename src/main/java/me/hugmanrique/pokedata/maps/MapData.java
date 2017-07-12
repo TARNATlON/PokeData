@@ -40,7 +40,6 @@ public class MapData extends Data {
             borderWidth = 2;
             borderHeight = 2;
 
-            // borderWidth + 0xA0
             Tileset.LOCAL_BLOCKS = 0xA2;
         } else {
             int[] borderDims = BitConverter.toInts(rom.readBytes(2));

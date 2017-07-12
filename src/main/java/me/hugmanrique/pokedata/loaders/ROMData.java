@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 @Getter
 public class ROMData {
-    private static final int BANKS = 42;
+    public static final int BANKS = 42;
 
     private String romName;
     private int itemData;
