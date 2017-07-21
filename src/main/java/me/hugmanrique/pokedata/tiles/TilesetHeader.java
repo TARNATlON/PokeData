@@ -30,8 +30,6 @@ public class TilesetHeader extends Data {
         palettesPtr = rom.getPointer();
         blocksPtr = rom.getPointer();
 
-        System.out.println("Read: Tileset imgs -> " + tilesetImgPtr + " Palettes -> " + palettesPtr + " Blocks -> " + blocksPtr);
-
         if (rom.getGame().isElements()) {
             animationPtr = rom.getPointer();
             behaviorPtr = rom.getPointer();
