@@ -15,13 +15,12 @@ public class Connection extends Data {
     private long offset;
     private byte bank;
     private byte map;
-    private int filler;
 
     public Connection(ROM rom) {
         type = rom.getPointer(true);
         offset = rom.getSignedLong(true);
         bank = rom.readByte();
         map = rom.readByte();
-        filler = rom.readWord();
+        rom.addInternalOffset(2);
     }
 }

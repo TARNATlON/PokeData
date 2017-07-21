@@ -133,7 +133,7 @@ public class ROMData {
 
         for (int i = 0; i < BANKS; i++) {
             bankPointers[i] = loader.getPointer("OriginalBankPointer" + i);
-            mapsInBanksNumber[i] = loader.getInt("NumberOfMapsInBank" + i);
+            mapsInBanksNumber[i] = loader.getInt("NumberOfMapsInBank" + i) + 1; // Convert to 1-index based
         }
 
         mapLabelData = loader.getPointer("MapLabelData");

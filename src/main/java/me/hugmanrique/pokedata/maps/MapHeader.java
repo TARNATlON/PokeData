@@ -44,5 +44,6 @@ public class MapHeader extends Data {
         rom.addInternalOffset(2);
         labelToggle = rom.readByte();
         battleFieldModel = rom.readByte();
+        rom.addInternalOffset(1);
     }
 }

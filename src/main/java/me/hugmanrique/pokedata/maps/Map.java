@@ -49,7 +49,6 @@ public class Map extends Data {
         connections = new ConnectionData(rom);
 
         // Sprites loading
-
         rom.seek((int) header.getSpritesPtr() & 0x1FFFFFF);
         sprites = new SpritesHeader(rom);
 
