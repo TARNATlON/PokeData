@@ -21,9 +21,6 @@ import java.util.Map;
  */
 @Getter
 public class Tileset extends Data {
-    private static final byte[] GLOBAL_TSLZ_HEADER = new byte[]{ 10, 80, 9, 00, 32, 00, 00 };
-    private static final byte[] LOCAL_TSLZ_HEADER = new byte[]{ 10, 80, 9, 00, 32, 00, 00 };
-
     public static final int MAIN_PAL_COUNT = 6;
 
     private static final int MAIN_HEIGHT = 0x100;
