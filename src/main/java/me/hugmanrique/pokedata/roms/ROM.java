@@ -538,7 +538,7 @@ public interface ROM {
     }
 
     default void repoint(int original, int newPointer, int lookForNum) {
-        original |= 0x08000000;
+        original |= 0x8000000;
 
         byte[] searching = BitConverter.reverseBytes(BitConverter.getBytes(original));
 
