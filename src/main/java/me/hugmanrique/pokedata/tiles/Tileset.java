@@ -172,6 +172,10 @@ public class Tileset extends Data {
         return palettes[time];
     }
 
+    public void setPalettes(int time, Palette[] palettes) {
+        this.palettes[time] = palettes;
+    }
+
     private int getHeight() {
         return header.isPrimary() ? MAIN_HEIGHT : LOCAL_HEIGHT;
     }
