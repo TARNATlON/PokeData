@@ -126,14 +126,19 @@ public class BlockRenderer {
 
         if (blockNum >= Tileset.MAIN_BLOCKS) {
             blockNum -= Tileset.MAIN_BLOCKS;
-            behaviourPtr = (int) local.getHeader().getBehaviorPtr();
+            behaviourPtr = (int) global.getHeader().getBehaviorPtr();
         }
 
         boolean elements = rom.getGame().isElements();
 
-        rom.seek(behaviourPtr + blockNum * (elements ? 4 : 2));
+        int offset = behaviourPtr + blockNum * (elements ? 4 : 2);
+        long behaviour = rom.getPointer(offset, true);
 
-        return elements ? rom.getPointer(true) : rom.getPointer(true) & 0xFFFF;
+        if (elements) {
+            behaviour &= 0xFFFF;
+        }
+
+        return behaviour;
     }
 
     private Graphics2D getGraphics(BufferedImage image) {
