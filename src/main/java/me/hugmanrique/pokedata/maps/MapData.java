@@ -35,6 +35,9 @@ public class MapData extends Data {
         globalTilesetPtr = rom.getPointerAsInt();
         localTilesetPtr = rom.getPointerAsInt();
 
+        System.out.println(globalTilesetPtr);
+        System.out.println(localTilesetPtr);
+
         // Borders on Emerald are always 2x2
         if (rom.getGame().isGem()) {
             borderWidth = 2;

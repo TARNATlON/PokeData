@@ -84,6 +84,7 @@ public class Tileset extends Data {
         }
 
         int[] data;
+        final int height = getHeight();
 
         if (header.isCompressed()) {
             data = Lz77.decompress(rom, imgDataPtr);
@@ -91,7 +92,7 @@ public class Tileset extends Data {
             // TODO Try to fix ROM by writing data
 
             // Pull uncompressed data
-            int size = getHeight() * 128 / 2;
+            int size = height * 128 / 2;
             data = BitConverter.toInts(rom.readBytes(imgDataPtr, size));
         }
 
@@ -101,7 +102,7 @@ public class Tileset extends Data {
             renderedTiles[i] = new HashMap<>();
         }
 
-        image = new ROMImage(palettes[0][0], data, 128, getHeight());
+        image = new ROMImage(palettes[0][0], data, 128, height);
     }
 
     public void startTileLoaders() {

@@ -36,7 +36,9 @@ public class BlockRenderer {
             blockNum -= Tileset.MAIN_BLOCKS;
         }
 
-        int blockPtr = (int) (secondary ? local : global).getHeader().getBlocksPtr() + blockNum * 16;
+        Tileset tileset = (secondary ? local : global);
+
+        int blockPtr = (int) tileset.getHeader().getBlocksPtr() + blockNum * 16;
 
         BufferedImage block = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = getGraphics(block);
@@ -88,14 +90,14 @@ public class BlockRenderer {
             }
 
             int tileIndex = tileNum;
-            Tileset tileset = global;
+            Tileset tileTileset = global;
 
             if (tileNum >= Tileset.MAIN_SIZE) {
                 tileIndex = tileNum - Tileset.MAIN_SIZE;
-                tileset = local;
+                tileTileset = local;
             }
 
-            BufferedImage tile = tileset.getTile(tileIndex, palette, flipX, flipY, currentTime);
+            BufferedImage tile = tileTileset.getTile(tileIndex, palette, flipX, flipY, currentTime);
 
             graphics.drawImage(tile, x * 8, y * 8, null);
 
