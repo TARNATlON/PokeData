@@ -159,12 +159,12 @@ public class Tileset extends Data {
     public void renderPalettedTiles() {
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 16; i++) {
-                rerenderTileSet(i, j);
+                rerenderTileSet(j, i);
             }
         }
     }
 
-    private void rerenderTileSet(int palette, int time) {
+    private void rerenderTileSet(int time, int palette) {
         images[time][palette] = image.getImage(palettes[time][palette]);
     }
 
