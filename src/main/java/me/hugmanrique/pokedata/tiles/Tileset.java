@@ -48,7 +48,7 @@ public class Tileset extends Data {
 
     public Tileset(ROM rom) {
         header = new TilesetHeader(rom);
-        blockCount = 1024;
+        blockCount = header.isPrimary() ? MAIN_BLOCKS : LOCAL_BLOCKS;
 
         render(rom);
     }
@@ -65,8 +65,8 @@ public class Tileset extends Data {
     }
 
     private void renderPalettes(ROM rom) {
-        palettes = new Palette[4][16];
-        images = new BufferedImage[4][16];
+        palettes = new Palette[MAX_TIME][16];
+        images = new BufferedImage[MAX_TIME][16];
 
         for (int i = 0; i < MAX_TIME; i++) {
             for (int j = 0; j < 16; j++) {
@@ -99,7 +99,7 @@ public class Tileset extends Data {
 
         renderedTiles = new HashMap[16 * 4];
 
-        for (int i = 0; i < 16 * 4; i++) {
+        for (int i = 0; i < 16 * MAX_TIME; i++) {
             renderedTiles[i] = new HashMap<>();
         }
 
@@ -140,11 +140,15 @@ public class Tileset extends Data {
         int x = (tileIndex % (128 / 8)) * 8;
         int y = (tileIndex / (128 / 8)) * 8;
 
-        BufferedImage image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image;
 
         try {
             image = images[time][palette].getSubimage(x, y, 8, 8);
-        } catch (Exception ignored) {} // Out of bounds
+        } catch (Exception ignored) {
+            // Out of bounds
+            // TODO Print warning
+            image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
+        }
 
         if (palette < MAIN_PAL_COUNT || renderedTiles.length > MAIN_PAL_COUNT) {
             renderedTiles[palette + (time * 16)].put(tileIndex, image);
