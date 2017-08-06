@@ -14,8 +14,8 @@ public class ROMTest {
     private static boolean CI = Boolean.parseBoolean(System.getProperty("CI"));
 
     protected ReadableROM load() {
-        System.out.println(System.getProperty("CI"));
-        System.out.println(System.getProperty("TRAVIS"));
+        System.out.println(System.getenv("TRAVIS"));
+        System.out.println(System.getenv("CI"));
 
         if (CI) {
             System.out.println("Running on a CI, skipping...");
