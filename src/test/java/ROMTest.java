@@ -11,12 +11,9 @@ import java.security.ProtectionDomain;
 
 public class ROMTest {
     public static final File JAR_FOLDER = getJarFolder();
-    private static boolean CI = Boolean.parseBoolean(System.getProperty("CI"));
+    private static boolean CI = Boolean.parseBoolean(System.getenv("CI")) || Boolean.parseBoolean(System.getenv("TRAVIS"));
 
     protected ReadableROM load() {
-        System.out.println(System.getenv("TRAVIS"));
-        System.out.println(System.getenv("CI"));
-
         if (CI) {
             System.out.println("Running on a CI, skipping...");
             return null;
