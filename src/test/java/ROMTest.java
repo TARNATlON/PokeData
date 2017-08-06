@@ -1,3 +1,5 @@
+import me.hugmanrique.pokedata.roms.Game;
+import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.roms.ROMLoader;
 import me.hugmanrique.pokedata.roms.ReadableROM;
 
@@ -9,7 +11,7 @@ import java.security.ProtectionDomain;
 public class ROMTest {
     public static final File JAR_FOLDER = getJarFolder();
 
-    public ReadableROM load() {
+    protected ReadableROM load() {
         File location = new File(JAR_FOLDER.getParentFile().getParentFile(), "tests.gba");
 
         ReadableROM rom = new ReadableROM();
@@ -22,6 +24,12 @@ public class ROMTest {
 
 
         return rom;
+    }
+
+    protected void checkFireRed(ROM rom) {
+        if (rom.getGame() != Game.FIRE_RED) {
+            throw new Error("Cannot perform this test because ROM isn't a FireRed game");
+        }
     }
 
     private static File getJarFolder() {

@@ -48,6 +48,6 @@ PokeData has base classes for Sprites and a SpriteManager, which creates the spr
 PokeData provides an intelligent way to load GBA images with a [Palette](src/main/java/me/hugmanrique/pokedata/graphics/Palette.java) and render it into a [BufferedImage](https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html) by using the [ROMImage](src/main/java/me/hugmanrique/pokedata/graphics/ROMImage.java) class.
 
 ## Tests
-As redistributing original GBA ROM Pokémon images is illegal, please place a `tests.gba` file on this directory and then run the tests with Maven. If no ROM file is found, some tests will fail.
+As redistributing original GBA ROM Pokémon images is illegal, please place a `tests.gba` FireRed ROM file on this directory and then run the tests with Maven. If no ROM file is found, some tests will fail.
 
 The [ImageUtils](src/main/java/me/hugmanrique/pokedata/utils/ImageUtils.java) provides ways to load Lz77 compressed palettes and images with a cache system to improve load times for duplicate reads.
