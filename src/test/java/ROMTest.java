@@ -1,3 +1,4 @@
+import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.Game;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.roms.ROMLoader;
@@ -19,7 +20,7 @@ public class ROMTest {
         try {
             ROMLoader.load(rom, location);
         } catch (IOException e) {
-            throw new Error("Expected tests.gba ROM file to load and parse correctly");
+            throw new Error("Expected tests.gba ROM file to load and parse correctly", e);
         }
 
 
@@ -29,6 +30,14 @@ public class ROMTest {
     protected void checkFireRed(ROM rom) {
         if (rom.getGame() != Game.FIRE_RED) {
             throw new Error("Cannot perform this test because ROM isn't a FireRed game");
+        }
+    }
+
+    protected ROMData loadData(ROM rom) {
+        try {
+            return new ROMData(rom);
+        } catch (IOException e) {
+            throw new Error("Can't load data for current ROM", e);
         }
     }
 
