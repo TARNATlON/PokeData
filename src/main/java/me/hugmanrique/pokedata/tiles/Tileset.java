@@ -21,6 +21,7 @@ import java.util.Map;
  */
 @Getter
 public class Tileset extends Data {
+    public static final int MAX_TIME = 4;
     public static final int MAIN_PAL_COUNT = 6;
 
     private static final int MAIN_HEIGHT = 0x100;
@@ -67,7 +68,7 @@ public class Tileset extends Data {
         palettes = new Palette[4][16];
         images = new BufferedImage[4][16];
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < MAX_TIME; i++) {
             for (int j = 0; j < 16; j++) {
                 int offset = (int) header.getPalettesPtr() + (32 * j) + (i * 0x200);
 
@@ -157,7 +158,7 @@ public class Tileset extends Data {
     }
 
     public void renderPalettedTiles() {
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < MAX_TIME; j++) {
             for (int i = 0; i < 16; i++) {
                 rerenderTileSet(j, i);
             }

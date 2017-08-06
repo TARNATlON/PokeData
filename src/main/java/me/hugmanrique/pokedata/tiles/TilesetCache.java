@@ -28,7 +28,7 @@ public class TilesetCache {
         Tileset global = get(rom, mapData.getGlobalTilesetPtr());
         Tileset local = get(rom, mapData.getLocalTilesetPtr());
 
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < Tileset.MAX_TIME; j++) {
             for (int i = Tileset.MAIN_PAL_COUNT - 1; i < 13; i++) {
                 global.getPalette(j)[i] = local.getPalette(j)[i];
             }
