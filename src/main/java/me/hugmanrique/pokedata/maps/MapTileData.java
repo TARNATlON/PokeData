@@ -40,9 +40,7 @@ public class MapTileData extends Data {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 int index = (y * width) + x;
-
-                int shortened = BitConverter.shortenPointer(pointer) + index * 2;
-                int raw = rom.readWord(shortened);
+                int raw = rom.readWord(pointer + index * 2);
 
                 MapTile tile = new MapTile((raw & 0x3FF), (raw & 0xFC00) >> 10);
                 tiles[x][y] = tile;
