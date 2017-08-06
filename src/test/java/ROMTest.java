@@ -11,8 +11,14 @@ import java.security.ProtectionDomain;
 
 public class ROMTest {
     public static final File JAR_FOLDER = getJarFolder();
+    private static boolean CI = Boolean.parseBoolean(System.getProperty("CI"));
 
     protected ReadableROM load() {
+        if (CI) {
+            System.out.println("Running on a CI, skipping...");
+            return null;
+        }
+
         File location = new File(JAR_FOLDER.getParentFile().getParentFile(), "tests.gba");
 
         ReadableROM rom = new ReadableROM();

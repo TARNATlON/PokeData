@@ -2,7 +2,6 @@ import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.maps.Map;
 import me.hugmanrique.pokedata.maps.MapData;
 import me.hugmanrique.pokedata.maps.MapHeader;
-import me.hugmanrique.pokedata.maps.MapTileData;
 import me.hugmanrique.pokedata.roms.ReadableROM;
 import org.junit.Test;
 
