@@ -93,7 +93,7 @@ public class BlockRenderer {
             Tileset tileTileset = global;
 
             if (tileNum >= Tileset.MAIN_SIZE) {
-                tileIndex = tileNum - Tileset.MAIN_SIZE;
+                tileIndex -= Tileset.MAIN_SIZE;
                 tileTileset = local;
             }
 

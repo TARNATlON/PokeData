@@ -32,10 +32,16 @@ public enum Game {
         return CUSTOM;
     }
 
+    /**
+     * Returns true if the EngineVersion of the game is 1
+     */
     public boolean isElements() {
         return this == FIRE_RED || this == LEAF_GREEN;
     }
 
+    /**
+     * Returns true if the EngineVersion of the game is 0
+     */
     public boolean isGem() {
         return this == RUBY || this == SAPPHIRE || this == EMERALD;
     }
