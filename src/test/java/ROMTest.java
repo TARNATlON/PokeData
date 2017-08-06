@@ -3,6 +3,7 @@ import me.hugmanrique.pokedata.roms.Game;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.roms.ROMLoader;
 import me.hugmanrique.pokedata.roms.ReadableROM;
+import org.junit.Assume;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class ROMTest {
     protected ReadableROM load() {
         if (CI) {
             System.out.println("Running on a CI, skipping...");
+            Assume.assumeTrue(false);
             return null;
         }
 
