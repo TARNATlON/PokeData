@@ -117,6 +117,8 @@ public class BlockRenderer {
             }
         }
 
+        graphics.dispose();
+
         return block;
     }
 
