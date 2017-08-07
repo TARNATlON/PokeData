@@ -168,4 +168,13 @@ public class ImageUtils {
 
         return newImage;
     }
+
+    public static BufferedImage getSubimage(BufferedImage image, int x, int y, int width, int height) {
+        int[] pixels = image.getRaster().getPixels(x, y, width, height, (int[]) null);
+
+        BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        newImage.getRaster().setPixels(0, 0, width, height, pixels);
+
+        return newImage;
+    }
 }

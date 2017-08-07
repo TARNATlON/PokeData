@@ -166,7 +166,8 @@ public class Tileset extends Data {
         BufferedImage image;
 
         try {
-            image = images[time][palette].getSubimage(x, y, 8, 8);
+            //image = images[time][palette].getSubimage(x, y, 8, 8);
+            image = getSubtile(time, palette, x, y);
         } catch (Exception ignored) {
             // Out of bounds
             // TODO Print warning
@@ -178,6 +179,12 @@ public class Tileset extends Data {
         }
 
         return applyTransforms(image, flipX, flipY);
+    }
+
+    private BufferedImage getSubtile(int time, int palette, int x, int y) {
+        BufferedImage original = images[time][palette];
+
+        return ImageUtils.getSubimage(original, x, y, 8, 8);
     }
 
     private BufferedImage applyTransforms(BufferedImage image, boolean flipX, boolean flipY) {
