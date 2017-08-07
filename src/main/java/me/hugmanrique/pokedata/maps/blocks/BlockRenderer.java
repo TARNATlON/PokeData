@@ -1,5 +1,6 @@
 package me.hugmanrique.pokedata.maps.blocks;
 
+import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.tiles.Tileset;
 
@@ -23,18 +24,18 @@ public class BlockRenderer {
         this.local = local;
     }
 
-    public Image renderBlock(ROM rom, int blockNum) {
-        return renderBlock(rom, blockNum, true);
+    public Image renderBlock(ROM rom, ROMData data, int blockNum) {
+        return renderBlock(rom, data, blockNum, true);
     }
 
-    public Image renderBlock(ROM rom, int blockNum, boolean transparency) {
+    public Image renderBlock(ROM rom, ROMData data, int blockNum, boolean transparency) {
         // TODO Check if safe to remove
         int originalNum = blockNum;
         boolean secondary = false;
 
-        if (blockNum >= Tileset.MAIN_BLOCKS) {
+        if (blockNum >= data.getMainBlocks()) {
             secondary = true;
-            blockNum -= Tileset.MAIN_BLOCKS;
+            blockNum -= data.getMainBlocks();
         }
 
         Tileset tileset = (secondary ? local : global);
@@ -64,9 +65,9 @@ public class BlockRenderer {
                 boolean second = false;
                 int tripleNum = (int) (behaviourByte >> 14) & 0x3FF;
 
-                if (tripleNum >= Tileset.MAIN_BLOCKS) {
+                if (tripleNum >= data.getMainBlocks()) {
                     second = true;
-                    tripleNum = Tileset.MAIN_BLOCKS;
+                    tripleNum = data.getMainBlocks();
                 }
 
                 blockPtr = (int) (second ? local : global).getHeader().getBlocksPtr() + (tripleNum * 16) + 8;
@@ -93,8 +94,8 @@ public class BlockRenderer {
             int tileIndex = tileNum;
             Tileset tileTileset = global;
 
-            if (tileNum >= Tileset.MAIN_SIZE) {
-                tileIndex -= Tileset.MAIN_SIZE;
+            if (tileNum >= data.getMainTilesetSize()) {
+                tileIndex -= data.getMainTilesetSize();
                 tileTileset = local;
             }
 

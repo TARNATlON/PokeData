@@ -6,6 +6,7 @@ import me.hugmanrique.pokedata.compression.Lz77;
 import me.hugmanrique.pokedata.graphics.ImageType;
 import me.hugmanrique.pokedata.graphics.Palette;
 import me.hugmanrique.pokedata.graphics.ROMImage;
+import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.utils.ImageUtils;
@@ -22,22 +23,24 @@ import java.util.Map;
 @Getter
 public class Tileset extends Data {
     public static final int MAX_TIME = 1; // TODO Default to 1, make configurable
-    public static final int MAIN_PAL_COUNT = 8;
+    //public static final int MAIN_PAL_COUNT = 8;
 
     // TODO This is for FireRed, add to ROMData
     // TODO Remove constants and read from ROMData
 
-    private static final int MAIN_HEIGHT = 0x140;
+    /*private static final int MAIN_HEIGHT = 0x140;
     private static final int LOCAL_HEIGHT = 0xC0;
 
     public static final int MAIN_SIZE = 0x280;
     public static final int LOCAL_SIZE = 0x140;
 
     public static final int MAIN_BLOCKS = 0x280;
-    public static int LOCAL_BLOCKS = 0x56;
+    public static int LOCAL_BLOCKS = 0x56;*/
 
     // Cache last primary as it's used a lot
     private static Tileset lastPrimary;
+
+    private final int mainPalCount;
 
     private final int mainHeight;
     private final int localHeight;
@@ -58,17 +61,26 @@ public class Tileset extends Data {
 
     private int blockCount;
 
-    public Tileset(ROM rom) {
+    public Tileset(ROM rom, ROMData data) {
         header = new TilesetHeader(rom);
-        blockCount = header.isPrimary() ? MAIN_BLOCKS : LOCAL_BLOCKS;
+
+        mainPalCount = data.getMainPalCount();
+        mainHeight = data.getMainTilesetHeight();
+        localHeight = data.getLocalTilesetHeight();
+        mainSize = data.getMainTilesetSize();
+        localSize = data.getLocalTilesetSize();
+        mainBlocks = data.getMainBlocks();
+        localBlocks = data.getLocalBlocks();
+
+        blockCount = header.isPrimary() ? mainBlocks : localBlocks;
 
         render(rom);
     }
 
-    public static Tileset load(ROM rom, int offset) {
+    public static Tileset load(ROM rom, ROMData data, int offset) {
         rom.seek(offset);
 
-        return new Tileset(rom);
+        return new Tileset(rom, data);
     }
 
     public void render(ROM rom) {
@@ -119,13 +131,13 @@ public class Tileset extends Data {
     }
 
     public void startTileLoaders() {
-        for (int i = 0; i < (header.isPrimary() ? MAIN_PAL_COUNT : 13); i++) {
+        for (int i = 0; i < (header.isPrimary() ? mainPalCount : 13); i++) {
             new TileLoader(this, renderedTiles, i).start();
         }
     }
 
     public BufferedImage getTile(int tileIndex, int palette, boolean flipX, boolean flipY, int time) {
-        if (palette < MAIN_PAL_COUNT) {
+        if (palette < mainPalCount) {
             // Check if tile is cached
             Map<Integer, BufferedImage> tiles = renderedTiles[palette + (time * 16)];
 
@@ -162,7 +174,7 @@ public class Tileset extends Data {
             image = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
         }
 
-        if (palette < MAIN_PAL_COUNT || renderedTiles.length > MAIN_PAL_COUNT) {
+        if (palette < mainPalCount || renderedTiles.length > mainPalCount) {
             renderedTiles[palette + (time * 16)].put(tileIndex, image);
         }
 
@@ -194,6 +206,6 @@ public class Tileset extends Data {
     }
 
     private int getHeight() {
-        return header.isPrimary() ? MAIN_HEIGHT : LOCAL_HEIGHT;
+        return header.isPrimary() ? mainHeight : localHeight;
     }
 }

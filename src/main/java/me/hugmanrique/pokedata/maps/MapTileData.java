@@ -3,6 +3,7 @@ package me.hugmanrique.pokedata.maps;
 import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.maps.blocks.BlockRenderer;
 import me.hugmanrique.pokedata.tiles.MapTile;
 import me.hugmanrique.pokedata.roms.ROM;
@@ -50,26 +51,26 @@ public class MapTileData extends Data {
         calcSize(width, height);
     }
 
-    public BufferedImage drawTileset(ROM rom, MapData mapData) {
-        return drawTileset(rom, BlockRenderer.DEFAULT, mapData);
+    public BufferedImage drawTileset(ROM rom, ROMData data, MapData mapData) {
+        return drawTileset(rom, data, BlockRenderer.DEFAULT, mapData);
     }
 
     /**
      * Creates an {@link Image} with a grid of all the tiles from the global and local tilesets
      */
-    public BufferedImage drawTileset(ROM rom, BlockRenderer renderer, MapData mapData) {
-        Tileset global = TilesetCache.get(rom, mapData.getGlobalTilesetPtr());
-        Tileset local = TilesetCache.get(rom, mapData.getLocalTilesetPtr());
+    public BufferedImage drawTileset(ROM rom, ROMData data, BlockRenderer renderer, MapData mapData) {
+        Tileset global = TilesetCache.get(rom, data, mapData.getGlobalTilesetPtr());
+        Tileset local = TilesetCache.get(rom, data, mapData.getLocalTilesetPtr());
 
         renderer.setTilesets(global, local);
 
-        Dimension imageDims = getDimension();
-        imageBuffer = rerenderTiles(rom, imageDims, renderer, 0, Tileset.MAIN_BLOCKS + 0x200, true);
+        Dimension imageDims = getDimension(data);
+        imageBuffer = rerenderTiles(rom, data, imageDims, renderer, 0, data.getMainBlocks() + 0x200, true);
 
         return imageBuffer;
     }
 
-    private BufferedImage rerenderTiles(ROM rom, Dimension dimension, BlockRenderer renderer, int start, int end, boolean complete) {
+    private BufferedImage rerenderTiles(ROM rom, ROMData data, Dimension dimension, BlockRenderer renderer, int start, int end, boolean complete) {
         if (complete && rom.getGame().isGem()) {
             dimension.height = 3048;
         }
@@ -82,14 +83,14 @@ public class MapTileData extends Data {
             int x = (i % TILE_COLS) * 16;
             int y = (i / TILE_COLS) * 16;
 
-            buffer.drawImage(renderer.renderBlock(rom, i, true), x, y, null);
+            buffer.drawImage(renderer.renderBlock(rom, data, i, true), x, y, null);
         }
 
         return image;
     }
 
-    private Dimension getDimension() {
-        int height = ((Tileset.MAIN_SIZE / TILE_COLS) + (Tileset.LOCAL_SIZE / TILE_COLS)) * 16;
+    private Dimension getDimension(ROMData data) {
+        int height = ((data.getMainTilesetSize() / TILE_COLS) + (data.getLocalTilesetSize() / TILE_COLS)) * 16;
 
         return new Dimension(TILE_COLS * 16, height);
     }

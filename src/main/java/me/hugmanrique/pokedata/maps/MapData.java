@@ -3,6 +3,7 @@ package me.hugmanrique.pokedata.maps;
 import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
+import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.tiles.Tileset;
 import me.hugmanrique.pokedata.utils.BitConverter;
@@ -27,7 +28,7 @@ public class MapData extends Data {
 
     private int secondarySize;
 
-    public MapData(ROM rom) {
+    public MapData(ROM rom, ROMData data) {
         width = rom.getPointer(true);
         height = rom.getPointer(true);
 
@@ -47,15 +48,15 @@ public class MapData extends Data {
             borderWidth = 2;
             borderHeight = 2;
 
-            Tileset.LOCAL_BLOCKS = secondarySize;
+            data.setLocalBlocks(secondarySize);
         } else {
-            secondarySize = Tileset.LOCAL_BLOCKS;
+            secondarySize = data.getLocalBlocks();
         }
     }
 
-    public static MapData load(ROM rom, int offset) {
+    public static MapData load(ROM rom, ROMData data, int offset) {
         rom.seek(offset);
 
-        return new MapData(rom);
+        return new MapData(rom, data);
     }
 }

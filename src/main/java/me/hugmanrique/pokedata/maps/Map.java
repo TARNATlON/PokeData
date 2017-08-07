@@ -42,7 +42,7 @@ public class Map extends Data {
     private MapData data;
     private MapTileData tileData;
 
-    public Map(ROM rom) {
+    public Map(ROM rom, ROMData data) {
         header = new MapHeader(rom);
 
         rom.seek(BitConverter.shortenPointer(header.getConnectPtr()));
@@ -57,19 +57,19 @@ public class Map extends Data {
         triggerManager = new TriggerManager(rom, (int) sprites.getTriggersPtr(), sprites.getTriggersAmount());
         exitManager = new SpritesExitManager(rom, (int) sprites.getExitsPtr(), sprites.getExitsAmount());
 
-        data = MapData.load(rom, (int) header.getMapPtr());
-        tileData = new MapTileData(rom, data);
+        this.data = MapData.load(rom, data, (int) header.getMapPtr());
+        tileData = new MapTileData(rom, this.data);
     }
 
     public static Map load(ROM rom, ROMData data, int bank, int id) {
         int pointer = BankLoader.getMapHeaderPointer(rom, data, bank, id);
         rom.seek(pointer);
 
-        Map map = new Map(rom);
+        Map map = new Map(rom, data);
         injectMapName(rom, data, map);
 
         // Load and cache map tilesets
-        TilesetCache.switchTileset(rom, map.getData());
+        TilesetCache.switchTileset(rom, data, map.getData());
 
         return map;
     }

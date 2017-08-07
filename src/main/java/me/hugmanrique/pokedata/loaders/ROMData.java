@@ -1,6 +1,7 @@
 package me.hugmanrique.pokedata.loaders;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.hugmanrique.pokedata.pokedex.ev.EvolutionParam;
 import me.hugmanrique.pokedata.roms.ROM;
 import org.ini4j.Wini;
@@ -103,6 +104,7 @@ public class ROMData {
 
     private int mainPalCount;
     private int mainBlocks;
+    @Setter
     private int localBlocks;
     private int mainTilesetSize;
     private int localTilesetSize;
