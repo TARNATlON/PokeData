@@ -133,7 +133,8 @@ public class ROMImage {
     }
 
     public BufferedImage getImage(Palette palette, boolean transparency) {
-        BufferedImage image = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
+        FastBitmap bitmap = new FastBitmap(size.x, size.y);
+        //BufferedImage image = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
 
         int x = -1;
         int y = 0;
@@ -153,7 +154,7 @@ public class ROMImage {
                 blockX++;
             }
 
-            if (blockX > image.getWidth() / 8 - 1) {
+            if (blockX > bitmap.getWidth() / 8 - 1) {
                 blockX = 0;
                 blockY++;
             }
@@ -175,11 +176,10 @@ public class ROMImage {
                 int xPos = x + blockX * 8;
                 int yPos = y + blockY * 8;
 
-                // TODO Optimize this Java shit
-                image.getRaster().setPixel(xPos, yPos, new int[]{ red, green, blue, alpha });
+                bitmap.setRGBA(xPos, yPos, red, green, blue, alpha);
             } catch (Exception ignored) {}
         }
 
-        return image;
+        return bitmap.getImage();
     }
 }
