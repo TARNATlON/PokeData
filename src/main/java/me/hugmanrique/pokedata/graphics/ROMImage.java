@@ -167,10 +167,10 @@ public class ROMImage {
             }
 
             try {
-                int red = palette.getReds()[pal];
-                int green = palette.getGreens()[pal];
-                int blue = palette.getBlues()[pal];
-                int alpha = transparency && pal == 0 ? 0 : 255;
+                byte red = palette.getReds()[pal];
+                byte green = palette.getGreens()[pal];
+                byte blue = palette.getBlues()[pal];
+                byte alpha = transparency && pal == 0 ? (byte) 0 : (byte) 255;
 
                 int xPos = x + blockX * 8;
                 int yPos = y + blockY * 8;

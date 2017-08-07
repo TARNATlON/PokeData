@@ -15,10 +15,10 @@ public class FastBitmap {
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         this.width = width;
 
-        this.pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        this.pixels = ((DataBufferInt) image.getAlphaRaster().getDataBuffer()).getData();
     }
 
-    public void setRGBA(int x, int y, int red, int green, int blue, int alpha) {
-        pixels[x * width + y] = alpha << 24 | red << 16 | green << 8 | blue;
+    public void setRGBA(int x, int y, byte red, byte green, byte blue, byte alpha) {
+        pixels[y * width + x] = (alpha & 0xFF) << 24 | (red & 0xFF) << 16 | (green & 0xFF) << 8 | (blue & 0xFF);
     }
 }
