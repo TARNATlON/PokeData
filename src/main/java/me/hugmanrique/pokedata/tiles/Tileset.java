@@ -26,6 +26,7 @@ public class Tileset extends Data {
 
     // TODO This is for FireRed, add to ROMData
     // TODO Remove constants and read from ROMData
+
     private static final int MAIN_HEIGHT = 0x140;
     private static final int LOCAL_HEIGHT = 0xC0;
 
@@ -37,6 +38,15 @@ public class Tileset extends Data {
 
     // Cache last primary as it's used a lot
     private static Tileset lastPrimary;
+
+    private final int mainHeight;
+    private final int localHeight;
+
+    private final int mainSize;
+    private final int localSize;
+
+    private final int mainBlocks;
+    private final int localBlocks;
 
     private TilesetHeader header;
     private ROMImage image;

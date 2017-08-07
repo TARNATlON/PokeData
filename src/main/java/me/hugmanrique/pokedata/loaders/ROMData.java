@@ -101,6 +101,14 @@ public class ROMData {
     private int pokedexSmallestTable;
     private int pokedexTypeTable;
 
+    private int mainPalCount;
+    private int mainBlocks;
+    private int localBlocks;
+    private int mainTilesetSize;
+    private int localTilesetSize;
+    private int mainTilesetHeight;
+    private int localTilesetHeight;
+
     public ROMData(Wini store, String header) {
         DataLoader loader = new DataLoader(store, header);
 
@@ -195,6 +203,14 @@ public class ROMData {
         pokedexLightestTable = loader.getPointer("PokedexLightestTable");
         pokedexSmallestTable = loader.getPointer("PokedexSmallestTable");
         pokedexTypeTable = loader.getPointer("PokedexTypeTable");
+
+        mainPalCount = loader.getPointer("MainTSPalCount");
+        mainBlocks = loader.getPointer("MainTSBlocks");
+        localBlocks = loader.getPointer("LocalTSBlocks");
+        mainTilesetSize = loader.getPointer("MainTSSize");
+        localTilesetSize = loader.getPointer("LocalTSSize");
+        mainTilesetHeight = loader.getPointer("MainTSHeight");
+        localTilesetHeight = loader.getPointer("LocalTSHeight");
     }
 
     public ROMData(File file, String header) throws IOException {
