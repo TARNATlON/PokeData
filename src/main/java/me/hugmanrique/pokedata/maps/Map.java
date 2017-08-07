@@ -66,6 +66,7 @@ public class Map extends Data {
         rom.seek(pointer);
 
         Map map = new Map(rom, data);
+
         injectMapName(rom, data, map);
 
         // Load and cache map tilesets
@@ -75,7 +76,7 @@ public class Map extends Data {
     }
 
     private static void injectMapName(ROM rom, ROMData data, Map map) {
-        byte labelId = map.getHeader().getLabelId();
+        int labelId = map.getHeader().getLabelId();
         int offset;
 
         // Switch depending on the engine version
@@ -83,7 +84,7 @@ public class Map extends Data {
             offset = data.getMapLabelData() + (labelId  - 0x58) * 4;
         } else {
             // TODO Will cause issues with custom games
-            offset = data.getMapLabelData() + (labelId * 8) + 4;
+            offset = data.getMapLabelData() + labelId * 8;
         }
 
         int namePointer = rom.getPointerAsInt(offset);

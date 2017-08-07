@@ -20,7 +20,7 @@ public class MapHeader extends Data {
     private long connectPtr;
     private int music;
     private int map;
-    private byte labelId;
+    private int labelId;
     private byte flash;
     private byte weather;
     private byte type;
@@ -37,7 +37,11 @@ public class MapHeader extends Data {
         connectPtr = rom.getPointer();
         music = rom.readWord();
         map = rom.readWord();
-        labelId = rom.readByte();
+
+        // Label is a word, ROMHacking.net is wrong
+        labelId = rom.readWord(rom.getInternalOffset());
+        rom.addInternalOffset(1);
+
         flash = rom.readByte();
         weather = rom.readByte();
         type = rom.readByte();

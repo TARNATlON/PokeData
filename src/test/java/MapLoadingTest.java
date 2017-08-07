@@ -28,6 +28,9 @@ public class MapLoadingTest extends ROMTest {
         checkEquals("Map scripts", header.getScriptPtr(), 0x16545A);
         checkEquals("Connections", header.getConnectPtr(), 0x35276C);
 
+        checkEquals("Label index", header.getLabelId(), 0x58);
+        checkEquals("Weather", header.getWeather(), 0x2);
+
         // Check data
         MapData mapData = map.getData();
 
