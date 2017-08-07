@@ -31,31 +31,19 @@ public class MapTileLoadingTest extends ROMTest {
         Tileset local = TilesetCache.get(rom, mapData.getLocalTilesetPtr());
 
         testTileset("Global", global);
-        testTileset("Local", local);
     }
 
+    // TODO Get local offsets and test
     private void testTileset(String name, Tileset tileset) {
         TilesetHeader header = tileset.getHeader();
 
         checkEquals(name + " Compressed", header.isCompressed() ? 1 : 0, 1);
-        checkEquals(name + " Global Primary", header.isPrimary() ? 1 : 0, 0);
+        checkEquals(name + " Primary", header.isPrimary() ? 1 : 0, 1);
 
         checkEquals(name + " Tileset image pointer", header.getTilesetImgPtr(), 0xEA1D68);
         checkEquals(name + " Palettes pointer", header.getPalettesPtr(), 0xEA1B68);
         checkEquals(name + " Blocks pointer", header.getBlocksPtr(), 0x29F6C8);
         checkEquals(name + " Animation routine pointer", header.getAnimationPtr(), 0x070155);
         checkEquals(name + " Behaviour pointer", header.getBehaviorPtr(), 0x2A1EC8);
-    }
-
-    private void checkEquals(String name, long pointer, long expected) {
-        if (pointer != expected) {
-            throwFail(name, pointer, expected);
-        }
-    }
-
-    private void throwFail(String name, Object obj, Object comparedTo) {
-        String message = String.format("%s don't/doesn't match (got %s, expected: %s)", name, obj, comparedTo);
-
-        throw new Error(message);
     }
 }

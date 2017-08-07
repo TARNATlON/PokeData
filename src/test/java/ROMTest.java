@@ -49,6 +49,20 @@ public class ROMTest {
         }
     }
 
+    protected void checkEquals(String name, long pointer, long expected) {
+        System.out.println("Checking " + name + " (got: " + pointer + ", expected: " + expected + ")");
+
+        if (pointer != expected) {
+            throwFail(name, pointer, expected);
+        }
+    }
+
+    private void throwFail(String name, Object obj, Object comparedTo) {
+        String message = String.format("%s don't/doesn't match (got %s, expected: %s)", name, obj, comparedTo);
+
+        throw new Error(message);
+    }
+
     private static File getJarFolder() {
         ProtectionDomain domain = ROMTest.class.getProtectionDomain();
         CodeSource source = domain.getCodeSource();
