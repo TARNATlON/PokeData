@@ -59,7 +59,7 @@ public class BlockRenderer {
 
         int size = type != TripleType.NONE ? 24 : 16;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i += 2) {
             if (type == TripleType.REFERENCE && i == 16) {
                 boolean second = false;
                 int tripleNum = (int) (behaviourByte >> 14) & 0x3FF;
@@ -114,8 +114,6 @@ public class BlockRenderer {
                 y = 0;
                 layer++;
             }
-
-            i++;
         }
 
         return block;
