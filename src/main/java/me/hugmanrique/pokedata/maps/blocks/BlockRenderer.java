@@ -47,7 +47,7 @@ public class BlockRenderer {
         int y = 0;
         int layer = 0;
 
-        long behaviourByte = getBehaviourByte(rom, originalNum);
+        long behaviourByte = getBehaviourByte(rom, tileset, blockNum);
         long behaviour = behaviourByte >> (rom.getGame().isElements() ? 24 : 8);
 
         TripleType type = TripleType.getType(behaviour, rom.getGame());
@@ -120,21 +120,14 @@ public class BlockRenderer {
         return block;
     }
 
-    private long getBehaviourByte(ROM rom, int blockId) {
-        int behaviourPtr = (int) global.getHeader().getBehaviorPtr();
-        int blockNum = blockId;
-
-        if (blockNum >= Tileset.MAIN_BLOCKS) {
-            blockNum -= Tileset.MAIN_BLOCKS;
-            behaviourPtr = (int) global.getHeader().getBehaviorPtr();
-        }
-
+    private long getBehaviourByte(ROM rom, Tileset tileset, int blockNum) {
+        int behaviourPtr = (int) tileset.getHeader().getBehaviorPtr();
         boolean elements = rom.getGame().isElements();
 
         int offset = behaviourPtr + blockNum * (elements ? 4 : 2);
         long behaviour = rom.getPointer(offset, true);
 
-        if (elements) {
+        if (!elements) {
             behaviour &= 0xFFFF;
         }
 
