@@ -134,7 +134,6 @@ public class ROMImage {
 
     public BufferedImage getImage(Palette palette, boolean transparency) {
         FastBitmap bitmap = new FastBitmap(size.x, size.y);
-        //BufferedImage image = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
 
         int x = -1;
         int y = 0;
