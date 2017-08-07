@@ -28,6 +28,7 @@ public class BlockRenderer {
     }
 
     public Image renderBlock(ROM rom, int blockNum, boolean transparency) {
+        // TODO Check if safe to remove
         int originalNum = blockNum;
         boolean secondary = false;
 

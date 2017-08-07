@@ -42,7 +42,7 @@ public class MapTileData extends Data {
                 int index = (y * width) + x;
                 int raw = rom.readWord(pointer + index * 2);
 
-                MapTile tile = new MapTile((raw & 0x3FF), (raw & 0xFC00) >> 10);
+                MapTile tile = new MapTile(raw & 0x3FF, (raw & 0xFC00) >> 10);
                 tiles[x][y] = tile;
             }
         }
