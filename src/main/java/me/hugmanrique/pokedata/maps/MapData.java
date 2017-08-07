@@ -5,8 +5,6 @@ import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
-import me.hugmanrique.pokedata.tiles.Tileset;
-import me.hugmanrique.pokedata.utils.BitConverter;
 
 /**
  * @author Hugmanrique

@@ -1,7 +1,6 @@
 package me.hugmanrique.pokedata.loaders;
 
 import lombok.AllArgsConstructor;
-import me.hugmanrique.pokedata.loaders.InvalidDataException;
 import org.ini4j.Wini;
 
 /**

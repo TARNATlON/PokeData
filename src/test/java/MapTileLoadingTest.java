@@ -1,7 +1,6 @@
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.maps.Map;
 import me.hugmanrique.pokedata.maps.MapData;
-import me.hugmanrique.pokedata.maps.MapTileData;
 import me.hugmanrique.pokedata.roms.ReadableROM;
 import me.hugmanrique.pokedata.tiles.Tileset;
 import me.hugmanrique.pokedata.tiles.TilesetCache;
@@ -27,8 +26,8 @@ public class MapTileLoadingTest extends ROMTest {
         checkEquals("Height", mapData.getHeight(), 20);
         checkEquals("Border size", mapData.getBorderHeight(), 2);
 
-        Tileset global = TilesetCache.get(rom, mapData.getGlobalTilesetPtr());
-        Tileset local = TilesetCache.get(rom, mapData.getLocalTilesetPtr());
+        Tileset global = TilesetCache.get(rom, data, mapData.getGlobalTilesetPtr());
+        Tileset local = TilesetCache.get(rom, data, mapData.getLocalTilesetPtr());
 
         testTileset("Global", global);
     }

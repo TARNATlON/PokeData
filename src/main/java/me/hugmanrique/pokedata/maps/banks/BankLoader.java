@@ -3,8 +3,6 @@ package me.hugmanrique.pokedata.maps.banks;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
 
-import java.util.Arrays;
-
 /**
  * Loads map banks data, may be run asynchronously if the
  * {@link ROM} implementation is thread safe.

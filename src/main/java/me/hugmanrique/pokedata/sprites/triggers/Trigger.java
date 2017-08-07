@@ -1,8 +1,8 @@
 package me.hugmanrique.pokedata.sprites.triggers;
 
 import lombok.Getter;
-import me.hugmanrique.pokedata.sprites.Sprite;
 import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.sprites.Sprite;
 
 /**
  * Although triggers aren't sprites, they have the same base structure

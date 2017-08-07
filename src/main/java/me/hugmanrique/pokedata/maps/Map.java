@@ -6,6 +6,7 @@ import me.hugmanrique.pokedata.Data;
 import me.hugmanrique.pokedata.connections.ConnectionData;
 import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.maps.banks.BankLoader;
+import me.hugmanrique.pokedata.roms.ROM;
 import me.hugmanrique.pokedata.sprites.SpritesHeader;
 import me.hugmanrique.pokedata.sprites.exits.SpritesExitManager;
 import me.hugmanrique.pokedata.sprites.npcs.SpritesNPCManager;
@@ -13,7 +14,6 @@ import me.hugmanrique.pokedata.sprites.signs.SpritesSignManager;
 import me.hugmanrique.pokedata.sprites.triggers.TriggerManager;
 import me.hugmanrique.pokedata.tiles.TilesetCache;
 import me.hugmanrique.pokedata.utils.BitConverter;
-import me.hugmanrique.pokedata.roms.ROM;
 
 /**
  * Bulbapedia article missing

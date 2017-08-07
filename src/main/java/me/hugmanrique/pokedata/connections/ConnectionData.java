@@ -3,8 +3,8 @@ package me.hugmanrique.pokedata.connections;
 import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
-import me.hugmanrique.pokedata.utils.BitConverter;
 import me.hugmanrique.pokedata.roms.ROM;
+import me.hugmanrique.pokedata.utils.BitConverter;
 
 import java.util.ArrayList;
 import java.util.List;

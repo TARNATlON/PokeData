@@ -3,7 +3,6 @@ package me.hugmanrique.pokedata.trainers;
 import lombok.Getter;
 import lombok.ToString;
 import me.hugmanrique.pokedata.Data;
-import me.hugmanrique.pokedata.loaders.ROMData;
 import me.hugmanrique.pokedata.roms.ROM;
 
 /**

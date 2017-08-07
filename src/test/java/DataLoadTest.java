@@ -1,5 +1,4 @@
 import me.hugmanrique.pokedata.loaders.ROMData;
-import me.hugmanrique.pokedata.roms.Game;
 import org.junit.Test;
 
 import java.io.IOException;
