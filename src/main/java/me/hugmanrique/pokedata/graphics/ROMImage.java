@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 /**
  * @author Hugmanrique
@@ -171,7 +172,11 @@ public class ROMImage {
                 int blue = palette.getBlues()[pal];
                 int alpha = transparency && pal == 0 ? 0 : 255;
 
-                image.getRaster().setPixel(x + blockX * 8, y + blockY * 8, new int[]{ red, green, blue, alpha });
+                int xPos = x + blockX * 8;
+                int yPos = y + blockY * 8;
+
+                // TODO Optimize this Java shit
+                image.getRaster().setPixel(xPos, yPos, new int[]{ red, green, blue, alpha });
             } catch (Exception ignored) {}
         }
 
