@@ -21,17 +21,19 @@ import java.util.Map;
  */
 @Getter
 public class Tileset extends Data {
-    public static final int MAX_TIME = 4;
-    public static final int MAIN_PAL_COUNT = 6;
+    public static final int MAX_TIME = 1; // TODO Default to 1, make configurable
+    public static final int MAIN_PAL_COUNT = 8;
 
-    private static final int MAIN_HEIGHT = 0x100;
-    private static final int LOCAL_HEIGHT = 0x100;
+    // TODO This is for FireRed, add to ROMData
+    // TODO Remove constants and read from ROMData
+    private static final int MAIN_HEIGHT = 0x140;
+    private static final int LOCAL_HEIGHT = 0xC0;
 
-    public static final int MAIN_SIZE = 0x200;
-    public static final int LOCAL_SIZE = 0x200;
+    public static final int MAIN_SIZE = 0x280;
+    public static final int LOCAL_SIZE = 0x140;
 
-    public static final int MAIN_BLOCKS = 0x200;
-    public static int LOCAL_BLOCKS = 0xFE;
+    public static final int MAIN_BLOCKS = 0x280;
+    public static int LOCAL_BLOCKS = 0x56;
 
     // Cache last primary as it's used a lot
     private static Tileset lastPrimary;
