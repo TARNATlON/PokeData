@@ -78,6 +78,10 @@ public class BlockRenderer {
     }
 
     public Image renderBlock(ROM rom, ROMData data, int blockNum, boolean transparency) {
+        return renderBlock(rom, data, blockNum, transparency, null);
+    }
+
+    public Image renderBlock(ROM rom, ROMData data, int blockNum, boolean transparency, Integer onlyLayer) {
         boolean secondary = false;
 
         if (blockNum >= data.getMainBlocks()) {
@@ -103,10 +107,14 @@ public class BlockRenderer {
 
         BlockRenderData renderData = new BlockRenderData(rom, data, graphics, blockPtr, behaviourByte, type, transparency);
 
-        int layers = type != TripleType.NONE ? 3 : 2;
+        if (onlyLayer != null) {
+            renderLayer(renderData, onlyLayer);
+        } else {
+            int layers = type != TripleType.NONE ? 3 : 2;
 
-        for (int layer = 0; layer < layers; layer++) {
-            renderLayer(renderData, layer);
+            for (int layer = 0; layer < layers; layer++) {
+                renderLayer(renderData, layer);
+            }
         }
 
         graphics.dispose();
