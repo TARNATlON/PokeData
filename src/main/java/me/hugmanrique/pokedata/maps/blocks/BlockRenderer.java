@@ -24,13 +24,60 @@ public class BlockRenderer {
         this.local = local;
     }
 
+    public void renderLayer(BlockRenderData renderData, int layer) {
+        ROM rom = renderData.getRom();
+        ROMData data = renderData.getData();
+
+        Graphics2D graphics = renderData.getGraphics();
+        int blockPtr = renderData.getBlockPtr();
+
+        int x = 0;
+        int y = 0;
+
+        for (int i = 0; i < 8; i += 2) {
+            int offset = 8 * layer + i;
+
+            int original = rom.readWord(blockPtr + offset);
+            int tileNum = original & 0x3FF;
+            int palette = (original & 0xF000) >> 12;
+
+            boolean flipX = (original & 0x400) > 0;
+            boolean flipY = (original & 0x800) > 0;
+
+            if (renderData.isTransparency() && layer == 0) {
+                try {
+                    Color bg = global.getPalette(currentTime)[palette].getColor(0);
+
+                    graphics.setColor(bg);
+                } catch (Exception ignored) {}
+
+                graphics.fillRect(x * 8, y * 8, 8, 8);
+            }
+
+            int tileIndex = tileNum;
+            Tileset tileset = global;
+
+            if (tileNum >= data.getMainTilesetSize()) {
+                tileIndex -= data.getMainTilesetSize();
+                tileset = local;
+            }
+
+            BufferedImage tile = tileset.getTile(tileIndex, palette, flipX, flipY, currentTime);
+
+            graphics.drawImage(tile, x * 8, y * 8, null);
+
+            if (++x > 1) {
+                x = 0;
+                y++;
+            }
+        }
+    }
+
     public Image renderBlock(ROM rom, ROMData data, int blockNum) {
         return renderBlock(rom, data, blockNum, true);
     }
 
     public Image renderBlock(ROM rom, ROMData data, int blockNum, boolean transparency) {
-        // TODO Check if safe to remove
-        int originalNum = blockNum;
         boolean secondary = false;
 
         if (blockNum >= data.getMainBlocks()) {
@@ -45,10 +92,6 @@ public class BlockRenderer {
         BufferedImage block = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = getGraphics(block);
 
-        int x = 0;
-        int y = 0;
-        int layer = 0;
-
         long behaviourByte = getBehaviourByte(rom, tileset, blockNum);
         long behaviour = behaviourByte >> (rom.getGame().isElements() ? 24 : 8);
 
@@ -58,63 +101,12 @@ public class BlockRenderer {
             blockPtr += 8;
         }
 
-        int size = type != TripleType.NONE ? 24 : 16;
+        BlockRenderData renderData = new BlockRenderData(rom, data, graphics, blockPtr, behaviourByte, type, transparency);
 
-        for (int i = 0; i < size; i += 2) {
-            if (type == TripleType.REFERENCE && i == 16) {
-                boolean second = false;
-                int tripleNum = (int) (behaviourByte >> 14) & 0x3FF;
+        int layers = type != TripleType.NONE ? 3 : 2;
 
-                if (tripleNum >= data.getMainBlocks()) {
-                    second = true;
-                    tripleNum = data.getMainBlocks();
-                }
-
-                blockPtr = (int) (second ? local : global).getHeader().getBlocksPtr() + (tripleNum * 16) + 8;
-                blockPtr -= i;
-            }
-
-            int original = rom.readWord(blockPtr + i);
-            int tileNum = original & 0x3FF;
-            int palette = (original & 0xF000) >> 12;
-
-            boolean flipX = (original & 0x400) > 0;
-            boolean flipY = (original & 0x800) > 0;
-
-            // We need a background
-            if (transparency && layer == 0) {
-                try {
-                    Color bg = global.getPalette(currentTime)[palette].getColor(0);
-                    graphics.setColor(bg);
-                } catch (Exception ignored) {}
-
-                graphics.fillRect(x * 8, y * 8, 8, 8);
-            }
-
-            int tileIndex = tileNum;
-            Tileset tileTileset = global;
-
-            if (tileNum >= data.getMainTilesetSize()) {
-                tileIndex -= data.getMainTilesetSize();
-                tileTileset = local;
-            }
-
-            BufferedImage tile = tileTileset.getTile(tileIndex, palette, flipX, flipY, currentTime);
-
-            graphics.drawImage(tile, x * 8, y * 8, null);
-
-            x++;
-
-            if (x > 1) {
-                x = 0;
-                y++;
-            }
-
-            if (y > 1) {
-                x = 0;
-                y = 0;
-                layer++;
-            }
+        for (int layer = 0; layer < layers; layer++) {
+            renderLayer(renderData, layer);
         }
 
         graphics.dispose();
