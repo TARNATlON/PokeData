@@ -52,6 +52,12 @@ The [ImageUtils](src/main/java/me/hugmanrique/pokedata/utils/ImageUtils.java) pr
 ## Tests
 As redistributing original GBA ROM Pokémon images is illegal, please place a `tests.gba` FireRed ROM file on this directory and then run the tests with Maven. If no ROM file is found, some tests will silently pass.
 
+
+
+![YourKit logo](https://www.yourkit.com/images/yklogo.png)
+
+The PokeData project uses YourKit Java Profiler to improve performance. We'd like to thank them for their amazing tool and recommend them to all Java developers!
+
 YourKit supports open source projects with its full-featured Java Profiler.
 YourKit, LLC is the creator of [YourKit Java Profiler](https://www.yourkit.com/java/profiler/)
 and [YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/),
