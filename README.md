@@ -52,7 +52,7 @@ The [ImageUtils](src/main/java/me/hugmanrique/pokedata/utils/ImageUtils.java) pr
 ## Tests
 As redistributing original GBA ROM Pokémon images is illegal, please place a `tests.gba` FireRed ROM file on this directory and then run the tests with Maven. If no ROM file is found, some tests will silently pass.
 
-
+----
 
 ![YourKit logo](https://www.yourkit.com/images/yklogo.png)
 
